@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.utils.Timer;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
@@ -41,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndVictoryCongrats;
@@ -50,22 +53,39 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
 
 import java.util.Date;
 
 public class TitleScene extends PixelScene {
-	
+
+	public static Image title;
+	public static Image signs;
+
 	@Override
 	public void create() {
 		
 		super.create();
 
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
-				new float[]{1, 1},
-				false);
+		Music.musicPlayerActive = false;
+
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS) {
+			Music.INSTANCE.play(Assets.Music.THEME_XMAS, false);
+		} else if (Random.Int(30) == 0) {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.THEME_3, Assets.Music.THEME_1, Assets.Music.THEME_2},
+					new float[]{1, 1, 1},
+					false);
+		} else {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
+					new float[]{1, 1},
+					false);
+		}
 
 		uiCamera.visible = false;
 		
@@ -75,8 +95,39 @@ public class TitleScene extends PixelScene {
 		Archs archs = new Archs();
 		archs.setSize( w, h );
 		add( archs );
-		
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+
+		int titleStyle = 0;
+
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS) {
+			title = BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON_CHRISTMAS);
+
+			Emitter emitter = new Emitter();
+			emitter.width = 200;
+			emitter.height = 50;
+			emitter.randomSize = true;
+			emitter.randomHeight = 0f;
+			emitter.randomWidth = Camera.main.width;
+			emitter.pos(0, 0);
+			emitter.pour(Speck.factory(Speck.SNOW), 0.05f);
+			add(emitter);
+
+			titleStyle = 1;
+		} else if (Holiday.getCurrentHoliday() == Holiday.HALLOWEEN) {
+			title = BannerSprites.get(  BannerSprites.Type.PIXEL_DUNGEON_HALLOWEEN );
+			titleStyle = 2;
+		} else if (Holiday.getCurrentHoliday() == Holiday.FINNISH_INDEPENDENCE_DAY) {
+			title = BannerSprites.get(  BannerSprites.Type.PIXEL_DUNGEON_FINNISH );
+			titleStyle = 3;
+		} else if (Holiday.getCurrentHoliday() == Holiday.VALENTINES_DAY) {
+			title = BannerSprites.get(  BannerSprites.Type.PIXEL_DUNGEON_VALENTINE );
+
+			titleStyle = 3;
+		} else if (Random.Float() < 0.02f) {
+			title = BannerSprites.get(  BannerSprites.Type.SHIT_SHIT_SHIT );
+			titleStyle = 3;
+		} else {
+			title = BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON);
+		}
 		add( title );
 
 		float topRegion = Math.max(title.height - 6, h*0.45f);
@@ -86,27 +137,81 @@ public class TitleScene extends PixelScene {
 
 		align(title);
 
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		title.x = (w - title.width()) / 2f;
+		title.y = 2 + (topRegion - title.height()) / 2f;
+		if (Holiday.getCurrentHoliday() == Holiday.HALLOWEEN) {
+			Emitter eyemitter = new Emitter();
+			eyemitter.pos(title.x + 37, title.y + 5);
+			eyemitter.pour(Speck.factory(Speck.FIERYSEAL), 0.01f);
+			add(eyemitter);
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
-			private float time = 0;
-			@Override
-			public void update() {
-				super.update();
-				am = Math.max(0f, (float)Math.sin( time += Game.elapsed ));
-				if (time >= 1.5f*Math.PI) time = 0;
+			Emitter eyemitter2 = new Emitter();
+			eyemitter2.pos(title.x + 40, title.y + 5);
+			eyemitter2.pour(Speck.factory(Speck.FIERYSEAL), 0.01f);
+			add(eyemitter2);
+		} else if (Holiday.getCurrentHoliday() == Holiday.VALENTINES_DAY) {
+			Emitter emitter = new Emitter();
+			emitter.pos(title.x + title.width / 2, title.y + 30);
+			emitter.randomSize = true;
+			emitter.randomHeight = 120f;
+			emitter.randomWidth = 100f;
+			emitter.pour(Speck.factory(Speck.HEARTSEAL), 0.05f);
+			add(emitter);
+		}
+
+		SecretButton button = new SecretButton(Chrome.Type.BLANK, "");
+		button.setPos(title.x + 5, title.y + 5);
+		button.setSize(title.width - 10, title.height - 10);
+		add(button);
+
+		if (titleStyle != 3) {
+			placeTorch(title.x + 22, title.y + 46);
+			placeTorch(title.x + title.width - 22, title.y + 46);
+
+			if (titleStyle == 1) {
+				signs = new Image(BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON_SIGNS_CHRISTMAS)) {
+					private float time = 0;
+
+					@Override
+					public void update() {
+						super.update();
+						am = Math.max(0f, (float) Math.sin(time += Game.elapsed));
+						if (time >= 1.5f * Math.PI) time = 0;
+					}
+
+					@Override
+					public void draw() {
+						Blending.setLightMode();
+						super.draw();
+						Blending.setNormalMode();
+					}
+				};
+				signs.x = (title.x + 0.5f) + (title.width() - signs.width()) / 2f;
+				signs.y = title.y + 11; // +11 to fix sprite fuck up
+				add(signs);
+			} else {
+				signs = new Image(BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON_SIGNS)) {
+					private float time = 0;
+
+					@Override
+					public void update() {
+						super.update();
+						am = Math.max(0f, (float) Math.sin(time += Game.elapsed));
+						if (time >= 1.5f * Math.PI) time = 0;
+					}
+
+					@Override
+					public void draw() {
+						Blending.setLightMode();
+						super.draw();
+						Blending.setNormalMode();
+					}
+				};
+				signs.x = title.x + (title.width() - signs.width()) / 2f;
+				signs.y = title.y;
+				add(signs);
 			}
-			@Override
-			public void draw() {
-				Blending.setLightMode();
-				super.draw();
-				Blending.setNormalMode();
-			}
-		};
-		signs.x = title.x + (title.width() - signs.width())/2f;
-		signs.y = title.y;
-		add( signs );
+		}
 
 		final Chrome.Type GREY_TR = Chrome.Type.GREY_BUTTON_TR;
 		
@@ -176,7 +281,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+		btnAbout.icon(Icons.get(Icons.SHIT));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;
@@ -278,7 +383,8 @@ public class TitleScene extends PixelScene {
 
 		public ChangesButton( Chrome.Type type, String label ){
 			super(type, label);
-			if (SPDSettings.updates()) Updates.checkForUpdate();
+			//TODO updates?
+			//if (SPDSettings.updates()) Updates.checkForUpdate();
 		}
 
 		boolean updateShown = false;
@@ -368,7 +474,56 @@ public class TitleScene extends PixelScene {
 
 		@Override
 		protected void onClick() {
-			ShatteredPixelDungeon.switchNoFade(SupporterScene.class);
+			ShatteredPixelDungeon.switchNoFade(StoreScene.class);
+		}
+	}
+
+	private static class SecretButton extends StyledButton {
+
+		int clickCount;
+
+		public SecretButton(Chrome.Type type, String label ){
+			super(type, label);
+		}
+
+		@Override
+		protected void onClick() {
+			super.onClick();
+			clickCount++;
+			switch (clickCount) {
+				case 5:
+					Camera.main.shake( 1, 1f );
+					Sample.INSTANCE.play(Assets.Sounds.OPEN_1, 1f);
+					break;
+				case 20:
+					if (TitleScene.title != null) {
+						TitleScene.title.speed.y = 5f;
+						Camera.main.shake( 4, 0.5f );
+						Sample.INSTANCE.play(Assets.Sounds.OPEN_3, 3f);
+						TitleScene.title.acc.set(0, 150);
+						if (TitleScene.signs != null) {
+							TitleScene.signs.speed.y = 5f;
+							TitleScene.signs.acc.set(0, 150);
+						}
+					}
+
+
+					new Thread(() -> Timer.schedule(new Timer.Task() {
+						@Override
+						public void run() {
+							Sample.INSTANCE.play(Assets.Sounds.CHASM1, 2f, 0.5f);
+							Camera.main.shake( 3, 1f );
+							TitleScene.title.speed.y = 0;
+							if (TitleScene.signs != null)  {
+								TitleScene.signs.speed.y = 0;
+								TitleScene.signs.acc.set(0,0);
+								TitleScene.signs.acc.set(0,0);
+							}
+						}
+					}, 4f)).start();
+					visible = false;
+					break;
+			}
 		}
 	}
 }

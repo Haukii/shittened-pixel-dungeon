@@ -24,23 +24,34 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -50,6 +61,7 @@ import java.util.ArrayList;
 public class CloakOfShadows extends Artifact {
 
 	{
+		skinnable = true;
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
 
 		exp = 0;
@@ -63,9 +75,15 @@ public class CloakOfShadows extends Artifact {
 
 		unique = true;
 		bones = false;
+
+		type = Type.CLOTH;
+
+		skin = Skin.CLOAK;
+		image = skin.sprite();
 	}
 
 	public static final String AC_STEALTH = "STEALTH";
+	public static final String AC_PAINT = "PAINT";
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -76,6 +94,7 @@ public class CloakOfShadows extends Artifact {
 				&& (charge > 0 || activeBuff != null)) {
 			actions.add(AC_STEALTH);
 		}
+		actions.add(AC_PAINT);
 		return actions;
 	}
 
@@ -110,6 +129,9 @@ public class CloakOfShadows extends Artifact {
 				hero.sprite.operate( hero.pos );
 			}
 
+		} else if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
 		}
 	}
 
@@ -220,6 +242,34 @@ public class CloakOfShadows extends Artifact {
 			activeBuff = new cloakStealth();
 			activeBuff.restoreFromBundle(bundle.getBundle(BUFF));
 		}
+	}
+
+	@Override
+	public String name() {
+		if (skin != null && skin.rarityTier() >= 4) {
+			switch (skin) {
+				case FIERYCLOAK:
+					return "Cloak of Fire";
+				case TRUEGOLDENCLOAK:
+					return "True Golden Cloak";
+				case DARKNESSCLOAK:
+					return "Cloak of Darkness";
+			}
+		}
+		return super.name();
+	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this,"desc");
+
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
+		}
+		return desc;
 	}
 
 	@Override
@@ -398,4 +448,52 @@ public class CloakOfShadows extends Artifact {
 			turnsToCost = bundle.getInt( TURNSTOCOST );
 		}
 	}
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(CloakOfShadows.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			if (item instanceof Pasty && Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS) return false;
+			return Skin.containsIngredient(item, CloakOfShadows.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, CloakOfShadows.class);
+				if (skin == null) {
+					//WE'VE FUCKED UP IF THIS HAPPENS
+					GLog.n("OH FUCK OH SHIT! THE SKIN IS NULL!!! (dev fucked up bad)");
+					return;
+				}
+
+				if (item instanceof Torch) {
+					if (((CloakOfShadows) curItem).skin == Skin.WOODENCLOAK) {
+						skin = Skin.FIERYCLOAK;
+						Sample.INSTANCE.play(Assets.Sounds.BURNING);
+					} else {
+						GLog.w(Messages.get(BrokenSeal.class, "notburning"));
+						return;
+					}
+				} else if (item instanceof GoldenMeat && ((CloakOfShadows) curItem).skin != Skin.GOLDENCLOAK) {
+					GLog.w(Messages.get(BrokenSeal.class, "notgolden"));
+				}
+
+				GLog.p(Messages.get(CloakOfShadows.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
+				((CloakOfShadows) curItem).changeSkin(skin);
+			}
+		}
+	};
 }

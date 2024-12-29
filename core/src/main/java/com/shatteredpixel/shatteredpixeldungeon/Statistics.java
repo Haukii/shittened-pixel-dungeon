@@ -34,6 +34,8 @@ public class Statistics {
 	public static int itemsCrafted;
 	public static int piranhasKilled;
 	public static int ankhsUsed;
+	public static int shitsTaken;
+	public static int ratsSlain;
 
 	//These are used for score calculation
 	// some are built incrementally, most are assigned when full score is calculated
@@ -48,6 +50,7 @@ public class Statistics {
 	public static int totalQuestScore;
 	public static float winMultiplier;
 	public static float chalMultiplier;
+	public static int shitScore;
 	public static int totalScore;
 
 	//used for hero unlock badges
@@ -67,6 +70,8 @@ public class Statistics {
 	public static boolean amuletObtained = false;
 	public static boolean gameWon = false;
 	public static boolean ascended = false;
+	public static boolean audioDisabled = false;
+	public static boolean kingKilled = false;
 	
 	public static void reset() {
 		
@@ -78,6 +83,8 @@ public class Statistics {
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
 		ankhsUsed		= 0;
+		shitsTaken		= 0;
+		ratsSlain		= 0;
 
 		progressScore   = 0;
 		heldItemValue   = 0;
@@ -107,7 +114,9 @@ public class Statistics {
 		amuletObtained = false;
 		gameWon = false;
 		ascended = false;
-		
+		audioDisabled = false;
+		kingKilled = false;
+
 	}
 	
 	private static final String GOLD		= "score";
@@ -118,6 +127,8 @@ public class Statistics {
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
 	private static final String ANKHS		= "ankhsUsed";
+	private static final String TURDS		= "shitsTaken";
+	private static final String RATS		= "ratsSlain";
 
 	private static final String PROG_SCORE	    = "prog_score";
 	private static final String ITEM_VAL	    = "item_val";
@@ -130,6 +141,7 @@ public class Statistics {
 	private static final String TOT_QUEST		= "tot_quest";
 	private static final String WIN_MULT		= "win_mult";
 	private static final String CHAL_MULT		= "chal_mult";
+	private static final String SHITSCORE = 	"shit_score";
 	private static final String TOTAL_SCORE		= "total_score";
 	
 	private static final String UPGRADES	= "upgradesUsed";
@@ -147,6 +159,8 @@ public class Statistics {
 	private static final String AMULET          = "amuletObtained";
 	private static final String WON		        = "won";
 	private static final String ASCENDED		= "ascended";
+	private static final String AUDIO_DISABLED		= "audioDisabled";
+	private static final String KING_KILLED		= "kingKilled";
 	
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( GOLD,		goldCollected );
@@ -157,6 +171,8 @@ public class Statistics {
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
+		bundle.put( TURDS,		shitsTaken );
+		bundle.put( RATS,		ratsSlain );
 
 		bundle.put( PROG_SCORE,  progressScore );
 		bundle.put( ITEM_VAL,    heldItemValue );
@@ -173,6 +189,7 @@ public class Statistics {
 		bundle.put( TOT_QUEST,   totalQuestScore );
 		bundle.put( WIN_MULT,    winMultiplier );
 		bundle.put( CHAL_MULT,   chalMultiplier );
+		bundle.put( SHITSCORE,   shitScore );
 		bundle.put( TOTAL_SCORE, totalScore );
 		
 		bundle.put( UPGRADES,   upgradesUsed );
@@ -190,6 +207,8 @@ public class Statistics {
 		bundle.put( AMULET,		amuletObtained );
 		bundle.put( WON,        gameWon );
 		bundle.put( ASCENDED,   ascended );
+		bundle.put( AUDIO_DISABLED,   audioDisabled );
+		bundle.put( KING_KILLED,   kingKilled );
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
@@ -201,6 +220,8 @@ public class Statistics {
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
+		shitsTaken		= bundle.getInt( TURDS );
+		ratsSlain		= bundle.getInt( RATS  );
 
 		progressScore   = bundle.getInt( PROG_SCORE );
 		heldItemValue   = bundle.getInt( ITEM_VAL );
@@ -220,6 +241,7 @@ public class Statistics {
 		totalQuestScore = bundle.getInt( TOT_QUEST );
 		winMultiplier   = bundle.getFloat( WIN_MULT );
 		chalMultiplier  = bundle.getFloat( CHAL_MULT );
+		shitScore		= bundle.getInt( SHITSCORE );
 		totalScore      = bundle.getInt( TOTAL_SCORE );
 		
 		upgradesUsed    = bundle.getInt( UPGRADES );
@@ -237,6 +259,8 @@ public class Statistics {
 		amuletObtained	= bundle.getBoolean( AMULET );
 		gameWon         = bundle.getBoolean( WON );
 		ascended        = bundle.getBoolean( ASCENDED );
+		audioDisabled   = bundle.getBoolean( AUDIO_DISABLED );
+		kingKilled 		= bundle.getBoolean(KING_KILLED);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ){

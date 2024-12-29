@@ -39,6 +39,14 @@ public class Emitter extends Group {
 	
 	protected Visual target;
 	public boolean fillTarget = true;
+
+	//THESE 5 VARIABLES ARE ALL USED FOR RANDOM SIZE
+	public boolean randomSize = false;
+	public float randomWidth = 1;
+	public float randomHeight = 1;
+	public float centerOffsetX = 0;
+	public float centerOffsetY = 0;
+	//THESE 5 VARIABLES ARE ALL USED FOR RANDOM SIZE
 	
 	protected float interval;
 	protected int quantity;
@@ -143,7 +151,21 @@ public class Emitter extends Group {
 	}
 
 	protected void emit( int index ) {
-		if (target == null) {
+		if (randomSize && target == null) { //nice job
+			factory.emit(
+					this,
+					index,
+					x + Random.Float(-randomWidth, randomWidth) + centerOffsetX + width / 2,
+					y + Random.Float(-randomHeight, randomHeight) + centerOffsetY + height / 2
+			);
+		} else if (randomSize) {
+			factory.emit(
+					this,
+					index,
+					target.x + Random.Float(-randomWidth, randomWidth) + centerOffsetX + target.width / 2,
+					target.y + Random.Float(-randomHeight, randomHeight) + centerOffsetY + target.height / 2
+			);
+		} else if (target == null) {
 			factory.emit(
 				this,
 				index,

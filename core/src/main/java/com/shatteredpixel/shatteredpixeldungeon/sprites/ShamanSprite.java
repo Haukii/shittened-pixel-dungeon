@@ -117,4 +117,15 @@ public abstract class ShamanSprite extends MobSprite {
 			return 42;
 		}
 	}
+
+	public static class Maskless extends ShamanSprite {
+		{
+			boltType = MagicMissile.SHAMAN_MASKLESS;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 63;
+		}
+	}
 }

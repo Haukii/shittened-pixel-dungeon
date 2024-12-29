@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -39,6 +41,10 @@ public class FrozenCarpaccio extends Food {
 	{
 		image = ItemSpriteSheet.CARPACCIO;
 		energy = Hunger.HUNGRY/2f;
+		carbs = 2f;
+		fats = 15f;
+		proteins = 11f;
+		salt = 0.3f;
 	}
 	
 	@Override
@@ -77,5 +83,17 @@ public class FrozenCarpaccio extends Food {
 		FrozenCarpaccio result = new FrozenCarpaccio();
 		result.quantity = ingredient.quantity();
 		return result;
+	}
+
+	public static class frozenMeat extends Recipe.SimpleRecipe{
+		{
+			inputs =  new Class[]{MysteryMeat.class, SmallMeat.class, Icecap.Seed.class};
+			inQuantity = new int[]{1,1,1};
+
+			cost = 1;
+
+			output = FrozenCarpaccio.class;
+			outQuantity = 2;
+		}
 	}
 }

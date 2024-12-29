@@ -43,6 +43,7 @@ public enum Icons {
 	PREFS,
 	SHPX,
 	JOURNAL,
+	SHIT,
 
 	//grey icons, mainly used for buttons, spacing for 16x16
 	EXIT,
@@ -123,6 +124,7 @@ public enum Icons {
 	SCROLL_HOLDER,
 	WAND_HOLSTER,
 	POTION_BANDOLIER,
+	FOOD_CRATE,
 
 	//icons that appear in the about screen, variable spacing
 	LIBGDX,
@@ -168,6 +170,9 @@ public enum Icons {
 				break;
 			case JOURNAL:
 				icon.frame( icon.texture.uvRectBySize( 136, 0, 17, 15 ) );
+				break;
+			case SHIT:
+				icon.frame( icon.texture.uvRectBySize( 192, 96, 14, 13 ) );
 				break;
 
 			case EXIT:
@@ -392,6 +397,9 @@ public enum Icons {
 				break;
 			case POTION_BANDOLIER:
 				icon.frame( icon.texture.uvRectBySize( 216, 80, 10, 10 ) );
+				break;
+			case FOOD_CRATE:
+				icon.frame(icon.texture.uvRectBySize( 226, 80, 8, 9 ));
 				break;
 		
 			case LIBGDX:

@@ -50,6 +50,11 @@ public class Pasty extends Food {
 		energy = Hunger.STARVING;
 
 		bones = true;
+		//TODO make seasonal
+		carbs = 35f;
+		fats = 13f;
+		proteins = 5.5f;
+		salt = 0.3f;
 	}
 	
 	@Override

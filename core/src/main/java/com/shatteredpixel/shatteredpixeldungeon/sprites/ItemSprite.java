@@ -342,17 +342,21 @@ public class ItemSprite extends MovieClip {
 					}
 
 					if (Dungeon.level.water[heap.pos]) {
-						Sample.INSTANCE.play( Assets.Sounds.WATER, 0.8f, Random.Float( 1f, 1.45f ) );
+						Sample.INSTANCE.play( Assets.Sounds.SPLASH, 0.5f, Random.Float( 0.8f, 1.2f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.EMPTY_SP && (Dungeon.depth <= 6 || Dungeon.depth >= 14)) {
+						Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.WOOD_1, Assets.Sounds.WOOD_2, Assets.Sounds.WOOD_3), 0.8f, Random.Float( 1.16f, 1.25f ) );
 					} else if (Dungeon.level.map[heap.pos] == Terrain.EMPTY_SP) {
-						Sample.INSTANCE.play( Assets.Sounds.STURDY, 0.8f, Random.Float( 1.16f, 1.25f ) );
+						Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.METAL_1, Assets.Sounds.METAL_2, Assets.Sounds.METAL_3, Assets.Sounds.METAL_4), 1, Random.Float( 0.96f, 1.05f ) );
 					} else if (Dungeon.level.map[heap.pos] == Terrain.GRASS
 							|| Dungeon.level.map[heap.pos] == Terrain.EMBERS
 							|| Dungeon.level.map[heap.pos] == Terrain.FURROWED_GRASS){
-						Sample.INSTANCE.play( Assets.Sounds.GRASS, 0.8f, Random.Float( 1.16f, 1.25f ) );
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 1.5f, Random.Float( 0.9f, 1.15f ) );
 					} else if (Dungeon.level.map[heap.pos] == Terrain.HIGH_GRASS) {
-						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ) );
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 0.8f, Random.Float( 1.16f, 1.25f ) );
 					} else {
-						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ));
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.STEP_1,Assets.Sounds.STEP_2,
+								Assets.Sounds.STEP_3,Assets.Sounds.STEP_4,Assets.Sounds.STEP_5,
+								Assets.Sounds.STEP_6,Assets.Sounds.STEP_7), 1.3f, Random.Float( 1.16f, 1.25f ));
 					}
 				}
 			}

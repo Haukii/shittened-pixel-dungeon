@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class FlockTrap extends Trap {
 			}
 		}
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);
-		Sample.INSTANCE.play(Assets.Sounds.SHEEP);
+		Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.SHEEP_1, Assets.Sounds.SHEEP_2, Assets.Sounds.SHEEP_3, Assets.Sounds.SHEEP_4));
 	}
 
 }

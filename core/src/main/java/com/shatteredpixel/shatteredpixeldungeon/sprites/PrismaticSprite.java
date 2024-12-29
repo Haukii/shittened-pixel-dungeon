@@ -37,7 +37,7 @@ public class PrismaticSprite extends MirrorSprite {
 
 	@Override
 	public void updateArmor() {
-		updateArmor( ((PrismaticImage)ch).armTier );
+		updateArmor( ((PrismaticImage)ch).armID);
 	}
 	
 	@Override

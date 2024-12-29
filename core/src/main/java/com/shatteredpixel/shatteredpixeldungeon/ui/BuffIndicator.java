@@ -122,6 +122,16 @@ public class BuffIndicator extends Component {
 	public static final int DAZE        = 70;
 	public static final int DISGUISE    = 71;
 	public static final int WAND        = 72;
+	public static final int NUTS      	= 73;
+	public static final int DIABETES    = 74;
+	public static final int CAFFEINERUSH= 75;
+	public static final int TICKBITE    = 76;
+	public static final int ACCELERATION= 77;
+	public static final int KETCHUP		= 78;
+	public static final int KETCHUPFLOOD= 79;
+	public static final int OILED		= 80;
+	public static final int LAVAGE		= 81;
+	public static final int CANCELLED	= 82;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

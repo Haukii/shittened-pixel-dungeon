@@ -34,7 +34,12 @@ public class Berry extends Food {
 
 	{
 		image = ItemSpriteSheet.BERRY;
-		energy = Hunger.HUNGRY/3f; //100 food value
+		energy = 30f;
+
+		carbs = 5f;
+		fats = 0.8f;
+		proteins = 1.9f;
+		salt = 0.2f;
 
 		bones = false;
 	}

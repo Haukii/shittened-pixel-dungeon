@@ -21,10 +21,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.RatAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -45,7 +54,26 @@ public class Rat extends Mob {
 			alignment = Alignment.ALLY;
 			if (state == SLEEPING) state = WANDERING;
 		}
+		if (Dungeon.level.heroFOV[pos] && Random.Int(90) == 1 && state == HUNTING) {
+			Buff.affect(this, Haste.class,1f);
+			Sample.INSTANCE.playForDuration( Assets.Sounds.FREE_RAT, Random.NormalFloat(0.2f, Random.Float(1f,4f)) );
+		}
 		return super.act();
+	}
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+		Statistics.ratsSlain++;
+		Badges.validateRats();
+		if (Random.Int(0,18) == 2) {
+			GameScene.ratSlain();
+		}
+		MusicPlayer player = Dungeon.hero.belongings.getItem( MusicPlayer.class );
+		if (player != null && Dungeon.LimitedDrops.RAT_ALBUM.count == 0 && Random.Int(10) == 5) {
+			Dungeon.level.drop( new RatAlbum(), pos ).sprite.drop();
+			Dungeon.LimitedDrops.RAT_ALBUM.count++;
+		}
 	}
 
 	@Override
@@ -75,5 +103,21 @@ public class Rat extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		if (bundle.contains(RAT_ALLY)) alignment = Alignment.ALLY;
+	}
+
+	public static Class<? extends Rat> random(int depth) {
+		float roll = Random.Float();
+		if (roll < 0.05f && depth > 10) {
+			return GlitchRat.class;
+		}
+		if (roll < 0.92f) {
+			return Rat.class;
+		} else if (roll < 0.95f) {
+			return NormalRat.class;
+		} else if (roll < 0.98f) {
+			return Ratatouille.class;
+		} else {
+			return HeroRat.class;
+		}
 	}
 }

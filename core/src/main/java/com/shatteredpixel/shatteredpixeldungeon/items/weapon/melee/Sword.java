@@ -45,6 +45,7 @@ public class Sword extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 3;
+		type = Type.SWORD;
 	}
 
 	@Override

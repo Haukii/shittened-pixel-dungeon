@@ -24,27 +24,71 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class GnollSprite extends MobSprite {
-	
+public abstract class GnollSprite extends MobSprite {
+
+	protected abstract int texOffset();
+
 	public GnollSprite() {
 		super();
-		
+
+		int c = texOffset();
+
 		texture( Assets.Sprites.GNOLL );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
-		
+
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
-		
+		idle.frames( frames, 0+c, 0+c, 0+c, 1+c, 0+c, 0+c, 1+c, 1+c );
+
 		run = new Animation( 12, true );
-		run.frames( frames, 4, 5, 6, 7 );
-		
+		run.frames( frames, 4+c, 5+c, 6+c, 7+c );
+
 		attack = new Animation( 12, false );
-		attack.frames( frames, 2, 3, 0 );
-		
+		attack.frames( frames, 2+c, 3+c, 0+c );
+
 		die = new Animation( 12, false );
-		die.frames( frames, 8, 9, 10 );
+		die.frames( frames, 8+c, 9+c, 10+c );
 		
 		play( idle );
+	}
+
+	public static class Sand extends GnollSprite {
+
+		@Override
+		protected int texOffset() {
+			return 0;
+		}
+	}
+
+	public static class Ash extends GnollSprite {
+
+		@Override
+		protected int texOffset() {
+			return 42;
+		}
+	}
+
+	public static class Red extends GnollSprite {
+
+		@Override
+		protected int texOffset() {
+			return 63;
+		}
+	}
+
+	public static class Dust extends GnollSprite {
+
+		@Override
+		protected int texOffset() {
+			return 84;
+		}
+	}
+
+	public static class Toast extends GnollSprite {
+
+		@Override
+		protected int texOffset() {
+			return 105;
+		}
 	}
 }

@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -128,7 +129,16 @@ public class Messages {
 		String value = getFromBundle(key.toLowerCase(Locale.ENGLISH));
 		if (value != null){
 			if (args.length > 0) return format(value, args);
-			else return value;
+			else {
+				int random = Random.Int(80);
+				if (random == 5 && !value.contains("%")) {
+					return value.toUpperCase();
+				} else if (random == 6) {
+					return value.replace('a', 'o');
+				} else if (random == 7) {
+					return value.replace('u', 'a');
+				} else return value;
+			}
 		} else {
 			//this is so child classes can inherit properties from their parents.
 			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated

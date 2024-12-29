@@ -24,9 +24,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -43,10 +45,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -65,6 +69,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	public static final String AC_IMBUE = "IMBUE";
 	public static final String AC_ZAP	= "ZAP";
+	public static final String AC_PAINT = "PAINT";
 
 	private static final float STAFF_SCALE_FACTOR = 0.75f;
 
@@ -80,10 +85,15 @@ public class MagesStaff extends MeleeWeapon {
 
 		unique = true;
 		bones = false;
+
+		skinnable = true;
+		skin = Skin.WAND;
+		type = Type.WOOD;
 	}
 
 	public MagesStaff() {
 		wand = null;
+		prefix = Prefix.NONE;
 	}
 
 	@Override
@@ -108,6 +118,7 @@ public class MagesStaff extends MeleeWeapon {
 		if (wand!= null && wand.curCharges > 0) {
 			actions.add( AC_ZAP );
 		}
+		actions.add(AC_PAINT);
 		return actions;
 	}
 
@@ -151,6 +162,9 @@ public class MagesStaff extends MeleeWeapon {
 			if (cursed || hasCurseEnchant()) wand.cursed = true;
 			else                             wand.cursed = false;
 			wand.execute(hero, AC_ZAP);
+		} else if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
 		}
 	}
 
@@ -350,8 +364,20 @@ public class MagesStaff extends MeleeWeapon {
 				info += "\n\n" + Messages.get(wand, "bmage_desc");
 			}
 		}
+		if (skin.rarityTier() != 0) {
+			info += skinInfo();
+		}
 
 		return info;
+	}
+
+	public String skinInfo() {
+
+		String desc = Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+		if (!skin.desc().isEmpty()) {
+			desc += "\n\n\"" + skin.desc() + "\"";
+		}
+		return desc;
 	}
 
 	@Override
@@ -380,6 +406,42 @@ public class MagesStaff extends MeleeWeapon {
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		}
 	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(MagesStaff.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, MagesStaff.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, MagesStaff.class);
+				if (skin == null) {
+					//WE'VE FUCKED UP IF THIS HAPPENS
+					GLog.n("OH FUCK OH SHIT! THE SKIN IS NULL!!! (dev fucked up bad)");
+					return;
+				}
+
+				GLog.p(Messages.get(MagesStaff.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_WOOD);
+				((MagesStaff) curItem).changeSkin(skin);
+			}
+		}
+	};
 
 	@Override
 	public int value() {

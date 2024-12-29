@@ -93,6 +93,7 @@ public class DriedRose extends Artifact {
 		chargeCap = 100;
 
 		defaultAction = AC_SUMMON;
+		type = Type.CLOTH;
 	}
 
 	private boolean talkedTo = false;

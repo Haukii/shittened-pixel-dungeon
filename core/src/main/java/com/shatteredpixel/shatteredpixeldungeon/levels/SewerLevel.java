@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
@@ -31,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CapybaraNestRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
@@ -50,12 +54,15 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class SewerLevel extends RegularLevel {
 
@@ -80,6 +87,9 @@ public class SewerLevel extends RegularLevel {
 			Music.INSTANCE.playTracks(SEWER_TRACK_LIST, SEWER_TRACK_CHANCES, false);
 		}
 	}
+
+	boolean clockPlayed = false;
+	boolean riserPlayed = false;
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
@@ -195,6 +205,36 @@ public class SewerLevel extends RegularLevel {
 			default:
 				return super.tileDesc( tile );
 		}
+	}
+
+	@Override
+	public void occupyCell(Char ch) {
+		if (ch != Dungeon.hero) {
+			super.occupyCell(ch);
+			return;
+		}
+
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && !clockPlayed  && Dungeon.depth == 1
+				&& (room(ch.pos) == roomEntrance || roomEntrance.neigbours.contains(room(ch.pos))) && Statistics.duration > 50) {
+			Sample.INSTANCE.play(Assets.Sounds.CLOCK);
+			clockPlayed = true;
+		}
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && !riserPlayed  && Dungeon.depth == 1
+				&& room(ch.pos) == roomEntrance && Statistics.duration > 50) {
+			Sample.INSTANCE.play(Assets.Sounds.RISER);
+			riserPlayed = true;
+		}
+
+		super.occupyCell(ch);
+	}
+
+	@Override
+	protected ArrayList<Room> initRooms() {
+		ArrayList<Room> rooms = super.initRooms();
+		if (Random.Int(5) == 0 ) {
+			rooms.add(new CapybaraNestRoom());
+		}
+		return rooms;
 	}
 	
 	private static class Sink extends Emitter {

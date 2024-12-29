@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
@@ -50,11 +52,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupStormed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
@@ -85,6 +91,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.KetchupSplat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
@@ -126,6 +133,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GnollRockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -151,8 +159,8 @@ public abstract class Char extends Actor {
 	
 	public CharSprite sprite;
 	
-	public int HT;
-	public int HP;
+	public int HT; //MAX HEALTH
+	public int HP; //CURRENT HEALTH
 	
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;
@@ -478,6 +486,14 @@ public abstract class Char extends Actor {
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
+			if (this instanceof Hero) {
+				MeleeWeapon weapon = null;
+				if (Dungeon.hero.belongings.weapon() instanceof MeleeWeapon)
+					weapon = (MeleeWeapon) Dungeon.hero.belongings.weapon();
+				if (weapon != null && weapon.prefix == Prefix.VENOMOUS && Random.Float() > 0.05f) {
+					Buff.affect(enemy, Poison.class).set(Math.round(1f + Math.min(weapon.level() / 2f, 3f) + Dungeon.scalingDepth() / 7f));
+				}
+			}
 
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
 				enemy.HP = 0;
@@ -594,6 +610,8 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
+		if (attacker.buff(Gotted.class) != null) acuRoll *= 0.9f;
+		if (attacker.buff(Ketchup.class) != null) acuRoll *= 1.5f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -603,6 +621,7 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff(Gotted.class) != null) defRoll *= 1.1f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -662,6 +681,11 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		if ( buff( CaffeineRush.class ) != null) speed *= 1.25f;
+		//Starts from 1.1f then after about 10 turns starts speeding up and reaches 2 after a total of ~20 turns
+		if ( buff( Acceleration.class ) != null) speed *= Acceleration.multiplier(this);
+		if (buff(Ketchup.class) != null) speed *= properties.contains(Property.BOSS) ? 0.25f :  0.75f;
+		if (buff(Furor.class) != null) speed *= 0.25f;
 		return speed;
 	}
 
@@ -914,6 +938,9 @@ public abstract class Char extends Actor {
 	}
 	
 	public void die( Object src ) {
+		if (buff(KetchupStormed.class) != null && !(this instanceof KetchupSplat)) {
+			Ketchupify();
+		}
 		destroy();
 		if (src != Chasm.class) {
 			sprite.die();
@@ -921,6 +948,20 @@ public abstract class Char extends Actor {
 				((MobSprite) sprite).fall();
 			}
 		}
+	}
+
+	private void Ketchupify() {
+		int splatDmg = 3;
+		//Roll a random damage for splat's damage roll with quadruple advantage.
+		for (int i = 0; i <= 3; i++) {
+			int dmgroll = damageRoll();
+			if (dmgroll > splatDmg) splatDmg = dmgroll;
+		}
+
+		KetchupSplat splat = new KetchupSplat(HT, splatDmg);
+		splat.state = splat.WANDERING;
+		splat.pos = pos;
+		GameScene.add(splat);
 	}
 
 	//we cache this info to prevent having to call buff(...) in isAlive.
@@ -1213,7 +1254,8 @@ public abstract class Char extends Actor {
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
-									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
+									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) )),
+		HUMAN;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

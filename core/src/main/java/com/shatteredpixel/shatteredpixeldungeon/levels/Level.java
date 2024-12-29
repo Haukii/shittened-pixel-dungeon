@@ -744,6 +744,27 @@ public abstract class Level implements Bundlable {
 			return false;
 		}
 	}
+
+	public boolean spawnMob(int disLimit, Mob mob){
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(passable, avoid, null));
+
+		mob.state = mob.WANDERING;
+		int tries = 30;
+		do {
+			mob.pos = randomRespawnCell(mob);
+			tries--;
+		} while ((mob.pos == -1 || PathFinder.distance[mob.pos] < disLimit) && tries > 0);
+
+		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
+			GameScene.add( mob );
+			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
+				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public int randomRespawnCell( Char ch ) {
 		int cell;
@@ -1215,11 +1236,11 @@ public abstract class Level implements Bundlable {
 		Plant plant = plants.get( cell );
 		if (plant != null) {
 			if (bubble != null){
-				Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 1, Random.Float( 0.96f, 1.05f ) );
 				bubble.setDelayedPress(cell);
 
 			} else if (timeFreeze != null){
-				Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 1, Random.Float( 0.96f, 1.05f ) );
 				timeFreeze.setDelayedPress(cell);
 
 			} else {

@@ -30,6 +30,10 @@ public class StewedMeat extends Food {
 	{
 		image = ItemSpriteSheet.STEWED;
 		energy = Hunger.HUNGRY/2f;
+		carbs = 1f;
+		fats = 17f;
+		proteins = 30f;
+		salt = 0.4f;
 	}
 	
 	@Override
@@ -61,7 +65,7 @@ public class StewedMeat extends Food {
 		}
 	}
 	
-	//red meat
+	//red sus
 	//blue meat
 	
 	public static class threeMeat extends Recipe.SimpleRecipe{
@@ -73,6 +77,18 @@ public class StewedMeat extends Food {
 			
 			output = StewedMeat.class;
 			outQuantity = 3;
+		}
+	}
+
+	public static class fromSmallMeat extends Recipe.SimpleRecipe{
+		{
+			inputs =  new Class[]{StewedSmallMeat.class};
+			inQuantity = new int[]{3};
+
+			cost = 0;
+
+			output = StewedMeat.class;
+			outQuantity = 1;
 		}
 	}
 

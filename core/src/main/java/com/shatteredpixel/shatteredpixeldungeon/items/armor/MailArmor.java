@@ -27,10 +27,12 @@ public class MailArmor extends Armor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_MAIL;
+
+		type = Type.CHAIN;
 	}
-	
+
 	public MailArmor() {
-		super( 3 );
+		super( 3, 3 );
 	}
 
 }

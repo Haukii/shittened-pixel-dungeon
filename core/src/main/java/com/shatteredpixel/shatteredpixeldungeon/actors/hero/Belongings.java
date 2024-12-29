@@ -213,8 +213,9 @@ public class Belongings implements Iterable<Item> {
 			} else {
 				info.armorTier = armor.tier;
 			}
+			info.armorID = armor.ID;
 		} else {
-			info.armorTier = 0;
+			info.armorID = info.armorTier = 0;
 		}
 	}
 

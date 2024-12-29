@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -39,6 +40,8 @@ public class ConfusionTrap extends Trap {
 
 		GameScene.add(Blob.seed(pos, 300 + 20 * scalingDepth(), ConfusionGas.class));
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
-
+		if (this.pos == Dungeon.hero.pos) {
+			Sample.INSTANCE.play(Assets.Sounds.GAS_GAS_GAS);
+		}
 	}
 }

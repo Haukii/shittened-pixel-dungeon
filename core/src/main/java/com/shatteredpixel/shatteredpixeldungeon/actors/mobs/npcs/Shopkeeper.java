@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -30,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bucket;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -49,11 +52,13 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -89,6 +94,25 @@ public class Shopkeeper extends NPC {
 	
 	@Override
 	public void damage( int dmg, Object src ) {
+		if (Dungeon.depth == 11 && src == Dungeon.hero) {
+			Tokmanni mrTokmanni = new Tokmanni();
+			if (Dungeon.level.passable[pos]) {
+				mrTokmanni.pos = pos;
+			} else {
+				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+					int p = pos + PathFinder.NEIGHBOURS8[i];
+					if (Dungeon.level.passable[p] && Dungeon.level.findMob(pos) == null) {
+						mrTokmanni.pos = pos;
+						break;
+					}
+				}
+			}
+			mrTokmanni.state = mrTokmanni.HUNTING;
+			GameScene.add(mrTokmanni);
+			mrTokmanni.beckon(Dungeon.hero.pos);
+			yell("You there! How dare you attack Mr Tokmanni himself!");
+			Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+		}
 		processHarm();
 	}
 	
@@ -181,6 +205,12 @@ public class Shopkeeper extends NPC {
 					CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
 				}
 				if (heap.size() == 1) {
+					if (Random.Float() > 0.5f && Dungeon.depth == 11) {
+						Bucket bucket = new Bucket();
+						bucket.pos = heap.pos;
+						bucket.state = bucket.WANDERING;
+						GameScene.add(bucket);
+					}
 					heap.destroy();
 				} else {
 					heap.items.remove(heap.size()-1);
@@ -333,5 +363,21 @@ public class Shopkeeper extends NPC {
 			}
 		}
 		turnsSinceHarmed = bundle.contains(TURNS_SINCE_HARMED) ? bundle.getInt(TURNS_SINCE_HARMED) : -1;
+	}
+
+	@Override
+	public String name() {
+		if (Dungeon.depth == 11) {
+			return Messages.get(Shopkeeper.class, "name_tok");
+		}
+		return super.name();
+	}
+
+	@Override
+	public String description() {
+		if (Dungeon.depth == 11) {
+			return Messages.get(Shopkeeper.class, "desc_tok");
+		}
+		return super.description();
 	}
 }

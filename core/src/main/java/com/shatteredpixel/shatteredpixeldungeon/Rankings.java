@@ -78,7 +78,7 @@ public enum Rankings {
 	public Record latestDailyReplay = null; //not stored, only meant to be temp
 	public LinkedHashMap<Long, Integer> dailyScoreHistory = new LinkedHashMap<>();
 
-	public void submit( boolean win, Object cause ) {
+	public void submit( boolean win, Object cause, boolean saul ) {
 
 		load();
 		
@@ -98,9 +98,12 @@ public enum Rankings {
 
 		rec.cause = cause instanceof Class ? (Class)cause : cause.getClass();
 		rec.win		= win;
+		rec.saul		= saul;
 		rec.heroClass	= Dungeon.hero.heroClass;
 		rec.armorTier	= Dungeon.hero.tier();
+		rec.armorID		= Dungeon.hero.armorID();
 		rec.herolevel	= Dungeon.hero.lvl;
+		rec.hairID 		= Dungeon.hero.hairColor().ID();
 		if (Statistics.highestAscent == 0){
 			rec.depth = Statistics.deepestFloor;
 			rec.ascending = false;
@@ -203,6 +206,8 @@ public enum Rankings {
 				if (i > 0) Statistics.totalQuestScore += i;
 			}
 
+			Statistics.shitScore = Statistics.shitsTaken * 10000;
+
 			Statistics.winMultiplier = 1f;
 			if (Statistics.gameWon)         Statistics.winMultiplier += 1f;
 			if (Statistics.ascended)        Statistics.winMultiplier += 0.5f;
@@ -224,7 +229,7 @@ public enum Rankings {
 		Statistics.chalMultiplier = Math.round(Statistics.chalMultiplier*20f)/20f;
 
 		Statistics.totalScore = Statistics.progressScore + Statistics.treasureScore + Statistics.exploreScore
-					+ Statistics.totalBossScore + Statistics.totalQuestScore;
+					+ Statistics.totalBossScore + Statistics.shitScore + Statistics.totalQuestScore;
 
 		Statistics.totalScore *= Statistics.winMultiplier * Statistics.chalMultiplier;
 
@@ -452,6 +457,7 @@ public enum Rankings {
 		private static final String SCORE	= "score";
 		private static final String CLASS	= "class";
 		private static final String TIER	= "tier";
+		private static final String ARMORID	= "armorid";
 		private static final String LEVEL	= "level";
 		private static final String DEPTH	= "depth";
 		private static final String ASCEND	= "ascending";
@@ -459,18 +465,23 @@ public enum Rankings {
 		private static final String ID      = "gameID";
 		private static final String SEED    = "custom_seed";
 		private static final String DAILY   = "daily";
+		private static final String SAUL   	= "saul";
+		private static final String HAIRID  = "hairID";
 
 		private static final String DATE    = "date";
 		private static final String VERSION = "version";
 
 		public Class cause;
 		public boolean win;
+		public boolean saul;
 
 		public HeroClass heroClass;
 		public int armorTier;
+		public int armorID;
 		public int herolevel;
 		public int depth;
 		public boolean ascending;
+		public int hairID;
 
 		public Bundle gameData;
 		public String gameID;
@@ -488,6 +499,8 @@ public enum Rankings {
 			if (win){
 				if (ascending){
 					return Messages.get(this, "ascended");
+				} else if (saul) {
+					return Messages.get(this, "wonsaul");
 				} else {
 					return Messages.get(this, "won");
 				}
@@ -519,9 +532,12 @@ public enum Rankings {
 
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
+			armorID		= bundle.getInt( ARMORID );
 			herolevel   = bundle.getInt( LEVEL );
 			depth       = bundle.getInt( DEPTH );
 			ascending   = bundle.getBoolean( ASCEND );
+			saul		= bundle.getBoolean(SAUL);
+			hairID		= bundle.getInt(HAIRID);
 
 			if (bundle.contains( DATE )){
 				date = bundle.getString( DATE );
@@ -549,9 +565,12 @@ public enum Rankings {
 
 			bundle.put( CLASS, heroClass );
 			bundle.put( TIER, armorTier );
+			bundle.put( ARMORID, armorID );
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
 			bundle.put( ASCEND, ascending );
+			bundle.put( SAUL, saul );
+			bundle.put( HAIRID, hairID );
 
 			bundle.put( DATE, date );
 			bundle.put( VERSION, version );

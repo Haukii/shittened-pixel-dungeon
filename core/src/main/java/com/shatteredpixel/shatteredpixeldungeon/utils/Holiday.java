@@ -40,7 +40,9 @@ public enum Holiday {
 	//Nothing in Nov
 	PD_BIRTHDAY,            //Dec 1st to Dec 7th                                    (7 days)
 	WINTER_HOLIDAYS,        //Dec 15th to Dec 26th                                  (12 days)
-	NEW_YEARS;              //Dec 27th to Jan 2nd                                   (7 days)
+	NEW_YEARS,              //Dec 27th to Jan 2nd                                   (7 days)
+	FINNISH_INDEPENDENCE_DAY, //Dec 6th												(1 day)
+	VALENTINES_DAY;			//Feb 14th												(1 day)
 
 	//total of 61-62 festive days each year, mainly concentrated in Late Oct to Early Feb
 

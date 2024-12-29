@@ -52,6 +52,8 @@ public class AlchemistsToolkit extends Artifact {
 		
 		charge = 0;
 		partialCharge = 0;
+
+		type = Type.LEATHER;
 	}
 
 	public static final String AC_BREW = "BREW";

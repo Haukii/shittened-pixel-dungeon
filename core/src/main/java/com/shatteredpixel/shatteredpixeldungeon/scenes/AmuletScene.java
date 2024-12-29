@@ -40,6 +40,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Random;
 
@@ -60,6 +61,7 @@ public class AmuletScene extends PixelScene {
 
 	StyledButton btnExit = null;
 	StyledButton btnStay = null;
+	StyledButton btnExitWithSaul = null;
 	
 	@Override
 	public void create() {
@@ -77,10 +79,11 @@ public class AmuletScene extends PixelScene {
 		btnExit = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
+				Dungeon.win( Amulet.class ,false );
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				Badges.saveGlobal();
 				btnExit.enable(false);
+				btnExitWithSaul.enable(false);
 				btnStay.enable(false);
 
 				AmuletScene.this.add(new Delayer(0.1f){
@@ -107,6 +110,39 @@ public class AmuletScene extends PixelScene {
 		btnExit.icon(new ItemSprite(ItemSpriteSheet.AMULET));
 		btnExit.setSize( WIDTH, BTN_HEIGHT );
 		add( btnExit );
+
+		btnExitWithSaul = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "saul") ) {
+			@Override
+			protected void onClick() {
+				Music.INSTANCE.stop();
+				Sample.INSTANCE.play(Assets.Sounds.SAUL);
+				Dungeon.win( Amulet.class, true );
+				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				btnExitWithSaul.enable(false);
+				btnExit.enable(false);
+				btnStay.enable(false);
+				Badges.validateVictoryWithSaul();
+
+				AmuletScene.this.add(new Delayer(5.5f){
+					@Override
+					protected void onComplete() {
+						if (BadgeBanner.isShowingBadges()){
+							AmuletScene.this.add(new Delayer(0f){
+								@Override
+								protected void onComplete() {
+									Game.switchScene( RankingsScene.class );
+								}
+							});
+						} else {
+							Game.switchScene( RankingsScene.class );
+						}
+					}
+				});
+			}
+		};
+		btnExitWithSaul.icon(new ItemSprite(ItemSpriteSheet.AMULET));
+		btnExitWithSaul.setSize( WIDTH, BTN_HEIGHT );
+		add( btnExitWithSaul );
 		
 		btnStay = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "stay") ) {
 			@Override
@@ -122,32 +158,31 @@ public class AmuletScene extends PixelScene {
 		
 		float height;
 		if (noText) {
-			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
-			
+			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnExitWithSaul.height() + SMALL_GAP  + btnStay.height();
+
 			amulet.x = (Camera.main.width - amulet.width) / 2;
 			amulet.y = (Camera.main.height - height) / 2;
 			align(amulet);
 
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
-			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
-			
+
 		} else {
-			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
-			
+			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnExitWithSaul.height() + SMALL_GAP  + btnStay.height();
+
 			amulet.x = (Camera.main.width - amulet.width) / 2;
 			amulet.y = (Camera.main.height - height) / 2;
 			align(amulet);
 
 			text.setPos((Camera.main.width - text.width()) / 2, amulet.y + amulet.height + LARGE_GAP);
 			align(text);
-			add(text);
-			
+
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
-			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
 		}
+		btnExitWithSaul.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+		btnStay.setPos( btnExitWithSaul.left(), btnExitWithSaul.bottom() + SMALL_GAP );
 
 		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( amulet, 0 ).angularSpeed = +30;
-		
+
 		fadeIn();
 	}
 	
@@ -158,18 +193,26 @@ public class AmuletScene extends PixelScene {
 			Game.switchScene(InterlevelScene.class);
 		}
 	}
-	
+
 	private float timer = 0;
-	
+	private float decreasingTimer = 1f;
+	private float increasingTimer = 1f;
+
 	@Override
 	public void update() {
 		super.update();
-		
+		//WE DEMAND MORE SPECKS
+		if(decreasingTimer > 0){
+			decreasingTimer -= 0.001f * decreasingTimer;
+		}
+		if(increasingTimer < 2000f){
+			increasingTimer += 0.2f * (increasingTimer / 130);
+		}
 		if ((timer -= Game.elapsed) < 0) {
-			timer = Random.Float( 0.5f, 5f );
-			
+			timer = Random.Float( 0.0005f + decreasingTimer, 0.002f + decreasingTimer );
+
 			Speck star = (Speck)recycle( Speck.class );
-			star.reset( 0, amulet.x + 10.5f, amulet.y + 5.5f, Speck.DISCOVER );
+			star.reset( 0, amulet.x + Random.Float( 0f + (-increasingTimer / 10), 30f + (increasingTimer / 10) ), amulet.y + Random.Float( 0f + (-increasingTimer / 10), 30f + (increasingTimer / 10) ), Speck.DISCOVER );
 			add( star );
 		}
 	}

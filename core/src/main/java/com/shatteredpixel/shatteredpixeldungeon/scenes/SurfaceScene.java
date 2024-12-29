@@ -268,7 +268,7 @@ public class SurfaceScene extends PixelScene {
 		add( gameOver );
 
 		Badges.validateHappyEnd();
-		Dungeon.win( Amulet.class );
+		Dungeon.win( Amulet.class, false );
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 		Badges.saveGlobal();
 		

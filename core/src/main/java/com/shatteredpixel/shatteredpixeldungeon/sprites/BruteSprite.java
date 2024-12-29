@@ -23,8 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Random;
 
 public class BruteSprite extends MobSprite {
+
+	private PixelParticle[] confetti = new PixelParticle[] {null,null,null,null,null};
 	
 	public BruteSprite() {
 		super();
@@ -34,7 +38,12 @@ public class BruteSprite extends MobSprite {
 		TextureFilm frames = new TextureFilm( texture, 12, 16 );
 		
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
+		idle.frames( frames,
+				0, 11, 12,13,14,0,12,14,0,13,11,12,13,14,11,13,0,14,
+				1, 15,16,1,17,15,
+				12,13,11,0,12,14,0,11,14,12,13,11,
+				1, 15,16,1,17,15,
+				1,17,16,1,15,16);
 		
 		run = new Animation( 12, true );
 		run.frames( frames, 4, 5, 6, 7 );
@@ -46,5 +55,30 @@ public class BruteSprite extends MobSprite {
 		die.frames( frames, 8, 9, 10 );
 		
 		play( idle );
+	}
+	@Override
+	public void onComplete(Animation anim) {
+		super.onComplete(anim);
+		if (visible) {
+			if (confetti[0] == null) {
+				for (int i = 0; i < confetti.length; i++) {
+					confetti[i] = new PixelParticle();
+					parent.add(confetti[i]);
+				}
+			}
+			for (PixelParticle particle : confetti) {
+
+				particle.reset(x + (flipHorizontal ? 0 : 13), y + 3, Random.Int(0x777777, 0xFFFFFF), Random.Float(0.5f, 2f), Random.Float(3f, 8f)); //0xFFFF00
+				particle.speed.y = Random.Int(-40, -150);
+				if (Random.Int(100) == 0) {
+					particle.speed.y = Random.Int(-300, -2000);
+				}
+				particle.speed.x = Random.Int(-10, 10);
+				if (Random.Int(30) == 0) {
+					particle.speed.x = Random.Int(-50, 50);
+				}
+				particle.acc.y = Random.Int(30, 250);
+			}
+		}
 	}
 }

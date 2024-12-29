@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.badlogic.gdx.utils.Timer;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -30,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -47,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -58,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -292,10 +298,23 @@ public abstract class YogFist extends Mob {
 			spriteClass = FistSprite.Soiled.class;
 		}
 
+		int speech = 0;
+
 		@Override
 		public boolean act() {
 
 			boolean result = super.act();
+
+			if (speech == 0 ) {
+				speech++;
+				yell(Messages.get(this, "speech_1"));
+				Timer.schedule(new Timer.Task(){
+					@Override
+					public void run(){
+						GLog.n( Messages.get(this, "speech_1_respond") );
+					}
+				}, 3f);
+			}
 
 			//1.33 grass tiles on average
 			int furrowedTiles = Random.chances(new float[]{0, 2, 1});
@@ -318,6 +337,24 @@ public abstract class YogFist extends Mob {
 					GameScene.updateMap( pos + i );
 				}
 			}
+			if (Random.Int(0,10) == 5) {
+				Sample.INSTANCE.play( Assets.Sounds.VINEBOOM );
+				int rand = Random.Int(0,4);
+				for (int i = 0; i < rand; i++) {
+					int spawnPos = -1;
+					for (int e : PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(pos+e) == null){
+							if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+e)){
+								spawnPos = pos + e;
+							}
+						}
+					}
+					Rat rat = new Rat();
+					rat.pos = spawnPos;
+					Buff.affect(rat, Adrenaline.class, 5f);
+					GameScene.add(rat);
+				}
+			}
 
 			return result;
 		}
@@ -336,6 +373,11 @@ public abstract class YogFist extends Mob {
 			//can be ignited, but takes no damage from burning
 			if (src.getClass() == Burning.class){
 				return;
+			}
+
+			if (speech == 1 && HP <= HT / 2) {
+				speech++;
+				yell(Messages.get(this, "speech_2"));
 			}
 
 			super.damage(dmg, src);
@@ -379,6 +421,25 @@ public abstract class YogFist extends Mob {
 					&& !(Dungeon.level.map[cell] == Terrain.FURROWED_GRASS || Dungeon.level.map[cell] == Terrain.HIGH_GRASS);
 		}
 
+		@Override
+		public void die(Object cause) {
+			super.die(cause);
+			yell(Messages.get(this, "speech_3"));
+		}
+
+		private static final String SPEECH = "SPEECH";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(SPEECH, speech);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			speech = bundle.getInt(SPEECH);
+		}
 	}
 
 	public static class RottingFist extends YogFist {
@@ -397,6 +458,25 @@ public abstract class YogFist extends Mob {
 			if (Dungeon.level.water[pos] && HP < HT) {
 				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(HT/50), FloatingText.HEALING);
 				HP = Math.min(HT, HP + HT/50);
+			}
+
+			if (Random.Int(0,20) == 5) {
+				Sample.INSTANCE.play( Assets.Sounds.VINEBOOM );
+				int rand = Random.Int(0,6);
+				for (int i = 0; i < rand; i++) {
+					int spawnPos = -1;
+					for (int e : PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(pos+e) == null){
+							if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+e)){
+								spawnPos = pos + e;
+							}
+						}
+					}
+					Capybara capybara = new Capybara();
+					capybara.pos = spawnPos;
+					Buff.affect(capybara, Amok.class, 5f);
+					GameScene.add(capybara);
+				}
 			}
 
 			return super.act();

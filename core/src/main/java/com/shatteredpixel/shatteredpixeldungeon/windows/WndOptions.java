@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
+import java.util.List;
+
 public class WndOptions extends Window {
 
 	protected static final int WIDTH_P = 120;
@@ -73,6 +75,23 @@ public class WndOptions extends Window {
 		layoutBody(pos, message, options);
 	}
 
+	public WndOptions(Image icon, String title, String message, List<String> options) {
+		super();
+
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		float pos = 0;
+		if (title != null) {
+			IconTitle tfTitle = new IconTitle(icon, title);
+			tfTitle.setRect(0, pos, width, 0);
+			add(tfTitle);
+
+			pos = tfTitle.bottom() + 2*MARGIN;
+		}
+
+		layoutBody(pos, message, options);
+	}
+
 	protected void layoutBody(float pos, String message, String... options){
 		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
@@ -111,6 +130,51 @@ public class WndOptions extends Window {
 			}
 
 			pos += BUTTON_HEIGHT + MARGIN;
+		}
+
+		resize( width, (int)(pos - MARGIN) );
+	}
+
+	private void layoutBody(float pos, String message, List<String> options){
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
+		tfMesage.text(message, width);
+		tfMesage.setPos( 0, pos );
+		add( tfMesage );
+
+		pos = tfMesage.bottom() + 2*MARGIN;
+
+		int i = 0;
+		for (String option : options) {
+			final int index = i;
+			RedButton btn = new RedButton( option ) {
+				@Override
+				protected void onClick() {
+					hide();
+					onSelect( index );
+				}
+			};
+			if (hasIcon(i)) btn.icon(getIcon(i));
+			btn.enable(enabled(i));
+			add( btn );
+
+			if (!hasInfo(i)) {
+				btn.setRect(0, pos, width, BUTTON_HEIGHT);
+			} else {
+				btn.setRect(0, pos, width - BUTTON_HEIGHT, BUTTON_HEIGHT);
+				IconButton info = new IconButton(Icons.get(Icons.INFO)){
+					@Override
+					protected void onClick() {
+						onInfo( index );
+					}
+				};
+				info.setRect(width-BUTTON_HEIGHT, pos, BUTTON_HEIGHT, BUTTON_HEIGHT);
+				add(info);
+			}
+
+			pos += BUTTON_HEIGHT + MARGIN;
+			i++;
 		}
 
 		resize( width, (int)(pos - MARGIN) );

@@ -76,6 +76,25 @@ public class Splash {
 		emitter.burst( fact, n );
 	}
 
+	public static void FUCK( int cell, final int color, int n, float scale ) {
+
+		if (n <= 0) {
+			return;
+		}
+
+		Emitter emitter = GameScene.emitter();
+		if (emitter == null) return;
+		emitter.pos( DungeonTilemap.tileCenterToWorld( cell ) );
+
+		SplashFactory factory = new SplashFactory();
+
+		factory.scale = scale;
+		factory.color = color;
+		factory.dir = -3.1415926f / 2;
+		factory.cone = 3.1415926f;
+		emitter.burst( factory, n);
+	}
+
 	public static void around(Visual v, final int color, int n ) {
 		if (n <= 0) {
 			return;
@@ -123,12 +142,13 @@ public class Splash {
 		public int color;
 		public float dir;
 		public float cone;
+		public float scale = 4f;
 		
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			PixelParticle p = (PixelParticle)emitter.recycle( PixelParticle.Shrinking.class );
 			
-			p.reset( x, y, color, 4, Random.Float( 0.5f, 1.0f ) );
+			p.reset( x, y, color, scale, Random.Float( 0.5f, 1.0f ) );
 			p.speed.polar( Random.Float( dir - cone / 2, dir + cone / 2 ), Random.Float( 40, 80 ) );
 			p.acc.set( 0, +100 );
 		}

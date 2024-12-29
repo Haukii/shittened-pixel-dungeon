@@ -38,6 +38,8 @@ public class Quarterstaff extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 2;
+
+		type = Type.CLOTH;
 	}
 
 	@Override

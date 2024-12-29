@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -38,6 +39,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Honeypot extends Item {
 	
@@ -253,5 +255,25 @@ public class Honeypot extends Item {
 		public int value() {
 			return 5 * quantity;
 		}
+	}
+
+	private String mood() {
+		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		if (hour > 7 && hour < 22) {
+			return Messages.get(this, "sleeping");
+		}
+		int items = 0;
+		for (Item item : Dungeon.hero.belongings) {
+			items++;
+		}
+		if (items > 20) {
+			return Messages.get(this, "nospace");
+		}
+		return Messages.get(this, "happy");
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", mood());
 	}
 }

@@ -55,6 +55,26 @@ public class SmartTexture extends Texture {
 
 	}
 
+	public static SmartTexture heroTexture(SmartTexture armor, SmartTexture head) {
+		return heroTexture(armor,head, 0);
+	}
+
+	public static SmartTexture heroTexture(SmartTexture armor, SmartTexture head, int hairID) {
+
+		Pixmap combinedPixmap = new Pixmap(armor.width, armor.height, Pixmap.Format.RGBA8888);
+
+		//Combining head and armor into a single texture
+		combinedPixmap.drawPixmap(armor.bitmap, 0, 0);
+		for (int tier = 0; tier < armor.height / 15; tier++) {
+			combinedPixmap.drawPixmap(head.bitmap, 0, tier * 15, 0, hairID * 15, head.width, head.height);
+
+			if (tier == 45) //Draw hero sprite again on top of the hair when wearing huntress cloak
+				combinedPixmap.drawPixmap(armor.bitmap, 0, tier * 15, 0, tier * 15, armor.width, armor.height);
+		}
+
+		return new SmartTexture(combinedPixmap);
+	}
+
 	@Override
 	protected void generate() {
 		super.generate();

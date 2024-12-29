@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class AlarmTrap extends Trap {
 
@@ -42,11 +43,12 @@ public class AlarmTrap extends Trap {
 
 		for (Mob mob : Dungeon.level.mobs) {
 				mob.beckon( pos );
+			Sample.INSTANCE.play( Assets.Sounds.HEALTH_CRITICAL, Random.Float(1f, 4f), Random.Float(1f, 4f), Random.Float(0.8f, 1.2f));
 		}
 
 		if (Dungeon.level.heroFOV[pos]) {
 			GLog.w( Messages.get(this, "alarm") );
-			CellEmitter.center( pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+			CellEmitter.center( pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, Random.Int(3, 6) );
 		}
 
 		Sample.INSTANCE.play( Assets.Sounds.ALERT );

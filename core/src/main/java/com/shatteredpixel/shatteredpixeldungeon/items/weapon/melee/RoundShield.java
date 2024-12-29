@@ -41,6 +41,7 @@ public class RoundShield extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 3;
+		type = Type.WOOD;
 	}
 
 	@Override

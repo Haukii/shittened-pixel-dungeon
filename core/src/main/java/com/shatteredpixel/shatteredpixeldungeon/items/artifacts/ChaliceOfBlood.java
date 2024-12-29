@@ -51,6 +51,7 @@ public class ChaliceOfBlood extends Artifact {
 		image = ItemSpriteSheet.ARTIFACT_CHALICE1;
 
 		levelCap = 10;
+		type = Type.TRINKET;
 	}
 
 	public static final String AC_PRICK = "PRICK";

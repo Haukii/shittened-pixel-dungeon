@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.Connecti
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.WheatPlant;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
@@ -385,10 +386,19 @@ public abstract class RegularPainter extends Painter {
 		
 		if (!rooms.isEmpty()){
 			for (Room r : rooms){
-				for (Point p : r.grassPlaceablePoints()){
-					int i = l.pointToCell(p);
-					if (grass[i] && l.map[i] == Terrain.EMPTY){
-						grassCells.add(i);
+				if (Random.Float() < 0.05f) {
+					for (Point p : r.grassPlaceablePoints()){
+						int i = l.pointToCell(p);
+						if (grass[i] && l.map[i] == Terrain.EMPTY){
+							l.plant(new WheatPlant.Seed(), i);
+						}
+					}
+				} else {
+					for (Point p : r.grassPlaceablePoints()){
+						int i = l.pointToCell(p);
+						if (grass[i] && l.map[i] == Terrain.EMPTY){
+							grassCells.add(i);
+						}
 					}
 				}
 			}

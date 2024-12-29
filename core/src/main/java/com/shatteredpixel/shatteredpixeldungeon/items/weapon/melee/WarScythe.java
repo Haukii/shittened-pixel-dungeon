@@ -35,6 +35,7 @@ public class WarScythe extends MeleeWeapon {
 
 		tier = 5;
 		ACC = 0.8f; //20% penalty to accuracy
+		type = Type.AXE;
 	}
 
 	@Override

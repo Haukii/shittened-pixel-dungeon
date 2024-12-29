@@ -71,6 +71,9 @@ public class Bat extends Mob {
 
 	@Override
 	public int attackProc( Char enemy, int damage ) {
+		if (this instanceof CaveBat) {
+			return super.attackProc(enemy,damage);
+		}
 		damage = super.attackProc( enemy, damage );
 		int reg = Math.min( damage - 4, HT - HP );
 		

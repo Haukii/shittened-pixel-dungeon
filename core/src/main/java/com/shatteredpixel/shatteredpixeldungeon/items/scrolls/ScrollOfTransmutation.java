@@ -247,6 +247,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		n.cursed = w.cursed;
 		n.augment = w.augment;
 		n.enchantHardened = w.enchantHardened;
+		n.prefix = w.prefix;
 		
 		return n;
 		

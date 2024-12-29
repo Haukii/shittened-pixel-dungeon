@@ -21,18 +21,105 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class ClothArmor extends Armor {
 
+	public static final String AC_PAINT = "PAINT";
+
 	{
+		skinnable = true;
+		skin = Skin.CLOTH;
 		image = ItemSpriteSheet.ARMOR_CLOTH;
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.
+
+		type = Type.CLOTH;
 	}
-	
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(LeatherArmor.class,"desc");
+
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(LeatherArmor.class,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
+		}
+		return desc;
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_PAINT);
+		return actions;
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+		if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
+		}
+	}
+
 	public ClothArmor() {
-		super( 1 );
+		super( 1, 1 );
 	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(LeatherArmor.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, ClothArmor.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, ClothArmor.class);
+				if (skin == null) {
+					//WE'VE FUCKED UP IF THIS HAPPENS
+					GLog.n("OH FUCK OH SHIT! THE SKIN IS NULL!!! (dev fucked up bad)");
+					return;
+				}
+
+				GLog.p(Messages.get(LeatherArmor.class, "applyskin"));
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH, 0.8f, Random.Float(0.9f, 1.1f));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				curItem.changeSkin(skin);
+			}
+		}
+	};
 
 }

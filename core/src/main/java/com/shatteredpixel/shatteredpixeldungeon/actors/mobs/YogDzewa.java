@@ -38,7 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.RemixAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -539,7 +541,11 @@ public class YogDzewa extends Mob {
 		Dungeon.level.unseal();
 		super.die( cause );
 
-		yell( Messages.get(this, "defeated") );
+		if (Dungeon.hero.belongings.getItem(MusicPlayer.class) != null) {
+			Dungeon.level.drop(new RemixAlbum(), pos).sprite.drop();
+		}
+
+		yell(Messages.get(this, "defeated_" + Random.Int(5)));
 	}
 
 	@Override
@@ -647,6 +653,8 @@ public class YogDzewa extends Mob {
 			properties.add(Property.BOSS_MINION);
 		}
 
+		public boolean ally = false;
+
 		@Override
 		public int attackSkill( Char target ) {
 			return 30;
@@ -654,12 +662,33 @@ public class YogDzewa extends Mob {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 15, 25 );
+			if (Dungeon.depth == 25) {
+				return Random.NormalIntRange( 15, 25 );
+			} else {
+				return Random.NormalIntRange( 1 ,Dungeon.depth + 3);
+			}
 		}
 
 		@Override
 		public int drRoll() {
 			return super.drRoll() + Random.NormalIntRange(0, 4);
+		}
+
+		private static final String ALLY = "ALLY";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(ALLY, ally);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			ally = bundle.getBoolean(ALLY);
+			if (ally) {
+				alignment = Alignment.ALLY;
+			}
 		}
 
 	}

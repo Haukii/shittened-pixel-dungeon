@@ -27,6 +27,8 @@ public class RogueArmor extends ClassArmor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_ROGUE;
+		type = Type.LEATHER;
+		ID = 44;
 	}
 
 }

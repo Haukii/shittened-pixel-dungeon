@@ -51,8 +51,12 @@ public class HeroSprite extends CharSprite {
 
 	public HeroSprite() {
 		super();
-		
-		texture( Dungeon.hero.heroClass.spritesheet() );
+
+		if (Dungeon.hero != null && Dungeon.hero.hairColor() != null) {
+			texture(SmartTexture.heroTexture(TextureCache.get(Dungeon.hero.heroClass.armorsheet()), TextureCache.get(Dungeon.hero.heroClass.headsheet()), Dungeon.hero.hairColor().ID()));
+		} else {
+			texture(SmartTexture.heroTexture(TextureCache.get(Dungeon.hero.heroClass.armorsheet()), TextureCache.get(Dungeon.hero.heroClass.headsheet())));
+		}
 		updateArmor();
 		
 		link( Dungeon.hero );
@@ -70,7 +74,7 @@ public class HeroSprite extends CharSprite {
 	
 	public void updateArmor() {
 
-		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.tier(), FRAME_WIDTH, FRAME_HEIGHT );
+		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.armorID(), FRAME_WIDTH, FRAME_HEIGHT );
 		
 		idle = new Animation( 1, true );
 		idle.frames( film, 0, 0, 0, 1, 0, 0, 1, 1 );
@@ -99,6 +103,13 @@ public class HeroSprite extends CharSprite {
 			idle();
 		else
 			die();
+	}
+
+	public void updateHair(int hairID) {
+		texture(SmartTexture.heroTexture(TextureCache.get(Dungeon.hero.heroClass.armorsheet()), TextureCache.get(Dungeon.hero.heroClass.headsheet()), hairID));
+		updateArmor();
+
+		link( Dungeon.hero );
 	}
 	
 	@Override
@@ -164,32 +175,33 @@ public class HeroSprite extends CharSprite {
 	public void sprint( float speed ) {
 		run.delay = 1f / speed / RUN_FRAMERATE;
 	}
-	
+
 	public static TextureFilm tiers() {
 		if (tiers == null) {
-			SmartTexture texture = TextureCache.get( Assets.Sprites.ROGUE );
+			SmartTexture texture = SmartTexture.heroTexture(TextureCache.get(Assets.Sprites.ARMOR), TextureCache.get(Assets.Sprites.HERO));
 			tiers = new TextureFilm( texture, texture.width, FRAME_HEIGHT );
 		}
-		
+
 		return tiers;
 	}
 
 	public static Image avatar( Hero hero ){
 		if (hero.buff(HeroDisguise.class) != null){
-			return avatar(hero.buff(HeroDisguise.class).getDisguise(), hero.tier());
+			return avatar(hero.buff(HeroDisguise.class).getDisguise(), hero.armorID(), hero.hairColor().ID());
 		} else {
-			return avatar(hero.heroClass, hero.tier());
+			return avatar(hero.heroClass, hero.armorID(), hero.hairColor().ID());
 		}
 	}
-	
-	public static Image avatar( HeroClass cl, int armorTier ) {
-		
-		RectF patch = tiers().get( armorTier );
-		Image avatar = new Image( cl.spritesheet() );
+
+	public static Image avatar( HeroClass cl, int armorID, int hairID ) {
+
+		RectF patch = tiers().get( armorID );
+		SmartTexture texture = SmartTexture.heroTexture(TextureCache.get(cl.armorsheet()), TextureCache.get(cl.headsheet()), hairID);
+		Image avatar = new Image( texture );
 		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
 		frame.shift( patch.left, patch.top );
 		avatar.frame( frame );
-		
+
 		return avatar;
 	}
 }

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
@@ -250,7 +251,7 @@ public class TalentButton extends Button {
 			float oldWidth = fill.width();
 			pointsInTalent++;
 			layout();
-			Sample.INSTANCE.play(Assets.Sounds.LEVELUP, 0.7f, 1.2f);
+			Sample.INSTANCE.play(Hero.levelUpSound(), 0.7f, 1.2f);
 			Emitter emitter = (Emitter) parent.recycle(Emitter.class);
 			emitter.revive();
 			emitter.pos(fill.x + (fill.width() + oldWidth) / 2f, fill.y + fill.height() / 2f);

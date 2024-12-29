@@ -65,6 +65,7 @@ public class HornOfPlenty extends Artifact {
 		chargeCap = 5 + level()/2;
 
 		defaultAction = AC_SNACK;
+		type = Type.WOOD;
 	}
 	
 	private int storedFoodEnergy = 0;

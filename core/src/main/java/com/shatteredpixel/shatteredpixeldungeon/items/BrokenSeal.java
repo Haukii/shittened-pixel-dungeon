@@ -23,24 +23,31 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +58,7 @@ public class BrokenSeal extends Item {
 
 	//only to be used from the quickslot, for tutorial purposes mostly.
 	public static final String AC_INFO = "INFO_WINDOW";
+	public static final String AC_PAINT = "PAINT";
 
 	{
 		image = ItemSpriteSheet.SEAL;
@@ -60,6 +68,8 @@ public class BrokenSeal extends Item {
 		bones = false;
 
 		defaultAction = AC_INFO;
+		skinnable = true;
+		skin = Skin.SEAL;
 	}
 
 	private Armor.Glyph glyph;
@@ -100,6 +110,7 @@ public class BrokenSeal extends Item {
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions =  super.actions(hero);
 		actions.add(AC_AFFIX);
+		actions.add(AC_PAINT);
 		return actions;
 	}
 
@@ -113,11 +124,17 @@ public class BrokenSeal extends Item {
 			GameScene.selectItem(armorSelector);
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndUseItem(null, this));
+		} else if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
 		}
 	}
 
 	@Override
 	public String name() {
+		if (skin != null && skin.rarityTier() >= 4) {
+			return skin.skinName() + " Seal";
+		}
 		return glyph != null ? glyph.name( super.name() ) : super.name();
 	}
 
@@ -127,6 +144,12 @@ public class BrokenSeal extends Item {
 		if (glyph != null){
 			info += "\n\n" + Messages.get(this, "inscribed", glyph.name());
 			info += " " + glyph.desc();
+		}
+		if (skin.rarityTier() != 0) {
+			info += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				info += "\n\n\"" + skin.desc() + "\"";
+			}
 		}
 		return info;
 	}
@@ -218,7 +241,7 @@ public class BrokenSeal extends Item {
 		@Override
 		public synchronized boolean act() {
 			if (Regeneration.regenOn() && shielding() < maxShield()) {
-				partialShield += 1/30f;
+				partialShield += 1/25f;
 			}
 			
 			while (partialShield >= 1){
@@ -247,7 +270,7 @@ public class BrokenSeal extends Item {
 		public synchronized int maxShield() {
 			//metamorphed iron will logic
 			if (((Hero)target).heroClass != HeroClass.WARRIOR && ((Hero) target).hasTalent(Talent.IRON_WILL)){
-				return ((Hero) target).pointsInTalent(Talent.IRON_WILL);
+				return ((Hero) target).pointsInTalent(Talent.IRON_WILL) * 3;
 			}
 
 			if (armor != null && armor.isEquipped((Hero)target) && armor.checkSeal() != null) {
@@ -272,4 +295,107 @@ public class BrokenSeal extends Item {
 			return dmg;
 		}
 	}
+
+	@Override
+	public Emitter emitter() {
+
+		Emitter emitter = new Emitter();
+		emitter.pos(ItemSpriteSheet.film.width(image)/2f, ItemSpriteSheet.film.height(image)/2f - 3f);
+		emitter.fillTarget = false;
+		switch (skin) {
+			case DMSEAL:
+				emitter.pour(Speck.factory( Speck.DMSEAL), 0.2f);
+				return emitter;
+			case KINGSEAL:
+				emitter.pour(Speck.factory( Speck.KINGSEAL), 1f);
+				emitter.randomSize = true;
+				emitter.randomHeight = 3f;
+				emitter.randomWidth = 3f;
+				emitter.centerOffsetY = -5f;
+				return emitter;
+			case FIERYSEAL:
+				emitter.pour(Speck.factory( Speck.FIERYSEAL), 0.15f);
+				return emitter;
+			case PUREGOLDSEAL:
+				emitter.pos(ItemSpriteSheet.film.width(image)/2f + Random.Float(4f), ItemSpriteSheet.film.height(image)/3f + Random.Float(-2f,2f));
+				emitter.pour(Speck.factory( Speck.PUREGOLDSEAL), 0.3f);
+				return emitter;
+			case AMULETSEAL:
+				emitter.randomSize = true;
+				emitter.randomHeight = 3f;
+				emitter.randomWidth = 3f;
+				emitter.centerOffsetY = -4f;
+				emitter.pour(Speck.factory( Speck.AMULETSEAL), 0.6f);
+				return emitter;
+			case BLOWNUPSEAL:
+				emitter.pos(ItemSpriteSheet.film.width(image)/2f, ItemSpriteSheet.film.height(image)/2f + 4f);
+				emitter.randomSize = true;
+				emitter.randomHeight = 3f;
+				emitter.randomWidth = 3f;
+				emitter.pour(Speck.factory( Speck.BLOWNUPSEAL), 0.3f);
+				return emitter;
+		}
+
+		return emitter;
+	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(BrokenSeal.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, BrokenSeal.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, BrokenSeal.class);
+				if (skin == null) {
+					//WE'VE FUCKED UP IF THIS HAPPENS
+					GLog.n("OH FUCK OH SHIT! THE SKIN IS NULL!!! (dev fucked up bad)");
+					return;
+				}
+
+				if (item instanceof Waterskin) {
+					if (((Waterskin)item).volume > 5) {
+						((Waterskin) item).volume -= 5;
+					} else {
+						GLog.w(Messages.get(BrokenSeal.class, "nowater"));
+						return;
+					}
+				} else if (item instanceof Torch) {
+					if (((BrokenSeal) curItem).skin == Skin.WOODSEAL) {
+						skin = Skin.FIERYSEAL;
+						Sample.INSTANCE.play(Assets.Sounds.BURNING);
+					} else if (((BrokenSeal) curItem).skin == Skin.BOMBSEAL) {
+						skin = Skin.BLOWNUPSEAL;
+						Sample.INSTANCE.play(Assets.Sounds.BLAST, 3f);
+					} else {
+						GLog.w(Messages.get(BrokenSeal.class, "notburning"));
+						return;
+					}
+				} else if (item instanceof GoldenMeat && ((BrokenSeal) curItem).skin != Skin.GOLDSEAL) {
+					GLog.w(Messages.get(BrokenSeal.class, "notgolden"));
+				} else if (item instanceof WoollyBomb) {
+					Sample.INSTANCE.play(Assets.Sounds.SHEEP, 1f);
+				}
+
+				GLog.p(Messages.get(BrokenSeal.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
+				((BrokenSeal) curItem).changeSkin(skin);
+			}
+		}
+	};
 }

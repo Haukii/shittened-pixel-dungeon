@@ -48,7 +48,16 @@ public class Food extends Item {
 	
 	public static final String AC_EAT	= "EAT";
 	
-	public float energy = Hunger.HUNGRY;
+	public float energy = Hunger.HUNGRY * 0.75f;
+
+	public float carbs = 30f;
+	public float fats = 18f;
+	public float proteins = 10f;
+	public float salt = 1.2f;
+
+	public boolean drink = false;
+
+	public String eatSound;
 	
 	{
 		stackable = true;
@@ -77,7 +86,9 @@ public class Food extends Item {
 			Catalog.countUse(getClass());
 			
 			satisfy(hero);
-			GLog.i( Messages.get(this, "eat_msg") );
+			if (!(this instanceof Nuts)) { //FIXME
+				GLog.i( Messages.get(this, "eat_msg") );
+			}
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
@@ -95,7 +106,24 @@ public class Food extends Item {
 	}
 
 	protected void eatSFX(){
-		Sample.INSTANCE.play( Assets.Sounds.EAT );
+		if (eatSound != null) {
+			Sample.INSTANCE.play(eatSound);
+		} else if (drink) {
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
+		} else {
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
+		}
+	}
+
+	public String nutritionalInfo() {
+		String info =
+				"NUTRITIONAL FACTS\nper portion\n\n" +
+						"Energy:              " + energy + " kcal\n" +
+						"Fats:                  " + fats + "g\n" +
+						"Carbohydrates: " + carbs + "g\n" +
+						"Proteins:            " + proteins + "g\n" +
+						"Salt:                    " + salt + "g";
+		return info;
 	}
 
 	protected float eatingTime(){

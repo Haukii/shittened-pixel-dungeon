@@ -50,8 +50,12 @@ public class ScrollOfRetribution extends Scroll {
 		//scales from 0x to 1x power, maxing at ~10% HP
 		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
 		float power = Math.min( 4f, 4.45f*hpPercent);
-		
-		Sample.INSTANCE.play( Assets.Sounds.BLAST );
+
+		if (power > 3f) {
+			Sample.INSTANCE.play( Assets.Sounds.BLAST_LARGE );
+		} else {
+			Sample.INSTANCE.play( Assets.Sounds.BLAST );
+		}
 		GLog.i(Messages.get(this, "blast"));
 
 		ArrayList<Mob> targets = new ArrayList<>();

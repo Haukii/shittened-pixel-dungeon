@@ -24,12 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Gnoll extends Mob {
 	
 	{
-		spriteClass = GnollSprite.class;
+		spriteClass = Random.oneOf(GnollSprite.Sand.class, GnollSprite.Ash.class,
+				GnollSprite.Red.class, GnollSprite.Dust.class, GnollSprite.Toast.class);
 		
 		HP = HT = 12;
 		defenseSkill = 4;
@@ -54,5 +56,20 @@ public class Gnoll extends Mob {
 	@Override
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 2);
+	}
+
+	private static final String SPRITE = "SPRITE";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(SPRITE, spriteClass);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(SPRITE))
+			spriteClass = bundle.getClass(SPRITE);
 	}
 }

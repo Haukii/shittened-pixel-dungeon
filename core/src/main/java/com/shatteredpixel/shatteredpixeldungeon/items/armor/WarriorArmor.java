@@ -27,6 +27,8 @@ public class WarriorArmor extends ClassArmor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_WARRIOR;
+		type = Type.STEEL;
+		ID = 42;
 	}
 
 }

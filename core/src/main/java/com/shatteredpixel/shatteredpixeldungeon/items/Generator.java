@@ -22,6 +22,18 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.Album;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.BeautifulAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.ChairAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.FinnishAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.HogAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.NonsenseAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.PopAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.RatAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.RemixAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.SeaAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.SynthAlbum;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.TwingoAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.DuelistArmor;
@@ -46,9 +58,30 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BakedFish;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BasedCake;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryBalls;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryCake;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Bread;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Bruschetta;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Coffee;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CompleteBreakfast;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CrispyBass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.FriedEgg;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Hashbrowns;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.IceCream;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Meatballs;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pizza;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Sashimi;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Spaghetti;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -65,6 +98,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfEarthenArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfFumes;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfFuror;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfKetchupStorm;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMastery;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStamina;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
@@ -243,7 +291,11 @@ public class Generator {
 		SCROLL	( 8, 8, Scroll.class ),
 		STONE   ( 1, 1, Runestone.class),
 		
-		GOLD	( 10, 10,   Gold.class );
+		GOLD	( 10, 10,   Gold.class ),
+
+		FOOD_NEW	( 0, 0, Food.class ),
+		ALBUM	( 0, 0, Album.class ),
+		EXOTIC	( 0.1f, 0.1f, ExoticPotion.class );
 		
 		public Class<?>[] classes;
 
@@ -586,6 +638,69 @@ public class Generator {
 			};
 			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			TRINKET.probs = TRINKET.defaultProbs.clone();
+
+			EXOTIC.classes = new Class<?>[]{
+					PotionOfDivineInspiration.class,
+					PotionOfMastery.class,
+					PotionOfCleansing.class,
+					PotionOfCorrosiveGas.class,
+					PotionOfDragonsBreath.class,
+					PotionOfEarthenArmor.class,
+					PotionOfMagicalSight.class,
+					PotionOfShielding.class,
+					PotionOfShroudingFog.class,
+					PotionOfSnapFreeze.class,
+					PotionOfStamina.class,
+					PotionOfStormClouds.class,
+					PotionOfFuror.class,
+					PotionOfKetchupStorm.class,
+					PotionOfFumes.class};
+			EXOTIC.defaultProbs = new float[]{ 0.01f, 0.005f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.05f, 0.03f, 0.03f };
+			EXOTIC.probs = EXOTIC.defaultProbs.clone();
+
+			ALBUM.classes = new Class<?>[]{
+					ChairAlbum.class,
+					FinnishAlbum.class,
+					HogAlbum.class,
+					NonsenseAlbum.class,
+					PopAlbum.class,
+					RatAlbum.class,
+					RemixAlbum.class,
+					SeaAlbum.class,
+					SynthAlbum.class,
+					TwingoAlbum.class,
+					BeautifulAlbum.class,
+			};
+			ALBUM.defaultProbs = new float[]{ 0,0,0,0,0,0,0,0,0,0,0 };
+			ALBUM.probs = ALBUM.defaultProbs.clone();
+
+			FOOD_NEW.classes = new Class<?>[]{
+					FriedEgg.class,
+					Sashimi.class,
+					Bread.class,
+					BakedFish.class,
+					BerryBalls.class,
+					Coffee.class,
+					Omelet.class,
+					CrispyBass.class,
+					Hashbrowns.class,
+					Meatballs.class,
+					Pancakes.class,
+					Pizza.class,
+					Spaghetti.class,
+					Bruschetta.class,
+					TripleShotEspresso.class,
+					StirFry.class,
+					CompleteBreakfast.class,
+
+					BakedFish.class,
+					BasedCake.class,
+					BerryCake.class,
+					Cheese.class,
+					IceCream.class,
+			};
+			FOOD_NEW.probs = new float[]{ 0.4f, 0.4f, 0.4f,0.3f,0.3f,0.3f,0.3f,0.2f,0.2f,0.1f,0.1f,  0.2f,0.03f,0.05f,0.25f,0.2f};
+
 
 			for (Category cat : Category.values()){
 				if (cat.defaultProbs2 != null){

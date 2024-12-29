@@ -64,6 +64,7 @@ public class MasterThievesArmband extends Artifact {
 		chargeCap = 5+level()/2;
 
 		defaultAction = AC_STEAL;
+		type = Type.CLOTH;
 	}
 
 	public static final String AC_STEAL = "STEAL";

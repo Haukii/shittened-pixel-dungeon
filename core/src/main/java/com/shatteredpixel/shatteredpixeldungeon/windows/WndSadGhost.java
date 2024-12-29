@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
 
 public class WndSadGhost extends Window {
 
@@ -59,17 +60,17 @@ public class WndSadGhost extends Window {
 			case 1:default:
 				titlebar.icon( new FetidRatSprite() );
 				titlebar.label( Messages.get(this, "rat_title") );
-				message = PixelScene.renderTextBlock( Messages.get(this, "rat")+"\n\n"+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "rat_" + Random.Int(0,3))+"\n\n"+Messages.get(this, "give_item"), 6 );
 				break;
 			case 2:
 				titlebar.icon( new GnollTricksterSprite() );
 				titlebar.label( Messages.get(this, "gnoll_title") );
-				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll")+"\n\n"+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll_" + Random.Int(0,3))+"\n\n"+Messages.get(this, "give_item"), 6 );
 				break;
 			case 3:
 				titlebar.icon( new GreatCrabSprite());
 				titlebar.label( Messages.get(this, "crab_title") );
-				message = PixelScene.renderTextBlock( Messages.get(this, "crab")+"\n\n"+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "crab_" + Random.Int(0,3))+"\n\n"+Messages.get(this, "give_item"), 6 );
 				break;
 
 		}

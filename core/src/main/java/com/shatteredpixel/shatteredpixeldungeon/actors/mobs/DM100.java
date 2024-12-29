@@ -131,5 +131,19 @@ public class DM100 extends Mob implements Callback {
 	public void call() {
 		next();
 	}
-	
+
+	public static Class<? extends DM100> random() {
+		float roll = Random.Float();
+		if (roll < 0.89f) {
+			return DM100.class;
+		} else if (roll < 0.91f) {
+			return DMS74UN.class;
+		} else if (roll < 0.94f) {
+			return DM102.class;
+		} else if (roll < 0.98f){
+			return DM102a2.class;
+		} else {
+			return DM105.class;
+		}
+	}
 }

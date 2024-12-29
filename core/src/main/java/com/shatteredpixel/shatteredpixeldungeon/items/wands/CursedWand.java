@@ -768,6 +768,7 @@ public class CursedWand {
 				InterlevelScene.returnBranch = 0;
 				InterlevelScene.returnPos = -1;
 				Game.switchScene(InterlevelScene.class);
+				Sample.INSTANCE.playDelayed(Assets.Sounds.DEJA_VU, 0.8f, 1f, Random.Float(1.2f, 1.6f));
 
 			//scroll of teleportation if positive only, or inter-floor teleport disallowed
 			} else {

@@ -35,6 +35,7 @@ public class Shortsword extends MeleeWeapon {
 		hitSoundPitch = 1.1f;
 
 		tier = 2;
+		type = Type.SWORD;
 	}
 
 	@Override

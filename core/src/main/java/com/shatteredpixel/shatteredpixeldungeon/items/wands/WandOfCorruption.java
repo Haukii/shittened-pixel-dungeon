@@ -230,8 +230,10 @@ public class WandOfCorruption extends Wand {
 			Corruption.corruptionHeal(enemy);
 
 			AllyBuff.affectAndLoot(enemy, curUser, Corruption.class);
+			Sample.INSTANCE.playForDuration(Assets.Sounds.CORRUPT, Random.Float(1.5f,3f), 1f, Random.Float(0.9f,1.2f));
 		} else {
 			Buff.affect(enemy, Doom.class);
+			Sample.INSTANCE.playForDuration(Assets.Sounds.CORRUPT, Random.Float(0.5f,1f), 0.8f, Random.Float(0.9f,1.2f));
 		}
 	}
 

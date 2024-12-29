@@ -35,6 +35,7 @@ public class HandAxe extends MeleeWeapon {
 
 		tier = 2;
 		ACC = 1.32f; //32% boost to accuracy
+		type = Type.AXE;
 	}
 
 	@Override

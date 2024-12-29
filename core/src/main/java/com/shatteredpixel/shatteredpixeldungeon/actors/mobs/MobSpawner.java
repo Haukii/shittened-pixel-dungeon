@@ -60,6 +60,7 @@ public class MobSpawner extends Actor {
 
 	public static ArrayList<Class<? extends Mob>> getMobRotation(int depth ){
 		ArrayList<Class<? extends Mob>> mobs = standardMobRotation( depth );
+		addShittenedMobs(depth, mobs);
 		addRareMobs(depth, mobs);
 		swapMobAlts(mobs);
 		Random.shuffle(mobs);
@@ -74,16 +75,16 @@ public class MobSpawner extends Actor {
 			case 1: default:
 				//3x rat, 1x snake
 				return new ArrayList<>(Arrays.asList(
-						Rat.class, Rat.class, Rat.class,
+						Rat.random(depth), Rat.random(depth), Rat.random(depth),
 						Snake.class));
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
-				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
+				return new ArrayList<>(Arrays.asList(Rat.random(depth), Rat.random(depth),
 						Snake.class,
 						Gnoll.class, Gnoll.class));
 			case 3:
 				//1x rat, 1x snake, 3x gnoll, 1x swarm, 1x crab
-				return new ArrayList<>(Arrays.asList(Rat.class,
+				return new ArrayList<>(Arrays.asList(Rat.random(depth),
 						Snake.class,
 						Gnoll.class, Gnoll.class, Gnoll.class,
 						Swarm.class,
@@ -105,20 +106,20 @@ public class MobSpawner extends Actor {
 				//3x skeleton, 1x thief, 1x DM-100, 1x guard
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
-						DM100.class,
+						DM100.random(),
 						Guard.class));
 			case 8:
 				//2x skeleton, 1x thief, 2x DM-100, 2x guard, 1x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class,
 						Thief.class,
-						DM100.class, DM100.class,
+						DM100.random(), DM100.random(),
 						Guard.class, Guard.class,
 						Necromancer.class));
 			case 9: case 10:
 				//1x skeleton, 1x thief, 2x DM-100, 2x guard, 2x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class,
 						Thief.class,
-						DM100.class, DM100.class,
+						DM100.random(), DM100.random(),
 						Guard.class, Guard.class,
 						Necromancer.class, Necromancer.class));
 
@@ -217,6 +218,8 @@ public class MobSpawner extends Actor {
 
 			// Sewers
 			default:
+				if (Random.Float() < 0.01f) rotation.add(Evan.class);
+				if (Random.Float() < 0.02f) rotation.add(Glassbox.class);
 				return;
 			case 4:
 				if (Random.Float() < 0.025f) rotation.add(Thief.class);
@@ -261,9 +264,68 @@ public class MobSpawner extends Actor {
 					cl = Senior.class;
 				} else if (cl == Scorpio.class) {
 					cl = Acidic.class;
+				} else if (cl == Bat.class) {
+					cl = RaveBat.class;
+				} else if (cl == Snake.class) {
+					cl = Cobra.class;
+				} else if (cl == Crab.class) {
+					cl = PinkCrab.class;
+				} else if (cl == Capybara.class) {
+					cl = CapybaraPile.class;
+				} else if (cl == Eye.class) {
+					cl = CursedEye.class;
 				}
 				rotation.set(i, cl);
 			}
+		}
+	}
+
+	//Adds shittened enemies to the rotation
+	public static void addShittenedMobs(int depth, ArrayList<Class<?extends Mob>> rotation ){
+
+		switch (depth){
+
+			// Sewers
+			default:
+				return;
+			case 1: case 2: case 3:
+				for (int i = 0; i < 5; i++) {
+					if (Random.Float() < 0.15f) rotation.add(Capybara.class);
+					if (Random.Float() < 0.3f) rotation.add(NormalRat.class);
+					if (Random.Float() < 0.35f - depth / 10f) rotation.add(Adventurer.random());
+				}
+				return;
+			case 4: case 5:
+				if (Random.Float() < 0.40f) rotation.add(NormalRat.class);
+				if (Random.Float() < 0.15f) rotation.add(Adventurer.random());
+				if (Random.Float() < 0.05f) rotation.add(Adventurer.random());
+				if (Random.Float() < 0.2f)  rotation.add(Capybara.class);
+				if (Random.Float() < 0.02f) rotation.add(RGBCrab.class);
+				return;
+
+			// Prison
+			case 7: case 8: case 9:
+				for (int i = 0; i < 3; i++) {
+					if (Random.Float() < 0.4f) rotation.add(CaveBat.class);
+					if (Random.Float() < 0.03f) rotation.add(Twingo.class);
+				}
+				return;
+
+			// Caves
+			case 13: case 14:
+				if (Random.Float() < 0.025f) rotation.add(DM16.class);
+				if (Random.Float() < 0.02f) rotation.add(DM249.class);
+				if (Random.Float() < 0.02f) rotation.add(RGBCrab.class);
+				return;
+
+			// City
+			case 16:
+				return;
+
+			// Hellhole
+			case 21:
+
+				return;
 		}
 	}
 }

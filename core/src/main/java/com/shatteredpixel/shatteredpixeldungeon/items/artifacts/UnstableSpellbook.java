@@ -23,10 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -46,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -71,10 +74,15 @@ public class UnstableSpellbook extends Artifact {
 		chargeCap = (int)(level()*0.6f)+2;
 
 		defaultAction = AC_READ;
+
+		type = Type.PAPER;
+		skinnable = true;
+		skin = Skin.BOOK;
 	}
 
 	public static final String AC_READ = "READ";
 	public static final String AC_ADD = "ADD";
+	public static final String AC_PAINT = "PAINT";
 
 	private final ArrayList<Class> scrolls = new ArrayList<>();
 
@@ -102,6 +110,9 @@ public class UnstableSpellbook extends Artifact {
 		}
 		if (isEquipped( hero ) && level() < levelCap && !cursed && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_ADD);
+		}
+		if (isIdentified()) {
+			actions.add(AC_PAINT);
 		}
 		return actions;
 	}
@@ -180,6 +191,9 @@ public class UnstableSpellbook extends Artifact {
 
 		} else if (action.equals( AC_ADD )) {
 			GameScene.selectItem(itemSelector);
+		} else if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
 		}
 	}
 
@@ -268,6 +282,13 @@ public class UnstableSpellbook extends Artifact {
 		
 		if (level() > 0) {
 			desc += "\n\n" + Messages.get(this, "desc_empowered");
+		}
+
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
 		}
 
 		return desc;
@@ -361,6 +382,36 @@ public class UnstableSpellbook extends Artifact {
 				GLog.w( Messages.get(UnstableSpellbook.class, "unable_scroll") );
 			} else if (item instanceof Scroll && !item.isIdentified()) {
 				GLog.w( Messages.get(UnstableSpellbook.class, "unknown_scroll") );
+			}
+		}
+	};
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(UnstableSpellbook.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, UnstableSpellbook.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, UnstableSpellbook.class);
+				GLog.p(Messages.get(UnstableSpellbook.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
+				curItem.changeSkin(skin);
 			}
 		}
 	};

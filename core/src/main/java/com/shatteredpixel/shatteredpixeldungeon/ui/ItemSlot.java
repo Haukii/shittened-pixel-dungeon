@@ -58,6 +58,7 @@ public class ItemSlot extends Button {
 	protected BitmapText status;
 	protected BitmapText extra;
 	protected Image      itemIcon;
+	protected Image      extraIcon;
 	protected BitmapText level;
 	
 	private static final String TXT_STRENGTH	= ":%d";
@@ -163,6 +164,12 @@ public class ItemSlot extends Button {
 			}
 			PixelScene.align(itemIcon);
 		}
+
+		if (extraIcon != null){
+			extraIcon.x = x - margin.right + 1;
+			extraIcon.y = y + height - extraIcon.height -1;//+ (ItemSpriteSheet.Icons.SIZE - extraIcon.height)/2f + margin.top;
+			PixelScene.align(extraIcon);
+		}
 		
 		if (level != null) {
 			level.x = x + (width - level.width()) - margin.right;
@@ -223,6 +230,10 @@ public class ItemSlot extends Button {
 			remove(itemIcon);
 			itemIcon = null;
 		}
+		if (extraIcon != null){
+			remove(extraIcon);
+			extraIcon = null;
+		}
 
 		if (item == null){
 			status.visible = extra.visible = level.visible = false;
@@ -232,6 +243,13 @@ public class ItemSlot extends Button {
 		}
 
 		status.text( item.status() );
+		if (item.extraIcon != -1 && item.isIdentified()){
+
+			extraIcon = new Image(Assets.Sprites.PREFIX_ICONS);
+			extraIcon.frame(ItemSpriteSheet.Prefix.film.get(item.extraIcon));
+			add(extraIcon);
+
+		}
 
 		//thrown weapons on their last use show quantity in orange, unless they are single-use
 		if (item instanceof MissileWeapon
@@ -283,7 +301,7 @@ public class ItemSlot extends Button {
 			level.text( Messages.format( TXT_LEVEL, buffedLvl ) );
 			level.measure();
 			if (trueLvl == buffedLvl || buffedLvl <= 0) {
-				if (buffedLvl > 0){
+				if (buffedLvl > 0){ //TODO ADD LEVEL COLORS HERE
 					if ((item instanceof Weapon && ((Weapon) item).curseInfusionBonus)
 						|| (item instanceof Armor && ((Armor) item).curseInfusionBonus)
 							|| (item instanceof Wand && ((Wand) item).curseInfusionBonus)){

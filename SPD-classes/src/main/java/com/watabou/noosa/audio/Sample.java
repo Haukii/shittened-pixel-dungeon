@@ -23,6 +23,7 @@ package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Timer;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
 
@@ -166,6 +167,28 @@ public enum Sample {
 		sfx.pitch = pitch;
 		synchronized (delayedSFX) {
 			delayedSFX.add(sfx);
+		}
+	}
+
+	public void playForDuration ( Object id, float duration ) {
+		playForDuration(id, duration, 1f);
+	}
+
+	public void playForDuration ( Object id, float duration, float volume ) {
+		playForDuration(id, duration, volume, 1f);
+	}
+
+	public synchronized void playForDuration( Object id, float duration, float volume, float pitch ) {
+		if (enabled && ids.containsKey( id )) {
+			Sound sound = ids.get(id);
+			sound.play( globalVolume*volume, pitch, 0f );
+
+			Timer.schedule(new Timer.Task(){
+				@Override
+				public void run(){
+					sound.stop();
+				}
+			}, duration);
 		}
 	}
 

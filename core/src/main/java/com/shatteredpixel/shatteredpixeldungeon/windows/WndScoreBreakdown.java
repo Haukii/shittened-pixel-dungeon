@@ -64,6 +64,9 @@ public class WndScoreBreakdown extends Window {
 			pos = statSlot(this, Messages.get(this, "quests_title"),
 					num.format(Statistics.totalQuestScore), pos, Statistics.totalQuestScore >= 10_000);
 			pos = addInfo(this, Messages.get(this, "quests_desc"), pos);
+			pos = statSlot(this, Messages.get(this, "turds_title"),
+					num.format(Statistics.shitsTaken * 10000L), pos, Statistics.shitsTaken * 10000 >= 30000);
+			pos = addInfo(this, Messages.get(this, "turds_desc"), pos);
 		} else {
 			pos = statSlot(this, Messages.get(this, "progress_title"),
 					num.format(Statistics.progressScore), pos, Statistics.progressScore >= 78_000);

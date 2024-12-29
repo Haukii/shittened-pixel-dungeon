@@ -27,6 +27,8 @@ public class DuelistArmor extends ClassArmor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_DUELIST;
+		type = Type.CLOTH;
+		ID = 46;
 	}
 
 }

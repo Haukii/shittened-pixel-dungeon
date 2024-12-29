@@ -27,6 +27,8 @@ public class MageArmor extends ClassArmor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_MAGE;
+		type = Type.CLOTH;
+		ID = 43;
 	}
 
 }

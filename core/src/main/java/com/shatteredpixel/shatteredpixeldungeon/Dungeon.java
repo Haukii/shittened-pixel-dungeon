@@ -113,6 +113,7 @@ public class Dungeon {
 		SWARM_HP,
 		NECRO_HP,
 		BAT_HP,
+		FOODCRATE,
 		WARLOCK_HP,
 		//Demon spawners are already limited in their spawnrate, no need to limit their health drops
 		//alchemy
@@ -127,6 +128,13 @@ public class Dungeon {
 		SHAMAN_WAND,
 		DM200_EQUIP,
 		GOLEM_EQUIP,
+
+		TWINGO_ALBUM,
+		RAT_ALBUM,
+		SYNTH_ALBUM,
+		CHAIR_ALBUM,
+		POP_ALBUM,
+		NONSENSE_ALBUM,
 
 		//containers
 		VELVET_POUCH,
@@ -880,18 +888,18 @@ public class Dungeon {
 		if (WndResurrect.instance == null) {
 			updateLevelExplored();
 			Statistics.gameWon = false;
-			Rankings.INSTANCE.submit( false, cause );
+			Rankings.INSTANCE.submit( false, cause, false );
 		}
 	}
 	
-	public static void win( Object cause ) {
+	public static void win( Object cause, boolean saul ) {
 
 		updateLevelExplored();
 		Statistics.gameWon = true;
 
 		hero.belongings.identify();
 
-		Rankings.INSTANCE.submit( true, cause );
+		Rankings.INSTANCE.submit( true, cause, saul );
 	}
 
 	public static void updateLevelExplored(){

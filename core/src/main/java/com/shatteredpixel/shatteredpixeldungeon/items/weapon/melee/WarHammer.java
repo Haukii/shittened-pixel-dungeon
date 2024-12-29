@@ -22,11 +22,38 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CoffeeBean;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Milk;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class WarHammer extends MeleeWeapon {
+
+	public static final String AC_PAINT = "PAINT";
+	public static final String AC_EAT = "EAT";
 
 	{
 		image = ItemSpriteSheet.WAR_HAMMER;
@@ -35,6 +62,10 @@ public class WarHammer extends MeleeWeapon {
 
 		tier = 5;
 		ACC = 1.20f; //20% boost to accuracy
+
+		type = Type.AXE;
+		skinnable = true;
+		skin = Skin.HAMMER;
 	}
 
 	@Override
@@ -70,4 +101,125 @@ public class WarHammer extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		if (isIdentified()) {
+			actions.add(AC_PAINT);
+		} else if (skin == Skin.CAKEHAMMER) {
+			actions.add(AC_EAT);
+		}
+		return actions;
+
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+		if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
+		} else if (action.equals(AC_EAT)) {
+			changeSkin(Skin.BITTENHAMMER);
+
+			//Basically just Food.execute()
+			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+				Buff.affect(hero, Hunger.class).satisfy(100f);
+			} else {
+				Buff.affect(hero, Hunger.class).satisfy(300f);
+			}
+			hero.sprite.operate( hero.pos );
+			hero.busy();
+			SpellSprite.show( hero, SpellSprite.FOOD );
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
+			GLog.i( Messages.get(this, "eat_msg") );
+			if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
+					|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
+					|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
+					|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+				hero.spend(1f);
+			} else {
+				hero.spend(3f);
+			}
+
+			Talent.onFoodEaten(hero, Dungeon.isChallenged(Challenges.NO_FOOD) ? 100f : 300f, this);
+			Buff.affect(hero, WellFed.class).reset(50);
+
+			Statistics.foodEaten++;
+			Badges.validateFoodEaten();
+		}
+	}
+
+	@Override
+	public String name() {
+		if (skin != null && skin.rarityTier() >= 4) {
+			switch (skin) {
+				case TRUEGOLDHAMMER:
+					return "True Golden Hammer";
+				case AMULETHAMMER:
+					return "Amulet Hammer";
+				case GOOLDENHAMMER:
+					return "Goolden Hammer";
+				case CAKEHAMMER:
+					return "Hammer of Cake";
+			}
+		}
+		return super.name();
+	}
+
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
+		}
+
+		return desc;
+	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(WarHammer.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, WarHammer.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, WarHammer.class);
+
+				if ((item instanceof Berry && skin != Skin.CREAMHAMMER) || (item instanceof Milk && skin != Skin.CHOCOHAMMER) || (item instanceof CoffeeBean && skin != Skin.CAKEBASEHAMMER)) {
+					GLog.w(Messages.get(WarHammer.class, "cake"));
+					return;
+				}
+				if (item instanceof GooBlob && skin == Skin.GOLDHAMMER) {
+					skin = Skin.GOOLDENHAMMER;
+					Sample.INSTANCE.play(Assets.Sounds.BURNING);
+				} else if (item instanceof Berry) {
+					item.detach(Dungeon.hero.belongings.backpack);
+					Sample.INSTANCE.play(Assets.Sounds.BURNING);
+				}
+
+				GLog.p(Messages.get(WarHammer.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
+				curItem.changeSkin(skin);
+			}
+		}
+	};
 }

@@ -37,6 +37,7 @@ public class WornShortsword extends MeleeWeapon {
 		tier = 1;
 		
 		bones = false;
+		type = Type.SWORD;
 	}
 
 	@Override

@@ -98,8 +98,15 @@ public class Chasm implements Hero.Doom {
 	public static void heroFall( int pos ) {
 		
 		jumpConfirmed = false;
-				
-		Sample.INSTANCE.play( Assets.Sounds.FALLING );
+
+		switch (Random.Int(3)) {
+			case 0:
+				Sample.INSTANCE.play( Assets.Sounds.CHASM1 );
+			case 1:
+				Sample.INSTANCE.play( Assets.Sounds.CHASM2 );
+			case 2:
+				Sample.INSTANCE.play( Assets.Sounds.CHASM3 );
+		}
 
 		Level.beforeTransition();
 
@@ -148,6 +155,10 @@ public class Chasm implements Hero.Doom {
 		//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
 		Buff.affect( hero, Bleeding.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))), Chasm.class);
 		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Chasm() );
+
+		if (hero.HP <= 0) {
+			Sample.INSTANCE.play(Assets.Sounds.IMPACT_DEATH);
+		}
 	}
 
 	public static void mobFall( Mob mob ) {

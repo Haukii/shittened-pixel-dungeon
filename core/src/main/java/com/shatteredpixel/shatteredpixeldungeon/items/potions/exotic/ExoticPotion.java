@@ -24,11 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
@@ -86,6 +89,14 @@ public class ExoticPotion extends Potion {
 		regToExo.put(PotionOfExperience.class, PotionOfDivineInspiration.class);
 		exoToReg.put(PotionOfDivineInspiration.class, PotionOfExperience.class);
 
+		regToExo.put(PotionOfAcceleration.class, PotionOfFuror.class);
+		exoToReg.put(PotionOfFuror.class, PotionOfAcceleration.class);
+
+		regToExo.put(PotionOfKetchup.class, PotionOfKetchupStorm.class);
+		exoToReg.put(PotionOfKetchupStorm.class, PotionOfKetchup.class);
+
+		regToExo.put(PotionOfFuel.class, PotionOfFumes.class);
+		exoToReg.put(PotionOfFumes.class, PotionOfFuel.class);
 	}
 	
 	@Override

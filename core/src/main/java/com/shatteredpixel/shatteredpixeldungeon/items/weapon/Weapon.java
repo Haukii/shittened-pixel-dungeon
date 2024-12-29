@@ -24,7 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -58,9 +60,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projec
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -110,6 +114,16 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean enchantHardened = false;
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
+
+	public Prefix prefix = Random.Float() > 0.4f && this instanceof MeleeWeapon ? Prefix.all[Random.Int(0,Prefix.all.length - 1)] : Prefix.NONE;
+
+	{
+		if (prefix != null && prefix != Prefix.NONE) {
+			extraIcon = prefix.icon();
+		} else {
+			extraIcon = -1;
+		}
+	}
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -154,6 +168,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String AUGMENT	        = "augment";
+	private static final String PREFIX	        = "prefix";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -165,6 +180,7 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( AUGMENT, augment );
+		bundle.put( PREFIX, prefix );
 	}
 	
 	@Override
@@ -176,6 +192,12 @@ abstract public class Weapon extends KindOfWeapon {
 		enchantHardened = bundle.getBoolean( ENCHANT_HARDENED );
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
+		if (prefix != null && prefix != Prefix.NONE) {
+			extraIcon = prefix.icon();
+			updateQuickslot();
+		} else {
+			extraIcon = -1;
+		}
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
@@ -249,6 +271,9 @@ abstract public class Weapon extends KindOfWeapon {
 	protected float speedMultiplier(Char owner ){
 		float multi = RingOfFuror.attackSpeedMultiplier(owner);
 
+		if ( Dungeon.hero.buff( Acceleration.class ) != null) multi *= Acceleration.multiplier(owner);
+		if ( Dungeon.hero.buff( Furor.class ) != null) multi *= 2f;
+
 		if (owner.buff(Scimitar.SwordDance.class) != null){
 			multi += 0.6f;
 		}
@@ -265,6 +290,7 @@ abstract public class Weapon extends KindOfWeapon {
 				return reach;
 			}
 		}
+		if (prefix == Prefix.LONG) reach++;
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(enchantment.procChanceMultiplier(owner));
 		} else {
@@ -327,7 +353,79 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String name() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name();
+		String name = "";
+		if (prefix != Prefix.NONE && isIdentified()) {
+			name += Messages.capitalize(prefix.toString().toLowerCase()) + " ";
+		}
+		if (enchantment != null && (cursedKnown || !enchantment.curse())) {
+			name += enchantment.name( super.name() );
+		} else {
+			name += super.name();
+		}
+		return name;
+	}
+
+	public String getStatChanges() {
+
+		String stats = "";
+
+		if (prefix == Prefix.NONE || !isIdentified()) {
+			return stats;
+		}
+
+		float minDmg = prefix.min();
+		float maxDmg = prefix.max();
+		float acc = prefix.acc();
+		float speed = prefix.speed();
+
+		stats += "\n\n" + Messages.capitalize(prefix.toString().toLowerCase()) + ":\n";
+
+		if (minDmg != 0) {
+			if (minDmg > 0) {
+				stats += "+";
+			}
+			stats += Math.round(minDmg * 100) + "% Minimum damage\n";
+		}
+		if (maxDmg != 0) {
+			if (maxDmg > 0) {
+				stats += "+";
+			}
+			stats += Math.round(maxDmg * 100) + "% Maximum damage\n";
+		}
+		if (acc != 0) {
+			if (acc > 0) {
+				stats += "+";
+			}
+			stats += Math.round(acc * 100) + "% Accuracy\n";
+		}
+		if (speed != 0) {
+			if (speed > 0) {
+				stats += "+";
+			}
+			stats += Math.round(speed * 100) + "% Speed\n";
+		}
+		if (prefix == Prefix.STEADFAST || prefix == Prefix.PROTECTIVE) {
+			if (this instanceof MeleeWeapon) {
+				stats += "+0-" + ((MeleeWeapon) this).tier  + " Armor\n";
+			}
+		}
+		if (prefix == Prefix.VENOMOUS) {
+			if (this instanceof MeleeWeapon) {
+				stats += "+5% Poison chance\n";
+			}
+		}
+		if (prefix == Prefix.LONG) {
+			if (this instanceof MeleeWeapon) {
+				stats += "+1 Range\n";
+			}
+		}
+
+		return stats;
+	}
+	public void reforge(Prefix prefix) {
+		this.prefix = prefix;
+		this.extraIcon = prefix.icon();
+		updateQuickslot();
 	}
 	
 	@Override

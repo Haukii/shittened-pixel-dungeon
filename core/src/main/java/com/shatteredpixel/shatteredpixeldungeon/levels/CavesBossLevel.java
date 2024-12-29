@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -81,7 +82,7 @@ public class CavesBossLevel extends Level {
 			if (BossHealthBar.isBleeding()){
 				Music.INSTANCE.play(Assets.Music.CAVES_BOSS_FINALE, true);
 			} else {
-				Music.INSTANCE.play(Assets.Music.CAVES_BOSS, true);
+				Music.INSTANCE.play(Assets.Music.CAVES_BOSS_1, true);
 			}
 		//if wall isn't broken
 		} else if (map[14 + 13*width()] == Terrain.CUSTOM_DECO){
@@ -93,11 +94,19 @@ public class CavesBossLevel extends Level {
 
 	@Override
 	public String tilesTex() {
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+				|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+			return Assets.Environment.TILES_CAVES_CHRISTMAS;
+		}
 		return Assets.Environment.TILES_CAVES;
 	}
 
 	@Override
 	public String waterTex() {
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+				|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+			return Assets.Environment.WATER_ICE;
+		}
 		return Assets.Environment.WATER_CAVES;
 	}
 
@@ -331,7 +340,7 @@ public class CavesBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.play(Assets.Music.CAVES_BOSS, true);
+				Music.INSTANCE.play(Assets.Music.CAVES_BOSS_1, true);
 			}
 		});
 
@@ -638,7 +647,13 @@ public class CavesBossLevel extends Level {
 	public static class CityEntrance extends CustomTilemap{
 
 		{
-			texture = Assets.Environment.CAVES_BOSS;
+			if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+					|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+				texture = Assets.Environment.CAVES_BOSS_CHRISTMAS;
+			} else
+			{
+				texture = Assets.Environment.CAVES_BOSS;
+			}
 		}
 
 		private static short[] entryWay = new short[]{
@@ -686,7 +701,13 @@ public class CavesBossLevel extends Level {
 	public static class EntranceOverhang extends CustomTilemap{
 
 		{
-			texture = Assets.Environment.CAVES_BOSS;
+			if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+					|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+				texture = Assets.Environment.CAVES_BOSS_CHRISTMAS;
+			} else
+			{
+				texture = Assets.Environment.CAVES_BOSS;
+			}
 		}
 
 		private static short[] entryWay = new short[]{
@@ -730,7 +751,13 @@ public class CavesBossLevel extends Level {
 	public static class ArenaVisuals extends CustomTilemap {
 
 		{
-			texture = Assets.Environment.CAVES_BOSS;
+			if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+					|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+				texture = Assets.Environment.CAVES_BOSS_CHRISTMAS;
+			} else
+			{
+				texture = Assets.Environment.CAVES_BOSS;
+			}
 		}
 
 		@Override

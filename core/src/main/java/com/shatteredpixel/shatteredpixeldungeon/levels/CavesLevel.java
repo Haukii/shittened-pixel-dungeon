@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Boombox;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -53,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
@@ -81,6 +84,9 @@ public class CavesLevel extends RegularLevel {
 	public void playLevelMusic() {
 		if (Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.CAVES_TENSE, true);
+		} else if (boomboxDestroyed()) {
+			Music.INSTANCE.stop();
+			Music.INSTANCE.clearQueue();
 		} else {
 			Music.INSTANCE.playTracks(CAVES_TRACK_LIST, CAVES_TRACK_CHANCES, false);
 		}
@@ -168,11 +174,19 @@ public class CavesLevel extends RegularLevel {
 
 	@Override
 	public String tilesTex() {
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+				|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+			return Assets.Environment.TILES_CAVES_CHRISTMAS;
+		}
 		return Assets.Environment.TILES_CAVES;
 	}
-	
+
 	@Override
 	public String waterTex() {
+		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS
+				|| Holiday.getCurrentHoliday() == Holiday.NEW_YEARS ) {
+			return Assets.Environment.WATER_ICE;
+		}
 		return Assets.Environment.WATER_CAVES;
 	}
 	
@@ -318,5 +332,14 @@ public class CavesLevel extends RegularLevel {
 			float p = left / lifespan;
 			size( (am = p < 0.5f ? p * 2 : (1 - p) * 2) * 2 );
 		}
+	}
+
+	boolean boomboxDestroyed() {
+		for (Mob mob : this.mobs) {
+			if (mob instanceof Boombox && mob.alignment == Char.Alignment.NEUTRAL) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

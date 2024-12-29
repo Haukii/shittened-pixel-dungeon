@@ -66,6 +66,10 @@ public class Blandfruit extends Food {
 		energy = Hunger.STARVING;
 
 		bones = true;
+		carbs = 22f;
+		fats = 0.2f;
+		proteins = 8f;
+		salt = 0.1f;
 	}
 
 	@Override

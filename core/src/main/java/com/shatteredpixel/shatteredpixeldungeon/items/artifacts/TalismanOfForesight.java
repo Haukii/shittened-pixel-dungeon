@@ -64,6 +64,7 @@ public class TalismanOfForesight extends Artifact {
 		chargeCap = 100;
 
 		defaultAction = AC_SCRY;
+		type = Type.SCALE;
 	}
 
 	public static final String AC_SCRY = "SCRY";

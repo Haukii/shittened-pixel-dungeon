@@ -23,20 +23,34 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class RunicBlade extends MeleeWeapon {
+
+	public static final String AC_PAINT = "PAINT";
 
 	{
 		image = ItemSpriteSheet.RUNIC_BLADE;
@@ -44,6 +58,10 @@ public class RunicBlade extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 4;
+		type = Type.SWORD;
+		skinnable = true;
+		skin = Skin.RUNIC;
+
 	}
 
 	//Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
@@ -122,6 +140,100 @@ public class RunicBlade extends MeleeWeapon {
 
 		public float boost = 2f;
 
+	};
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		if (isIdentified()) {
+			actions.add(AC_PAINT);
+		}
+		return actions;
+
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+		if (action.equals(AC_PAINT)) {
+			curItem = this;
+			GameScene.selectItem(skinSelector);
+		}
+	}
+
+	@Override
+	public String name() {
+		if (skin != null && skin.rarityTier() >= 4) {
+			switch (skin) {
+				case TRUEGOLDRUNIC:
+					return "Golden Blade";
+				case AMULETRUNIC:
+					return "The Amulet Blade";
+				case NATURERUNIC:
+					return "The Blade of Nature";
+				case WATERRUNIC:
+					return "Blade of Water";
+				case EARTHRUNIC:
+					return "Blade of Earth";
+				case FIRERUNIC:
+					return "Blade of Fire";
+				case WINDRUNIC:
+					return "Blade of Air";
+			}
+		}
+		return super.name();
+	}
+
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
+		}
+
+		return desc;
+	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(RunicBlade.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, RunicBlade.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, RunicBlade.class);
+
+				if (item instanceof Waterskin && ((Waterskin) item).volume < 20) {
+					GLog.w(Messages.get(RunicBlade.class, "nowater"));
+					return;
+				} else if (item instanceof SandalsOfNature && item.level() != 10) {
+					GLog.w(Messages.get(RunicBlade.class, "sandals", item.name().toLowerCase(Locale.ROOT)));
+					return;
+				}
+
+				GLog.p(Messages.get(RunicBlade.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_SWORD);
+				curItem.changeSkin(skin);
+			}
+		}
 	};
 
 }

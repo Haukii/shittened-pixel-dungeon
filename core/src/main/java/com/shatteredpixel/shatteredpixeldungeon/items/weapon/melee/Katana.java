@@ -35,6 +35,7 @@ public class Katana extends MeleeWeapon {
 		hitSoundPitch = 1.1f;
 
 		tier = 4;
+		type = Type.SWORD;
 	}
 
 	@Override

@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,8 @@ public abstract class EquipableItem extends Item {
 	public static final String AC_UNEQUIP	= "UNEQUIP";
 
 	public int customNoteID = -1;
+
+	public Type type;
 
 	{
 		bones = true;
@@ -148,6 +151,43 @@ public abstract class EquipableItem extends Item {
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
 			if (collect) Dungeon.level.drop( this, hero.pos ).sprite.drop();
+		} else if (type != null) {
+			switch (type) {
+				case SWORD:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_SWORD, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case AXE:
+				case WOOD:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_AXE, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case DAGGER:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_DAGGER, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case CLOTH:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_CLOTH, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case LEATHER:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_LEATHER, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case CHAIN:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_CHAIN, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case SCALE:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_SCALE, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case STEEL:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_STEEL, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case TRINKET:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_TRINKET, 1f, Random.Float(0.95f,1.1f));
+					break;
+				case PAPER:
+					Sample.INSTANCE.play(Assets.Sounds.UNEQUIP_PAPER, 1.2f, Random.Float(0.95f,1.1f));
+					break;
+				default:
+					Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH, 0.8f, Random.Float(0.95f,1.1f));
+					break;
+			}
 		}
 		keptThoughLostInvent = wasKept;
 
@@ -172,5 +212,62 @@ public abstract class EquipableItem extends Item {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
+	}
+
+	public void playEquipSound() {
+		switch (this.type) {
+			case SWORD:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_SWORD, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case AXE:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case DAGGER:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_DAGGER, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case CLOTH:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case LEATHER:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_LEATHER, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case CHAIN:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CHAIN, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case SCALE:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_SCALE, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case STEEL:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_STEEL, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case TRINKET:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_TRINKET, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case WOOD:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_WOOD, 1f, Random.Float(0.95f, 1.1f));
+				break;
+			case PAPER:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_PAPER, 1.2f, Random.Float(0.95f, 1.1f));
+				break;
+			default:
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH, 0.8f, Random.Float(0.95f, 1.1f));
+				break;
+		}
+	}
+
+	public enum Type { //TODO add these
+		SWORD,
+		AXE,
+		DAGGER,
+
+		CLOTH,
+		LEATHER,
+		CHAIN,
+		SCALE,
+		STEEL,
+
+		TRINKET,
+		WOOD,
+		PAPER,
 	}
 }

@@ -129,6 +129,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			}
 
 			hero.spendAndNext( timeToEquip(hero) );
+			playEquipSound();
 			if (isSwiftEquipping) {
 				GLog.i(Messages.get(this, "swift_equip"));
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){

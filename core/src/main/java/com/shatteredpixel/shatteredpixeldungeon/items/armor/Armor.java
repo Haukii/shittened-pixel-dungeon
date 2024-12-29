@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -68,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -114,13 +117,17 @@ public class Armor extends EquipableItem {
 	protected BrokenSeal seal;
 	
 	public int tier;
+
+	//Used to identify different armor sprites
+	public int ID;
 	
 	private static final int USES_TO_ID = 10;
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
-	
-	public Armor( int tier ) {
+
+	public Armor( int tier, int ID ) {
 		this.tier = tier;
+		this.ID = ID;
 	}
 	
 	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
@@ -131,6 +138,7 @@ public class Armor extends EquipableItem {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
+	private static final String ARMORID			= "ID";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -143,6 +151,7 @@ public class Armor extends EquipableItem {
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
+		bundle.put( ARMORID, ID);
 	}
 
 	@Override
@@ -155,6 +164,7 @@ public class Armor extends EquipableItem {
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 		seal = (BrokenSeal)bundle.get(SEAL);
+		ID = bundle.getInt(ARMORID);
 		
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
@@ -185,6 +195,7 @@ public class Armor extends EquipableItem {
 			if (sealBuff != null) sealBuff.setArmor(null);
 
 			BrokenSeal detaching = seal;
+			detaching.image = seal.image();
 			seal = null;
 
 			if (detaching.level() > 0){
@@ -246,6 +257,7 @@ public class Armor extends EquipableItem {
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
 			Talent.onItemEquipped(hero, this);
+			playEquipSound();
 			hero.spendAndNext( timeToEquip( hero ) );
 			return true;
 			
@@ -467,6 +479,21 @@ public class Armor extends EquipableItem {
 		if (glyph != null && defender.buff(MagicImmune.class) == null) {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
+
+		if (this instanceof PlateCarrier) {
+			if (Random.Float() < 0.03f) {
+				Sample.INSTANCE.play(Assets.Sounds.CARRIER_HIT);
+				GLog.i("The attack was stopped by a ballistic plate in your armor");
+				damage = 0;
+			}
+		}
+
+		if (this instanceof PlateArmor) {
+			if (Random.Float() < 0.05f) {
+				Sample.INSTANCE.play(Assets.Sounds.HIT_GLANCE);
+				damage = 0;
+			}
+		}
 		
 		if (!levelKnown && defender == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
@@ -565,7 +592,152 @@ public class Armor extends EquipableItem {
 		Emitter emitter = new Emitter();
 		emitter.pos(ItemSpriteSheet.film.width(image)/2f + 2f, ItemSpriteSheet.film.height(image)/3f);
 		emitter.fillTarget = false;
-		emitter.pour(Speck.factory( Speck.RED_LIGHT ), 0.6f);
+		Skin skin = seal.skin;
+		if (skin == null || skin.rarity().equals(Skin.DEFAULT)) {
+			emitter.pour(Speck.factory( Speck.RED_LIGHT ), 0.6f);
+			return emitter;
+		}
+		//MAGNIFICENT
+		switch (skin) {
+			case YELLOWSEAL:
+				emitter.pour(Speck.factory( Speck.YELLOWSEAL ), 0.6f);
+				return emitter;
+			case GREENSEAL:
+				emitter.pour(Speck.factory( Speck.GREENSEAL ), 0.6f);
+				return emitter;
+			case BLUESEAL:
+				emitter.pour(Speck.factory( Speck.BLUESEAL ), 0.6f);
+				return emitter;
+			case PURPLESEAL:
+				emitter.pour(Speck.factory( Speck.PURPLESEAL ), 0.6f);
+				return emitter;
+			case BLACKSEAL:
+				emitter.pour(Speck.factory( Speck.BLACKSEAL ), 0.6f);
+				return emitter;
+			case WHITESEAL:
+				emitter.pour(Speck.factory( Speck.WHITESEAL ), 0.6f);
+				return emitter;
+			case GRAYSEAL:
+				emitter.pour(Speck.factory( Speck.GRAYSEAL ), 0.6f);
+				return emitter;
+			case TURQUOISESEAL:
+				emitter.pour(Speck.factory( Speck.TURQUOISESEAL ), 0.6f);
+				return emitter;
+			case BROWNSEAL:
+				emitter.pour(Speck.factory( Speck.BROWNSEAL ), 0.6f);
+				return emitter;
+			case PINKSEAL:
+				emitter.pour(Speck.factory( Speck.PINKSEAL ), 0.6f);
+				return emitter;
+			case ORANGESEAL:
+				emitter.pour(Speck.factory( Speck.ORANGESEAL ), 0.6f);
+				return emitter;
+
+			case WOODSEAL:
+				emitter.pour(Speck.factory( Speck.WOODSEAL), 0.6f);
+				return emitter;
+			case MEATSEAL:
+				emitter.pour(Speck.factory( Speck.MEATSEAL), 0.6f);
+				return emitter;
+			case TRANSPARENTSEAL:
+				emitter.pour(Speck.factory( Speck.TRANSPARENTSEAL), 0.6f);
+				return emitter;
+			case HEALINGSEAL:
+				emitter.pour(Speck.factory( Speck.HEALINGSEAL), 0.6f);
+				return emitter;
+			case CUTSEAL:
+				emitter.pour(Speck.factory( Speck.CUTSEAL), 0.6f);
+				return emitter;
+			case THIEFSEAL:
+				emitter.pour(Speck.factory( Speck.THIEFSEAL), 0.6f);
+				return emitter;
+			case COPPERSEAL:
+				emitter.pour(Speck.factory( Speck.COPPERSEAL), 0.6f);
+				return emitter;
+			case CUBESEAL:
+				emitter.pour(Speck.factory( Speck.CUBESEAL), 0.6f);
+				return emitter;
+
+			case RINGSEAL:
+				emitter.pour(Speck.factory( Speck.RINGSEAL), 0.6f);
+				return emitter;
+			case RAINBOWSEAL:
+				emitter.pour(Speck.factory( Speck.RAINBOWSEAL), 0.6f);
+				return emitter;
+			case GOLDSEAL:
+				emitter.pour(Speck.factory( Speck.GOLDSEAL), 0.3f);
+				return emitter;
+			case CORPSESEAL:
+				emitter.pour(Speck.factory( Speck.CORPSESEAL), Random.Float(0.8f,4f));
+				return emitter;
+			case HEARTSEAL:
+				emitter.pour(Speck.factory( Speck.HEARTSEAL), 0.6f);
+				return emitter;
+			case BURNTSEAL:
+				emitter.pour(Speck.factory( Speck.BURNTSEAL), 0.6f);
+				return emitter;
+			case GOOSEAL:
+				emitter.pour(Speck.factory( Speck.GOOSEAL), 2f);
+				return emitter;
+			case WATERSEAL:
+				emitter.pour(Speck.factory( Speck.WATERSEAL), 0.1f);
+				return emitter;
+			case WARRIORSEAL:
+				emitter.pour(Speck.factory( Speck.WARRIORSEAL), 0.6f);
+				return emitter;
+			case COWBOYSEAL:
+				emitter.pour(Speck.factory( Speck.COWBOYSEAL), 0.6f);
+				return emitter;
+			case HONEYSEAL:
+				emitter.randomSize = true;
+				emitter.randomWidth = 1f;
+				emitter.randomHeight = 1f;
+				emitter.pour(Speck.factory( Speck.HONEYSEAL), 0.4f);
+				return emitter;
+			case ICESEAL:
+				emitter.pour(Speck.factory( Speck.ICESEAL), 0.9f);
+				return emitter;
+			case EYESEAL:
+				emitter.pour(Speck.factory( Speck.EYESEAL), 1.3f);
+				return emitter;
+			case SNAKESEAL:
+				emitter.pour(Speck.factory( Speck.SNAKESEAL), 0.4f);
+				return emitter;
+			case CANDLESEAL:
+				emitter.pour(Speck.factory( Speck.CANDLESEAL), 0.1f);
+				return emitter;
+			case BOMBSEAL:
+				emitter.pour(Speck.factory( Speck.BOMBSEAL), 0.3f);
+				return emitter;
+			case SHEEPSEAL:
+				emitter.pour(Speck.factory( Speck.SHEEPSEAL), 0.6f);
+				return emitter;
+
+			case DMSEAL:
+				emitter.pour(Speck.factory( Speck.DMSEAL), 0.02f);
+				return emitter;
+			case KINGSEAL:
+				emitter.pour(Speck.factory( Speck.KINGSEAL), 0.15f);
+				return emitter;
+			case FIERYSEAL:
+				emitter.pour(Speck.factory( Speck.FIERYSEAL), 0.01f);
+				return emitter;
+			case PUREGOLDSEAL:
+				emitter.fillTarget = true;
+				emitter.pos(ItemSpriteSheet.film.width(image)/2f + Random.Float(4f), ItemSpriteSheet.film.height(image)/3f + Random.Float(-2f,2f));
+				emitter.pour(Speck.factory( Speck.PUREGOLDSEAL), 0.1f);
+				return emitter;
+			case AMULETSEAL:
+				emitter.randomSize = true;
+				emitter.randomHeight = 2f;
+				emitter.randomWidth = 2f;
+				emitter.pour(Speck.factory( Speck.AMULETSEAL), 0.2f);
+				return emitter;
+			case BLOWNUPSEAL:
+				emitter.pour(Speck.factory( Speck.BLOWNUPSEAL), 0.04f);
+				return emitter;
+		}
+
 		return emitter;
 	}
 

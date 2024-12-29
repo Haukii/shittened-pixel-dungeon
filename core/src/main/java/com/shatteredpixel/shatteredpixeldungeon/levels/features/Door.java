@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class Door {
 
@@ -38,7 +39,7 @@ public class Door {
 
 		if (Dungeon.level.heroFOV[pos]) {
 			Dungeon.observe();
-			Sample.INSTANCE.play( Assets.Sounds.OPEN );
+			Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.OPEN_1, Assets.Sounds.OPEN_2, Assets.Sounds.OPEN_3, Assets.Sounds.OPEN_4), 2f, Random.Float(0.7f, 1.3f) );
 		}
 	}
 
@@ -53,8 +54,10 @@ public class Door {
 		if (Dungeon.level.heaps.get( pos ) == null && chars <= 1) {
 			Level.set( pos, Terrain.DOOR );
 			GameScene.updateMap( pos );
-			if (Dungeon.level.heroFOV[pos])
+			if (Dungeon.level.heroFOV[pos]) {
 				Dungeon.observe();
+				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.CLOSE_1, Assets.Sounds.CLOSE_2, Assets.Sounds.CLOSE_3, Assets.Sounds.CLOSE_4), 0.8f, Random.Float(0.7f, 1.3f) );
+			}
 		}
 	}
 }

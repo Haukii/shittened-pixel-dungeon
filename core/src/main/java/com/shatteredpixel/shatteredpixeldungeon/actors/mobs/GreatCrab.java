@@ -35,7 +35,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class GreatCrab extends Crab {
+public class GreatCrab extends Crab { //TODO explotanus?
 
 	{
 		spriteClass = GreatCrabSprite.class;
@@ -58,7 +58,7 @@ public class GreatCrab extends Crab {
 	private int moving = 0;
 
 	@Override
-	protected boolean getCloser( int target ) {
+	public boolean getCloser( int target ) {
 		//this is used so that the crab remains slower, but still detects the player at the expected rate.
 		moving++;
 		if (moving < 3) {

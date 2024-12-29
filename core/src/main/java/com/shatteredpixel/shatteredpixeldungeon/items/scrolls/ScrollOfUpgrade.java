@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -40,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUpgrade;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 	
@@ -85,6 +88,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadGoodEnchant = w.hasGoodEnchant();
 
 			item = w.upgrade();
+			Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_WEAPON, 1f, Random.Float(0.9f, 1.1f));
 
 			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
 				removeCurse( Dungeon.hero );
@@ -105,6 +109,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadGoodGlyph = a.hasGoodGlyph();
 
 			item = a.upgrade();
+			Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_ARMOR, 1f, Random.Float(0.9f, 1.1f));
 
 			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){
 				removeCurse( Dungeon.hero );
@@ -121,6 +126,15 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean wasCursed = item.cursed;
 
 			item = item.upgrade();
+			if (item instanceof Wand) {
+				if (Random.Float() > 0.1f) {
+					Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_WAND, 1f, Random.Float(0.9f, 1.1f));
+				} else {
+					Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_WAND_ALT, 1f, Random.Float(0.9f, 1.1f));
+				}
+			} else {
+				Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_RING, 1f, Random.Float(0.9f, 1.1f));
+			}
 
 			if (item.cursedKnown && wasCursed && !item.cursed){
 				removeCurse( Dungeon.hero );

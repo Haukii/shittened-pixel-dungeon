@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
@@ -109,8 +111,10 @@ public class PitfallTrap extends Trap {
 							&& !(ch.alignment == Char.Alignment.ALLY && ignoreAllies)) {
 						if (ch == Dungeon.hero) {
 							herofell = true;
+							Sample.INSTANCE.play(Assets.Sounds.PITFALL );
 						} else {
 							Chasm.mobFall((Mob) ch);
+							Sample.INSTANCE.play(Assets.Sounds.PITFALL, 0.3f );
 						}
 					}
 

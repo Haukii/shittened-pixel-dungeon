@@ -148,6 +148,8 @@ public class GamesInProgress {
 		info.heroClass = Dungeon.hero.heroClass;
 		info.subClass = Dungeon.hero.subClass;
 		info.armorTier = Dungeon.hero.tier();
+		info.armorID = Dungeon.hero.armorID();
+		info.hairID = Dungeon.hero.hairColor().ID();
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
@@ -185,6 +187,8 @@ public class GamesInProgress {
 		public HeroClass heroClass;
 		public HeroSubClass subClass;
 		public int armorTier;
+		public int armorID;
+		public int hairID;
 		
 		public int goldCollected;
 		public int maxDepth;

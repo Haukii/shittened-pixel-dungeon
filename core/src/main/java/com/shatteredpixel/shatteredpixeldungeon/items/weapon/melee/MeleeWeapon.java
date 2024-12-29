@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,6 +56,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -298,6 +300,9 @@ public class MeleeWeapon extends Weapon {
 				damage += Hero.heroDamageIntRange( 0, exStr );
 			}
 		}
+		if (prefix == Prefix.MUSICAL) {
+			Sample.INSTANCE.play(Assets.Sounds.NOTE, 1.4f, Math.round(Random.Float(0.6f,1.4f) * 10) / 10f);
+		}
 		return damage;
 	}
 	
@@ -354,6 +359,8 @@ public class MeleeWeapon extends Weapon {
 				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 			}
 		}
+
+		info += getStatChanges();
 
 		//the mage's staff has no ability as it can only be gained by the mage
 		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){

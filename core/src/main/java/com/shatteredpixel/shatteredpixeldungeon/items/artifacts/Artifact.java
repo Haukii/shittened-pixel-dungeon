@@ -70,6 +70,7 @@ public class Artifact extends KindofMisc {
 			if (super.doEquip( hero )){
 
 				identify();
+				playEquipSound();
 				return true;
 
 			} else {

@@ -68,6 +68,7 @@ public class EtherealChains extends Artifact {
 
 		defaultAction = AC_CAST;
 		usesTargeting = true;
+		type = Type.CHAIN;
 	}
 
 	@Override

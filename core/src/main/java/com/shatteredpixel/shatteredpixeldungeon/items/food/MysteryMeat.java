@@ -39,6 +39,10 @@ public class MysteryMeat extends Food {
 	{
 		image = ItemSpriteSheet.MEAT;
 		energy = Hunger.HUNGRY/2f;
+		carbs = 2f;
+		fats = Random.Int(5,15);
+		proteins = Random.Int(5,15);
+		salt = 3.3f;
 	}
 	
 	@Override

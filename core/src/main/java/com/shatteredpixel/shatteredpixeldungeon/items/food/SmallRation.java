@@ -29,6 +29,10 @@ public class SmallRation extends Food {
 	{
 		image = ItemSpriteSheet.OVERPRICED;
 		energy = Hunger.HUNGRY/2f;
+		carbs = 20f;
+		fats = 9f;
+		proteins = 19f;
+		salt = 0.3f;
 	}
 	
 	@Override

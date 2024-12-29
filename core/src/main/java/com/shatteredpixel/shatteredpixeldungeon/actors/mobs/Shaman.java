@@ -27,8 +27,17 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -40,6 +49,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class Shaman extends Mob {
 	
@@ -180,6 +192,40 @@ public abstract class Shaman extends Mob {
 			Buff.prolong( enemy, Hex.class, Hex.DURATION );
 		}
 	}
+
+	public static class MasklessShaman extends Shaman {
+		{
+			spriteClass = ShamanSprite.Maskless.class;
+
+			HP = HT = 25;
+			lootChance = 0.3f;
+		}
+
+		@Override
+		public int damageRoll() {
+			return Random.NormalIntRange( 5, 20 );
+		}
+
+		@Override
+		protected void debuff( Char enemy ) {
+
+			float roll = Random.Float();
+			if (roll < 0.3f) {
+				Buff.prolong( enemy, Vertigo.class, 5f );
+			} else if (roll < 0.6f) {
+				Buff.prolong(enemy, Cripple.class, 8f);
+			} else if (roll < 0.9f) {
+				Buff.prolong(enemy, Roots.class, 4f);
+			} else {
+				List<Class<? extends FlavourBuff>> debuffs
+						=  Arrays.asList(
+						Paralysis.class, Degrade.class, Chill.class, Levitation.class,
+						Slow.class);
+
+				Buff.prolong(enemy, debuffs.get(Random.Int(0,debuffs.size())), Random.Int(3,10) * 2);
+			}
+		}
+	}
 	
 	public static Class<? extends Shaman> random(){
 		float roll = Random.Float();
@@ -187,8 +233,10 @@ public abstract class Shaman extends Mob {
 			return RedShaman.class;
 		} else if (roll < 0.8f){
 			return BlueShaman.class;
-		} else {
+		} else if (roll < 0.95f) {
 			return PurpleShaman.class;
+		} else {
+			return MasklessShaman.class;
 		}
 	}
 }

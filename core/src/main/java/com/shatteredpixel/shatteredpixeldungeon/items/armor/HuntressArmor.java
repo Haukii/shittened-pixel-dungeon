@@ -27,6 +27,9 @@ public class HuntressArmor extends ClassArmor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_HUNTRESS;
+
+		type = Type.CLOTH;
+		ID = 45;
 	}
 
 }

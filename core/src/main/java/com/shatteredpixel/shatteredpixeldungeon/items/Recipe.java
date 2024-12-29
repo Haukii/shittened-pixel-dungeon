@@ -23,9 +23,44 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BakedFish;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BasedCake;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryBalls;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryCake;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Bread;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Bruschetta;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CakeBase;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Coffee;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CompleteBreakfast;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Cookies;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CrispyBass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.DeepfriedRat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Flour;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.FriedEgg;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Hashbrowns;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.IceCream;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Meatballs;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Oil;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.PancakesWithCheese;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pizza;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Sashimi;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Spaghetti;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
@@ -193,7 +228,15 @@ public abstract class Recipe {
 		new SummonElemental.Recipe(),
 		new StewedMeat.oneMeat(),
 		new TrinketCatalyst.Recipe(),
-		new Trinket.UpgradeTrinket()
+		new Trinket.UpgradeTrinket(),
+		new StewedSmallMeat.oneMeat(),
+		new WaxBar.Recipe(),
+		new FriedEgg.Recipe(),
+		new Cheese.Recipe(),
+		new Flour.Recipe(),
+		new Bread.Recipe(),
+		new Sashimi.Recipe(),
+		new CheeseSlice.Recipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -209,13 +252,40 @@ public abstract class Recipe {
 		new CurseInfusion.Recipe(),
 		new ReclaimTrap.Recipe(),
 		new WildEnergy.Recipe(),
-		new StewedMeat.twoMeat()
+		new StewedMeat.twoMeat(),
+		new Omelet.Recipe(),
+		new Pancakes.Recipe(),
+		new Oil.Recipe(),
+		new Hashbrowns.Recipe(),
+		new Spaghetti.Recipe(),
+		new StirFry.Recipe(),
+		new BakedFish.Recipe(),
+		new BerryBalls.Recipe(),
+		new Meatballs.Recipe(),
+		new IceCream.Recipe(),
+		new BerryCake.Recipe(),
+		new BasedCake.Recipe(),
+		new DeepfriedRat.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
 		new StewedMeat.threeMeat(),
-		new MeatPie.Recipe()
+		new MeatPie.Recipe(),
+		new GoldBar.Craft(),
+		new GoldenMeat.Craft(),
+		new TidePod.Recipe(),
+		new Coffee.Recipe(),
+		new TripleShotEspresso.Recipe(),
+		new PancakesWithCheese.Recipe(),
+		new CompleteBreakfast.Recipe(),
+		new Bruschetta.Recipe(),
+		new Pizza.Recipe(),
+		new CrispyBass.Recipe(),
+		new Cookies.Recipe(),
+		new DanishPastry.Recipe(),
+		new CakeBase.Recipe(),
+		new ChocolateCake.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){

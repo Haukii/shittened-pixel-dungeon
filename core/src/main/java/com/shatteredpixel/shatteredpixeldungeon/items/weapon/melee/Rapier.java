@@ -49,6 +49,7 @@ public class Rapier extends MeleeWeapon {
 		tier = 1;
 
 		bones = false;
+		type = Type.DAGGER;
 	}
 
 	@Override

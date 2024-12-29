@@ -46,10 +46,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Sh
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.FinnishAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.SprayPaint;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
@@ -72,8 +76,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKn
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
+
+import scrollofdebug.ScrollOfDebug;
 
 public enum HeroClass {
 
@@ -97,8 +107,23 @@ public enum HeroClass {
 		Item i = new ClothArmor().identify();
 		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
 
-		i = new Food();
+		if (Random.Float() < 0.2f) {
+			i = new UntaxedFood();
+		} else {
+			i = new Food();
+		}
 		if (!Challenges.isItemBlocked(i)) i.collect();
+
+		if (DeviceCompat.isDebug()) {
+			new SprayPaint().collect();
+			new LeatherArmor().identify().upgrade(3).collect();
+			new ScrollOfDebug().identify().collect();
+		}
+
+		if (Holiday.getCurrentHoliday() == Holiday.FINNISH_INDEPENDENCE_DAY) {
+			new FinnishAlbum().collect();
+		}
+
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
@@ -158,7 +183,10 @@ public enum HeroClass {
 	}
 
 	private static void initWarrior( Hero hero ) {
-		(hero.belongings.weapon = new WornShortsword()).identify();
+		WornShortsword sword = new WornShortsword();
+		sword.identify();
+		sword.reforge(Prefix.NONE);
+		hero.belongings.weapon = sword;
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Dungeon.quickslot.setSlot(0, stones);
@@ -275,6 +303,28 @@ public enum HeroClass {
 				return Assets.Sprites.DUELIST;
 		}
 	}
+
+	public String headsheet() {
+		switch (this) {
+			case WARRIOR: default:
+				return Assets.Sprites.WARRIOR_HEAD;
+			case MAGE:
+				return Assets.Sprites.MAGE_HEAD;
+			case ROGUE:
+				return Assets.Sprites.ROGUE_HEAD;
+			case HUNTRESS:
+				return Assets.Sprites.HUNTRESS_HEAD;
+			case DUELIST:
+				return Assets.Sprites.DUELIST_HEAD;
+		}
+	}
+
+	public String armorsheet() {
+        if (this == HeroClass.DUELIST) {
+            return Assets.Sprites.ARMOR_DARK;
+        }
+        return Assets.Sprites.ARMOR;
+    }
 
 	public String splashArt(){
 		switch (this) {

@@ -28,12 +28,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
@@ -53,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Lavage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
@@ -74,6 +77,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -132,15 +136,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -149,6 +156,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -165,6 +173,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Bundle;
@@ -175,8 +184,10 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Hero extends Char {
 
@@ -222,6 +233,8 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
+
+	private HairColor hairColor = HairColor.DEFAULT;
 	
 	private ArrayList<Mob> visibleEnemies;
 
@@ -284,6 +297,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
+	private static final String HAIRCOLOR   = "haircolor";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -304,6 +318,7 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+		bundle.put( HAIRCOLOR, hairColor );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -327,6 +342,7 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
+		hairColor = bundle.getEnum( HAIRCOLOR, HairColor.class );
 
 		belongings.restoreFromBundle( bundle );
 	}
@@ -340,6 +356,8 @@ public class Hero extends Char {
 		info.shld = bundle.getInt( Char.TAG_SHLD );
 		info.heroClass = bundle.getEnum( CLASS, HeroClass.class );
 		info.subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
+		HairColor color = bundle.getEnum( HAIRCOLOR, HairColor.class );
+		info.hairID = color.ID();
 		Belongings.preview( info, bundle );
 	}
 
@@ -446,6 +464,15 @@ public class Hero extends Char {
 			return 6;
 		} else if (armor != null){
 			return armor.tier;
+		} else {
+			return 0;
+		}
+	}
+
+	public int armorID() {
+		Armor armor = belongings.armor();
+		if (armor != null){
+			return armor.ID;
 		} else {
 			return 0;
 		}
@@ -796,6 +823,28 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
+
+		if (Random.Int(8000) == 0) {
+			GameScene.friendRequest();
+		}
+
+		if (Dungeon.hero.heroClass == HeroClass.WARRIOR && Random.Int(50) == 0
+				&& Dungeon.hero.belongings.armor != null
+				&& Dungeon.hero.belongings.armor.checkSeal() != null
+				&& Dungeon.hero.belongings.armor.checkSeal().skin == Skin.SHEEPSEAL) {
+			Sample.INSTANCE.play(Assets.Sounds.SHEEP, 0.6f, Random.Float(0.7f,1.3f));
+		}
+
+		//		if ( Dungeon.hero.belongings.getItem(Glaive.class) != null) {
+//			int rarity = 0;
+//			Skin skin = Skin.GLAIVE;
+//			while (rarity < 4) {
+//				skin = Skin.random(Glaive.class);
+//				rarity = skin.rarityTier();
+//			}
+////			GLog.p("Glaive skin : " + skin.skinName());
+//			Dungeon.hero.belongings.getItem(Glaive.class).changeSkin(skin);
+//		}
 		
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
@@ -1195,11 +1244,17 @@ public class Hero extends Char {
 			if (hasKey) {
 				
 				sprite.operate( doorCell );
-				
-				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
+
+				if (door == Terrain.LOCKED_EXIT) {
+					Sample.INSTANCE.play( Assets.Sounds.GATE_UNLOCK );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
+				}
 				
 			} else {
 				GLog.w( Messages.get(this, "locked_door") );
+				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.LOCKED_DOOR_1,
+						Assets.Sounds.LOCKED_DOOR_2, Assets.Sounds.LOCKED_DOOR_3), 0.3f, Random.Float(0.95f, 1.05f));
 				ready();
 			}
 
@@ -1414,7 +1469,30 @@ public class Hero extends Char {
 		}
 		if (!fullRest) {
 			if (sprite != null) {
-				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+				int min = 0, max = 17;
+				int randomNumber = min + (int)(max * (1f - Math.sqrt(0.96f - Random.Float() * Random.Float())));
+				if (randomNumber > 15) {
+					randomNumber = 15;
+				}
+
+				String status = Messages.get(this, "wait_" + randomNumber);
+
+				sprite.showStatus(CharSprite.DEFAULT, status);
+				if (status.contains("dies")) {
+					for (Item item : Dungeon.hero.belongings.backpack) {
+						if (item instanceof Ankh) {
+							item.detach(Dungeon.hero.belongings.backpack);
+						}
+					}
+
+					Dungeon.hero.damage(999,this);
+					Dungeon.hero.damage(999,this);
+					Dungeon.hero.damage(999,this);
+					Dungeon.hero.damage(999,this);
+					Dungeon.hero.damage(999,this);
+					GLog.n("You waited yourself to death");
+					Badges.validateBoredom();
+				}
 			}
 		}
 		resting = fullRest;
@@ -1935,7 +2013,7 @@ public class Hero extends Char {
 
 				GLog.newLine();
 				GLog.p( Messages.get(this, "level_cap"));
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				Sample.INSTANCE.play( levelUpSound() );
 			}
 			
 		}
@@ -1946,7 +2024,7 @@ public class Hero extends Char {
 				GLog.newLine();
 				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				Sample.INSTANCE.play( levelUpSound() );
 				if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1]){
 					GLog.newLine();
 					GLog.p( Messages.get(this, "new_talent") );
@@ -1967,6 +2045,10 @@ public class Hero extends Char {
 	
 	public static int maxExp( int lvl ){
 		return 5 + lvl * 5;
+	}
+
+	public static String levelUpSound() {
+		return Random.oneOf(Assets.Sounds.LEVELUP_1,Assets.Sounds.LEVELUP_2,Assets.Sounds.LEVELUP_3,Assets.Sounds.LEVELUP_4,Assets.Sounds.LEVELUP_5,Assets.Sounds.LEVELUP_6);
 	}
 	
 	public boolean isStarving() {
@@ -2150,12 +2232,21 @@ public class Hero extends Char {
 			@Override
 			public void call() {
 				GameScene.gameOver();
-				Sample.INSTANCE.play( Assets.Sounds.DEATH );
+				Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.DEATH_1, Assets.Sounds.DEATH_2, Assets.Sounds.DEATH_3,
+						Assets.Sounds.DEATH_4, Assets.Sounds.DEATH_5, Assets.Sounds.DEATH_6,
+						Assets.Sounds.DEATH_7, Assets.Sounds.DEATH_8, Assets.Sounds.DEATH_9,
+						Assets.Sounds.DEATH_10, Assets.Sounds.DEATH_11, Assets.Sounds.DEATH_12, Assets.Sounds.OOF) );
 			}
 		});
 
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
+		}
+
+		if (Dungeon.level.getClass() == CityBossLevel.class) {
+			Music.INSTANCE.play(Assets.Music.KING_VICTORY, false);
+		} else {
+			Music.INSTANCE.stop();
 		}
 
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
@@ -2182,25 +2273,119 @@ public class Hero extends Char {
 	public void move(int step, boolean travelling) {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
-		super.move( step, travelling);
-		
-		if (!flying && travelling) {
-			if (Dungeon.level.water[pos]) {
-				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
-			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
-				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );
-			} else if (Dungeon.level.map[pos] == Terrain.GRASS
-					|| Dungeon.level.map[pos] == Terrain.EMBERS
-					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-				if (step == pos && wasHighGrass) {
-					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
-				} else {
-					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
-				}
-			} else {
-				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
+		//HERO MAY TAKE A SHIT
+		if (Random.Int(0,1500) == 4 && Dungeon.depth > 0){
+			defecate(3f);
+		}
+		if (Random.Int(300) == 69 && buff(CaffeineRush.class) != null) {
+			defecate(3f);
+			GLog.w("Damn... That coffee is really acting up.");
+		}
+		if (Random.Int(300) == 69 && buff(Lavage.class) != null) {
+			defecate(3f);
+		}
+
+		//HERO MAY STEP ON A LEGO
+		if (Random.Int(3500) == 6) {
+			GameScene.legoBanner();
+			Dungeon.hero.damage(Dungeon.hero.HP / 6 + Dungeon.depth, Dungeon.hero);
+			if (belongings.weapon() instanceof MagesStaff && ((MagesStaff) belongings.weapon).skin == Skin.WAND) {
+				((MagesStaff) belongings.weapon).changeSkin(Skin.BENTWAND);
+				GLog.w("You fell over and bent your staff.");
+			}
+			if (belongings.weapon() instanceof RunicBlade && belongings.weapon.skin == Skin.RUNIC) {
+				belongings.weapon.changeSkin(Skin.BROKENRUNIC);
+				GLog.w("You fell over and shattered your sword.");
+			}
+			if (belongings.weapon() instanceof Longsword && belongings.weapon.skin == Skin.LSWORD) {
+				belongings.weapon.changeSkin(Skin.BENTLSWORD);
+				GLog.w("You fell over and bent your sword.");
 			}
 		}
+
+		super.move( step, travelling);
+
+		if (!flying && travelling) {
+			//I LOVE this mess. Holy crap. I wrote this like two years ago, and I don't want to touch it, or even look at it ever again.
+			if (Dungeon.depth == -1) {
+				if (Dungeon.level.water[pos]) {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.WATER_1, Assets.Sounds.WATER_2, Assets.Sounds.WATER_3),
+							2f, Random.Float( 0.8f, 1.25f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.WOOD_1, Assets.Sounds.WOOD_2, Assets.Sounds.WOOD_3), 1, Random.Float( 0.96f, 1.05f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.GRASS
+						|| Dungeon.level.map[pos] == Terrain.EMBERS
+						|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+					if (step == pos && wasHighGrass) {
+						Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 1, Random.Float( 0.96f, 1.05f ) );
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 4f, Random.Float( 0.9f, 1.15f ) );
+					} else {
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.SAND_1, Assets.Sounds.SAND_2, Assets.Sounds.SAND_3, Assets.Sounds.SAND_4, Assets.Sounds.SAND_5), 3f, Random.Float( 0.9f, 1.15f ) );
+					}
+				} else {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.SAND_1, Assets.Sounds.SAND_2, Assets.Sounds.SAND_3, Assets.Sounds.SAND_4, Assets.Sounds.SAND_5), 3f, Random.Float( 0.9f, 1.15f ) );
+				}
+			} else if (Dungeon.depth == 0) {
+				if (Dungeon.level.water[pos]) {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.WATER_1, Assets.Sounds.WATER_2, Assets.Sounds.WATER_3),
+							2f, Random.Float( 0.8f, 1.25f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.WOOD_1, Assets.Sounds.WOOD_2, Assets.Sounds.WOOD_3), 1, Random.Float( 0.96f, 1.05f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.GRASS
+						|| Dungeon.level.map[pos] == Terrain.EMBERS
+						|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+					if (step == pos && wasHighGrass) {
+						Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 1, Random.Float( 0.96f, 1.05f ) );
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 4f, Random.Float( 0.9f, 1.15f ) );
+					} else {
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 2f, Random.Float( 0.9f, 1.15f ) );
+					}
+				} else {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 2f, Random.Float( 0.9f, 1.15f ) );
+				}
+			} else {
+				if (Dungeon.level.water[pos]) {
+					Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.WATER_1, Assets.Sounds.WATER_2, Assets.Sounds.WATER_3), 2f, Random.Float( 0.8f, 1.25f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP && (Dungeon.depth < 6 || Dungeon.depth > 14)) {
+					Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.WOOD_1, Assets.Sounds.WOOD_2, Assets.Sounds.WOOD_3), 1, Random.Float( 0.96f, 1.05f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+					Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.METAL_1, Assets.Sounds.METAL_2, Assets.Sounds.METAL_3, Assets.Sounds.METAL_4), 1, Random.Float( 0.96f, 1.05f ) );
+				} else if (Dungeon.level.map[pos] == Terrain.GRASS
+						|| Dungeon.level.map[pos] == Terrain.EMBERS
+						|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+					if (step == pos && wasHighGrass) {
+						Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2), 1, Random.Float( 0.96f, 1.05f ) );
+					} else {
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3), 2f, Random.Float( 0.9f, 1.15f ) );
+					}
+				} else {
+					if (Dungeon.depth > 5 && Dungeon.depth < 11) {
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.DIRT_1,Assets.Sounds.DIRT_2,
+								Assets.Sounds.DIRT_3,Assets.Sounds.DIRT_4,Assets.Sounds.DIRT_5,
+								Assets.Sounds.DIRT_6), 1.5f, Random.Float( 0.96f, 1.05f ));
+					} else {
+						Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.STEP_1,Assets.Sounds.STEP_2,
+								Assets.Sounds.STEP_3,Assets.Sounds.STEP_4,Assets.Sounds.STEP_5,
+								Assets.Sounds.STEP_6,Assets.Sounds.STEP_7), 1.5f, Random.Float( 0.96f, 1.05f ));
+					}
+				}
+			}
+		}
+	}
+
+	public void defecate(float larvaParalysisLength) {
+		Sample.INSTANCE.play( Assets.Sounds.TURD, Random.Float(1f,3f) );
+		Sample.INSTANCE.play( Assets.Sounds.GAS, 5f );
+		Statistics.shitsTaken++;
+		Badges.validateTurd();
+		GLog.newLine();
+		GLog.w( Messages.get(this, "dump") );
+
+		YogDzewa.Larva larva = new YogDzewa.Larva();
+		larva.pos = Dungeon.hero.pos;
+		larva.HP = larva.HT = Dungeon.depth * 2;
+		Buff.affect(larva, Paralysis.class, larvaParalysisLength);
+		GameScene.add(larva);
 	}
 	
 	@Override
@@ -2501,5 +2686,14 @@ public class Hero extends Char {
 
 	public static interface Doom {
 		public void onDeath();
+	}
+
+	public HairColor hairColor() {
+		return hairColor;
+	}
+
+	public void hairColor(HairColor color) {
+		hairColor = color;
+		((HeroSprite) sprite).updateArmor();
 	}
 }

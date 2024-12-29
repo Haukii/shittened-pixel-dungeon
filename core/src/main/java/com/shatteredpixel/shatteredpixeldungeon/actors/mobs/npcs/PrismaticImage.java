@@ -65,7 +65,7 @@ public class PrismaticImage extends NPC {
 	
 	private Hero hero;
 	private int heroID;
-	public int armTier;
+	public int armID;
 	
 	private int deathTimer = -1;
 	
@@ -100,9 +100,9 @@ public class PrismaticImage extends NPC {
 			}
 		}
 		
-		if (hero.tier() != armTier){
-			armTier = hero.tier();
-			((PrismaticSprite)sprite).updateArmor( armTier );
+		if (hero.armorID() != armID){
+			armID = hero.tier();
+			((PrismaticSprite)sprite).updateArmor(armID);
 		}
 		
 		return super.act();
@@ -240,11 +240,11 @@ public class PrismaticImage extends NPC {
 		
 		hero = (Hero)Actor.findById(heroID);
 		if (hero != null) {
-			armTier = hero.tier();
+			armID = hero.armorID();
 		} else {
-			armTier = 1;
+			armID = 1;
 		}
-		((PrismaticSprite)s).updateArmor( armTier );
+		((PrismaticSprite)s).updateArmor(armID);
 		return s;
 	}
 	

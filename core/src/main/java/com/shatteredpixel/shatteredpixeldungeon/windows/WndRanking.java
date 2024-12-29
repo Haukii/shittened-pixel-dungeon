@@ -166,7 +166,7 @@ public class WndRanking extends WndTabbed {
 			}
 			
 			IconTitle title = new IconTitle();
-			title.icon( HeroSprite.avatar( record.heroClass, record.armorTier ) );
+			title.icon( HeroSprite.avatar( record.heroClass, record.armorID, record.hairID) );
 			title.label( Messages.get(this, "title", record.herolevel, heroClass ).toUpperCase( Locale.ENGLISH ) );
 			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );

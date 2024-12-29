@@ -50,8 +50,14 @@ public enum Music {
 	float[] trackChances;
 	private final ArrayList<String> trackQueue = new ArrayList<>();
 	boolean shuffle = false;
-	
+
+	public static boolean musicPlayerActive;
+
 	public synchronized void play( String assetName, boolean looping ) {
+		play(assetName, looping, false);
+	}
+
+	public synchronized void play( String assetName, boolean looping, boolean musicPlayer ) {
 
 		//iOS cannot play ogg, so we use an mp3 alternative instead
 		if (assetName != null && DeviceCompat.isiOS()){
@@ -60,6 +66,10 @@ public enum Music {
 		
 		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
 			player.setVolume(volumeWithFade());
+			return;
+		}
+
+		if (!musicPlayer && musicPlayerActive) {
 			return;
 		}
 		
@@ -78,10 +88,18 @@ public enum Music {
 		play(assetName, null);
 	}
 
-	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle){
+	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle) {
+		playTracks(tracks, chances, shuffle, false);
+	}
+
+	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle, boolean musicPlayer){
 
 		if (tracks == null || tracks.length == 0 || tracks.length != chances.length){
 			stop();
+			return;
+		}
+
+		if (!musicPlayer && musicPlayerActive) {
 			return;
 		}
 
@@ -288,6 +306,10 @@ public enum Music {
 				play(lastPlayed, looping);
 			}
 		}
+	}
+
+	public synchronized void clearQueue() {
+		trackList = new String[] {};
 	}
 	
 	public synchronized boolean isEnabled() {

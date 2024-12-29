@@ -66,6 +66,7 @@ public class TimekeepersHourglass extends Artifact {
 		chargeCap = 5+level();
 
 		defaultAction = AC_ACTIVATE;
+		type = Type.CLOTH;
 	}
 
 	public static final String AC_ACTIVATE = "ACTIVATE";

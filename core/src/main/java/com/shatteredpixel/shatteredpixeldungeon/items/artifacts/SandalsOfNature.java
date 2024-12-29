@@ -79,6 +79,7 @@ public class SandalsOfNature extends Artifact {
 		chargeCap = 100;
 
 		defaultAction = AC_ROOT;
+		type = Type.LEATHER;
 	}
 
 	public static final String AC_FEED = "FEED";
@@ -343,7 +344,7 @@ public class SandalsOfNature extends Artifact {
 					Plant plant = ((Plant.Seed) Reflection.newInstance(curSeedEffect)).couch(cell, null);
 					plant.activate(Actor.findChar(cell));
 					Sample.INSTANCE.play(Assets.Sounds.PLANT);
-					Sample.INSTANCE.playDelayed(Assets.Sounds.TRAMPLE, 0.25f, 1, Random.Float( 0.96f, 1.05f ) );
+					Sample.INSTANCE.playDelayed(Assets.Sounds.GRASS_2, 0.25f, 1, Random.Float( 0.96f, 1.05f ) );
 
 					charge -= seedChargeReqs.get(curSeedEffect);
 					Talent.onArtifactUsed(Dungeon.hero);

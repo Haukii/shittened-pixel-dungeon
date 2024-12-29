@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Random;
 
 public class ShopkeeperSprite extends MobSprite {
 	
@@ -34,9 +36,19 @@ public class ShopkeeperSprite extends MobSprite {
 		
 		texture( Assets.Sprites.KEEPER );
 		TextureFilm film = new TextureFilm( texture, 14, 14 );
-		
+
+		int off = 0;
+		float random = Random.Float();
 		idle = new Animation( 10, true );
-		idle.frames( film, 1, 1, 1, 1, 1, 0, 0, 0, 0 );
+		if (random < 0.1f) {
+			off = 2;
+		} else if (random < 0.2f) {
+			off = 4;
+		}
+		if (Dungeon.depth == 11) {
+			off = 6;
+		}
+		idle.frames( film, 1 + off, 1+ off, 1+ off, 1+ off, 1+ off, off, off, off, off );
 
 		die = new Animation( 20, false );
 		die.frames( film, 0 );
@@ -57,9 +69,16 @@ public class ShopkeeperSprite extends MobSprite {
 				coin = new PixelParticle();
 				parent.add( coin );
 			}
-			coin.reset( x + (flipHorizontal ? 0 : 13), y + 7, 0xFFFF00, 1, 0.5f );
-			coin.speed.y = -40;
-			coin.acc.y = +160;
+			coin.reset( x + (flipHorizontal ? 0 : 13), y + 7, 0xFFFF00,  1, 4f ); //0xFFFF00
+			coin.speed.y = Random.Int(-40, -150);
+			if (Random.Int(100) == 0) {
+				coin.speed.y = Random.Int(-300, -2000);
+			}
+			coin.speed.x = Random.Int(-10,10);
+			if (Random.Int(30) == 0) {
+				coin.speed.x = Random.Int(-50,50);
+			}
+			coin.acc.y = Random.Int(30, 250);
 		}
 	}
 }

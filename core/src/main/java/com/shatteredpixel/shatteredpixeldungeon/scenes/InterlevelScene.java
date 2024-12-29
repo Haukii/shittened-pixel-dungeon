@@ -51,6 +51,7 @@ import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
@@ -407,9 +408,15 @@ public class InterlevelScene extends PixelScene {
 
 						switch (mode) {
 							case DESCEND:
+								Sample.INSTANCE.play(
+										Random.oneOf(Assets.Sounds.STAIRS_1, Assets.Sounds.STAIRS_2,
+												Assets.Sounds.STAIRS_3), 1f, Random.Float(1.1f, 1.3f));
 								descend();
 								break;
 							case ASCEND:
+								Sample.INSTANCE.play(
+										Random.oneOf(Assets.Sounds.STAIRS_1, Assets.Sounds.STAIRS_2,
+												Assets.Sounds.STAIRS_3), 1f, Random.Float(0.8f, 1f));
 								ascend();
 								break;
 							case CONTINUE:

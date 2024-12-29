@@ -202,7 +202,44 @@ public class Badges {
 		GAMES_PLAYED_5              ( 122, BadgeType.GLOBAL ),
 		HIGH_SCORE_5                ( 123 ),
 		CHAMPION_2                  ( 124 ),
-		CHAMPION_3                  ( 125 );
+		CHAMPION_3                  ( 125 ),
+
+		//shittened
+		VICTORY_SAUL        		( 126 ),
+		BOREDOM        				( 127 ),
+		FRIEND        				( 128 ),
+		TURD_1        				( 129 ),
+		TURD_2        				( 130 ),
+		TURD_3        				( 131 ),
+		NOT_SHITTENED        		( 132 ),
+		RATATOUILLE        			( 133 ),
+		RATS_1        				( 134 ),
+		RATS_2        				( 135 ),
+		RATS_3        				( 136 ),
+		RATS_4        				( 137 ),
+		PAT_RAT        				( 138 ),
+		KETCHUP        				( 139 ),
+		ALL_SEAL_SKINS		      	( 140 ),
+		ALL_CLOAK_SKINS		      	( 141 ),
+		ALL_BOW_SKINS		      	( 142 ),
+		ALL_WAND_SKINS		      	( 143 ),
+		ALL_ARMOR_SKINS		      	( 144 ),
+		ALL_BOOK_SKINS		      	( 145 ),
+		ALL_RUNIC_SKINS		      	( 146 ),
+		ALL_LSWORD_SKINS		  	( 147 ),
+		ALL_GLAIVE_SKINS		  	( 148 ),
+		ALL_AXE_SKINS		  		( 149 ),
+		SKINS_1		  				( 150 ),
+		SKINS_2		  				( 151 ),
+		SKINS_3		  				( 152 ),
+		SKINS_4		  				( 153 ),
+		ALL_SKINS		  			( 154 ),
+		ALL_HAMMER_SKINS		  	( 155 ),
+
+
+
+		JACKPOT		  				( 158 ),
+		;
 
 		public boolean meta;
 
@@ -1102,6 +1139,187 @@ public class Badges {
 		local.add(badge);
 		displayBadge( badge );
 	}
+
+	public static void validateVictoryWithSaul() {
+
+		Badge badge = Badge.VICTORY_SAUL;
+		local.add( badge );
+		displayBadge( badge );
+
+//		badge = victoryClassBadges.get(Dungeon.hero.heroClass);
+//		if (badge == null) return;
+		local.add( badge );
+		unlock(badge);
+	}
+
+	public static void validateBoredom() {
+
+		Badge badge = Badge.BOREDOM;
+		local.add( badge );
+		displayBadge( badge );
+
+		local.add( badge );
+		unlock(badge);
+	}
+
+	public static void validateFriend() {
+
+		Badge badge = Badge.FRIEND;
+		local.add( badge );
+		displayBadge( badge );
+
+		local.add( badge );
+		unlock(badge);
+	}
+
+	public static void validateTurd() {
+
+		Badge badge = null;
+
+		if (!local.contains( Badge.TURD_1 ) && Statistics.shitsTaken >= 1) {
+			badge = Badge.TURD_1;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.TURD_2 ) && Statistics.shitsTaken >= 3) {
+			if (badge != null) unlock(badge);
+			badge = Badge.TURD_2;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.TURD_3 ) && Statistics.shitsTaken >= 6) {
+			if (badge != null) unlock(badge);
+			badge = Badge.TURD_3;
+			local.add( badge );
+		}
+
+		displayBadge(badge);
+	}
+
+	public static void validateNotShittened() {
+		if (!local.contains( Badge.NOT_SHITTENED ) && !Statistics.audioDisabled
+				&& SPDSettings.SFXVol() != 0 && SPDSettings.musicVol() != 0
+				&& SPDSettings.music() && SPDSettings.soundFx()) {
+			Badge badge = Badge.NOT_SHITTENED;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateRatatouille() {
+		if (!local.contains( Badge.RATATOUILLE )) {
+			Badge badge = Badge.RATATOUILLE;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateRats() {
+
+		Badge badge = null;
+
+		if (!local.contains( Badge.RATS_1 ) && Statistics.ratsSlain >= 5) {
+			badge = Badge.RATS_1;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_2 ) && Statistics.ratsSlain >= 15) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_2;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_3 ) && Statistics.ratsSlain >= 25) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_3;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_4 ) && Statistics.ratsSlain >= 40) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_4;
+			local.add( badge );
+		}
+
+		displayBadge(badge);
+	}
+
+	public static void validatePatRat() {
+		if (!local.contains( Badge.PAT_RAT )) {
+			Badge badge = Badge.PAT_RAT;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateDeathWithKetchup() {
+		if (!local.contains( Badge.KETCHUP )) {
+			Badge badge = Badge.KETCHUP;
+			local.add(badge);
+			displayBadge(badge);
+		}
+	}
+
+	public static void validateSkinsFound() {
+
+		int found = 0;
+		int total = 0;
+//		for (SkinCatalog cat : SkinCatalog.values()){
+//			for (Skin skin : cat.skins()) {
+//				if (cat.seen.get(skin)){
+//					found++;
+//				}
+//				total++;
+//			}
+//			if (cat.allSeen()){
+//				Badge b = SkinCatalog.catalogBadges.get(cat);
+//				if (!isUnlocked(b)){
+//					displayBadge(b);
+//				}
+//			}
+//		}
+		if (found >= 350) {
+			Badge badge = Badge.SKINS_4;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
+		} else if (found >= 200) {
+			Badge badge = Badge.SKINS_3;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
+		} else if (found >= 100) {
+			Badge badge = Badge.SKINS_2;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
+		} else if (found >= 25) {
+			Badge badge = Badge.SKINS_1;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
+		}
+
+		if (isUnlocked( 	Badge.ALL_SEAL_SKINS ) &&
+				isUnlocked( Badge.ALL_CLOAK_SKINS ) &&
+				isUnlocked( Badge.ALL_BOW_SKINS ) &&
+				isUnlocked( Badge.ALL_WAND_SKINS ) &&
+				isUnlocked( Badge.ALL_ARMOR_SKINS ) &&
+				isUnlocked( Badge.ALL_BOOK_SKINS ) &&
+				isUnlocked( Badge.ALL_RUNIC_SKINS ) &&
+				isUnlocked( Badge.ALL_LSWORD_SKINS ) &&
+				isUnlocked( Badge.ALL_GLAIVE_SKINS ) &&
+				isUnlocked( Badge.ALL_AXE_SKINS ) &&
+				isUnlocked( Badge.ALL_HAMMER_SKINS ) &&
+				found == total
+		) {
+			Badge badge = Badge.ALL_SKINS;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
+		}
+	}
+
+	public static void validateJackpot() {
+		Badge badge = Badge.JACKPOT;
+		local.add( badge );
+		displayBadge( badge );
+	}
 	
 	private static void displayBadge( Badge badge ) {
 
@@ -1179,7 +1397,10 @@ public class Badges {
 			{Badge.RESEARCHER_1, Badge.RESEARCHER_2, Badge.RESEARCHER_3, Badge.RESEARCHER_4, Badge.RESEARCHER_5},
 			{Badge.HIGH_SCORE_1, Badge.HIGH_SCORE_2, Badge.HIGH_SCORE_3, Badge.HIGH_SCORE_4, Badge.HIGH_SCORE_5},
 			{Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4, Badge.GAMES_PLAYED_5},
-			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3}
+			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3},
+			{Badge.TURD_1, Badge.TURD_2, Badge.TURD_3},
+			{Badge.RATS_1, Badge.RATS_2, Badge.RATS_3, Badge.RATS_4},
+			{Badge.SKINS_1, Badge.SKINS_2, Badge.SKINS_3, Badge.SKINS_4, Badge.ALL_SKINS},
 	};
 
 	//don't show the later badge if the earlier one isn't unlocked
@@ -1189,6 +1410,18 @@ public class Badges {
 			{Badge.BOSS_SLAIN_3, Badge.BOSS_CHALLENGE_3},
 			{Badge.BOSS_SLAIN_4, Badge.BOSS_CHALLENGE_4},
 			{Badge.VICTORY,      Badge.BOSS_CHALLENGE_5},
+
+			{Badge.SKINS_1,      Badge.ALL_SEAL_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_CLOAK_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_BOW_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_WAND_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_ARMOR_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_BOOK_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_RUNIC_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_LSWORD_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_GLAIVE_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_AXE_SKINS},
+			{Badge.SKINS_1,      Badge.ALL_HAMMER_SKINS},
 	};
 
 	//If the summary badge is unlocked, don't show the component badges
@@ -1209,7 +1442,12 @@ public class Badges {
 			{Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
-			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED}
+			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+
+			{Badge.SKINS_1,	 		Badge.ALL_SKINS},
+			{Badge.SKINS_2,		 	Badge.ALL_SKINS},
+			{Badge.SKINS_3,	 		Badge.ALL_SKINS},
+			{Badge.SKINS_4, 		Badge.ALL_SKINS}
 	};
 	
 	public static List<Badge> filterReplacedBadges( List<Badge> badges ) {

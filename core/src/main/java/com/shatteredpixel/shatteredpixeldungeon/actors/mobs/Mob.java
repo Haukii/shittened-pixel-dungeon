@@ -850,6 +850,10 @@ public abstract class Mob extends Char {
 
 		}
 
+		if (Random.Int(200) == 0) {
+			GameScene.weirdBanner();
+		}
+
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
@@ -1004,6 +1008,11 @@ public abstract class Mob extends Char {
 	public void yell( String str ) {
 		GLog.newLine();
 		GLog.n( "%s: \"%s\" ", Messages.titleCase(name()), str );
+	}
+
+	public void talk( String str ) {
+		GLog.newLine();
+		GLog.i( "%s: \"%s\" ", Messages.titleCase(name()), str );
 	}
 
 	//some mobs have an associated landmark entry, which is added when the hero sees them

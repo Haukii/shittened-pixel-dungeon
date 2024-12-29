@@ -115,10 +115,25 @@ public class RenderedTextBlock extends Component {
 		clear();
 		words = new ArrayList<>();
 		boolean highlighting = false;
+		boolean common = false;
+		boolean rare = false;
+		boolean epic = false;
+		boolean legendary = false;
+		boolean mythic = false;
 		for (String str : tokens){
 			
 			if (str.equals("_") && highlightingEnabled){
 				highlighting = !highlighting;
+			}else if (str.equals("å")){ //I love this
+				common = !common;
+			}else if (str.equals("Å")){
+				rare = !rare;
+			}else if (str.equals("ö")){
+				epic = !epic;
+			}else if (str.equals("Ö")){
+				legendary = !legendary;
+			}else if (str.equals("ä")){
+				mythic = !mythic;
 			} else if (str.equals("\n")){
 				words.add(NEWLINE);
 			} else if (str.equals(" ")){
@@ -127,6 +142,11 @@ public class RenderedTextBlock extends Component {
 				RenderedText word = new RenderedText(str, size);
 				
 				if (highlighting) word.hardlight(hightlightColor);
+				else if (common) word.hardlight(Window.COMMON_COLOR);
+				else if (rare) word.hardlight(Window.RARE_COLOR);
+				else if (epic) word.hardlight(Window.EPIC_COLOR);
+				else if (legendary) word.hardlight(Window.LEGENDARY_COLOR);
+				else if (mythic) word.hardlight(Window.MYTHIC_COLOR);
 				else if (color != -1) word.hardlight(color);
 				word.scale.set(zoom);
 				
