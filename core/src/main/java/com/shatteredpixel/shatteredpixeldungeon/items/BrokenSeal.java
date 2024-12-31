@@ -394,7 +394,7 @@ public class BrokenSeal extends Item {
 				GLog.p(Messages.get(BrokenSeal.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
-				((BrokenSeal) curItem).changeSkin(skin);
+				((BrokenSeal) curItem).applySkin(skin);
 			}
 		}
 	};

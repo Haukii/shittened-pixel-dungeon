@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -113,17 +114,24 @@ public class Item implements Bundlable {
 		}
 	};
 
-	public void changeSkin(Skin newSkin) {
+	public void applySkin(Skin newSkin) {
 		this.skin = newSkin;
 		image = skin.sprite();
 		updateQuickslot();
+
 		if (this instanceof Armor) {
 			((Armor) this).ID = skin.ID();
-			if (this == Dungeon.hero.belongings.armor) {
+			if (Dungeon.hero != null && this == Dungeon.hero.belongings.armor) {
 				((HeroSprite) Dungeon.hero.sprite).updateArmor();
 			}
 		}
-		//SkinCatalog.setSeen(skin);
+		SkinCatalog.setSeen(skin);
+		SkinCatalog.countApply(skin);
+	}
+
+	public void changeSkin(Skin newSkin) {
+		this.skin = newSkin;
+		image = skin.sprite();
 	}
 	
 	public ArrayList<String> actions( Hero hero ) {

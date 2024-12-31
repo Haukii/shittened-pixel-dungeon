@@ -370,7 +370,11 @@ public class ShadowClone extends ArmorAbility {
 		public ShadowSprite() {
 			super();
 
-			texture( SmartTexture.heroTexture(TextureCache.get(Dungeon.hero.heroClass.armorsheet()), TextureCache.get(Dungeon.hero.heroClass.headsheet())) );
+			if (Dungeon.hero != null) {
+				texture( SmartTexture.heroTexture(TextureCache.get(Dungeon.hero.heroClass.armorsheet()), TextureCache.get(Dungeon.hero.heroClass.headsheet())) );
+			} else {
+				texture( HeroClass.ROGUE.spritesheet() );
+			}
 
 			TextureFilm film = new TextureFilm( HeroSprite.tiers(), 6, 12, 15 );
 
@@ -386,7 +390,7 @@ public class ShadowClone extends ArmorAbility {
 			attack = new Animation( 15, false );
 			attack.frames( film, 13, 14, 15, 0 );
 
-			idle();
+			//idle(); FIXME
 			resetColor();
 		}
 

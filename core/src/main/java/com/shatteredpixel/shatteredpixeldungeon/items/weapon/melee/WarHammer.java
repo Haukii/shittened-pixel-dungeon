@@ -120,7 +120,7 @@ public class WarHammer extends MeleeWeapon {
 			curItem = this;
 			GameScene.selectItem(skinSelector);
 		} else if (action.equals(AC_EAT)) {
-			changeSkin(Skin.BITTENHAMMER);
+			applySkin(Skin.BITTENHAMMER);
 
 			//Basically just Food.execute()
 			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
@@ -218,7 +218,7 @@ public class WarHammer extends MeleeWeapon {
 				GLog.p(Messages.get(WarHammer.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

@@ -324,7 +324,7 @@ public class SpiritBow extends Weapon {
 
 	public SpiritArrow knockArrow(){
 		SpiritArrow arrow = new SpiritArrow();
-		arrow.changeSkin(skin);
+		arrow.applySkin(skin);
 		switch (skin) {
 			case ORANGEBOW:
 				arrow.image = ItemSpriteSheet.ORANGE_ARROW;
@@ -778,7 +778,7 @@ public class SpiritBow extends Weapon {
 				GLog.p(Messages.get(SpiritBow.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_WOOD);
-				((SpiritBow) curItem).changeSkin(skin);
+				((SpiritBow) curItem).applySkin(skin);
 			}
 		}
 	};

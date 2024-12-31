@@ -22,14 +22,27 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Scimitar extends MeleeWeapon {
+
+	public static final String AC_PAINT = "PAINT";
 
 	{
 		image = ItemSpriteSheet.SCIMITAR;
@@ -38,7 +51,10 @@ public class Scimitar extends MeleeWeapon {
 
 		tier = 3;
 		DLY = 0.8f; //1.25x speed
+
 		type = Type.SWORD;
+		skinnable = true;
+		skin = Skin.SCIMITAR;
 	}
 
 	@Override
@@ -88,5 +104,71 @@ public class Scimitar extends MeleeWeapon {
 			return Math.max(0, (4 - visualcooldown()) / 4);
 		}
 	}
+
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		if (isIdentified()) {
+			actions.add(AC_PAINT);
+		}
+		return actions;
+
+	}
+
+	@Override
+	public String name() {
+		if (skin != null && skin.rarityTier() >= 4) {
+			switch (skin) {
+				case TRUEGOLDSCIMITAR:
+					return "True Golden Scimitar";
+				case FEATHERSCIMITAR:
+					return "Feather";
+			}
+		}
+		return super.name();
+	}
+
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (skin.rarityTier() != 0) {
+			desc += Messages.get(this,"desc_skin",skin.rarity() + " _" + skin.skinName() + "_");
+			if (!skin.desc().isEmpty()) {
+				desc += "\n\n\"" + skin.desc() + "\"";
+			}
+		}
+
+		return desc;
+	}
+
+	protected static WndBag.ItemSelector skinSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(BattleAxe.class, "skin");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			if (InventoryPane.lastBag != null) return InventoryPane.lastBag.getClass();
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Skin.containsIngredient(item, BattleAxe.class) && item.isIdentified();
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && itemSelectable(item)) {
+				Skin skin = Skin.fromIngredient(item, BattleAxe.class);
+
+				GLog.p(Messages.get(BattleAxe.class, "applyskin"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
+				curItem.applySkin(skin);
+			}
+		}
+	};
 
 }

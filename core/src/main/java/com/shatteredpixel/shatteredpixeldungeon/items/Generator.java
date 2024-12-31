@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ratatouille;
 import com.shatteredpixel.shatteredpixeldungeon.items.albums.Album;
 import com.shatteredpixel.shatteredpixeldungeon.items.albums.BeautifulAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.albums.ChairAlbum;
@@ -41,7 +42,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MageArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateCarrier;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PostArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
@@ -53,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
@@ -64,30 +69,62 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryBalls;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.BerryCake;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Bread;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Bruschetta;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CakeBase;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledSmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Coffee;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CoffeeBean;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.CompleteBreakfast;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CookedWarrior;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Cookies;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.CrispyBass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.DeepfriedRat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Egg;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Fish;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Flour;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FriedEgg;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Hashbrowns;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.IceCream;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Meatballs;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Milk;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Nuts;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Oil;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.PancakesWithCheese;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Piethon;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pizza;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Potato;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.RatatouilleFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Sashimi;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallFrozenCarpaccio;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Spaghetti;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Sugar;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Tomato;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Wheat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
@@ -136,6 +173,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
@@ -154,6 +192,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfReforging;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
@@ -188,6 +227,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Branch;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
@@ -196,6 +236,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatgreatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
@@ -204,6 +245,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PileOfSais;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
@@ -212,7 +254,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SilverKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SmallGreatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spearaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarScythe;
@@ -236,18 +281,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.plants.PotatoPlant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.plants.TomatoPlant;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -384,9 +432,13 @@ public class Generator {
 					PotionOfLevitation.class,
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
-					PotionOfExperience.class};
-			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1 };
-			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0 };
+					PotionOfExperience.class,
+					PotionOfFuel.class,
+					PotionOfKetchup.class,
+					PotionOfAcceleration.class
+			};
+			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1 };
 			POTION.probs = POTION.defaultProbs.clone();
 			
 			SEED.classes = new Class<?>[]{
@@ -401,8 +453,12 @@ public class Generator {
 					Stormvine.Seed.class,
 					Earthroot.Seed.class,
 					Mageroyal.Seed.class,
-					Starflower.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 };
+					Starflower.Seed.class,
+					TomatoPlant.Seed.class,
+					PotatoPlant.Seed.class,
+					CoffeeBush.Seed.class,
+			};
+			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1.5f, 1.5f };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
@@ -417,10 +473,11 @@ public class Generator {
 					ScrollOfRage.class,
 					ScrollOfRetribution.class,
 					ScrollOfTerror.class,
-					ScrollOfTransmutation.class
+					ScrollOfTransmutation.class,
+					ScrollOfShit.class,
 			};
-			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1 };
-			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0 };
+			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1 };
+			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0.5f };
 			SCROLL.probs = SCROLL.defaultProbs.clone();
 			
 			STONE.classes = new Class<?>[]{
@@ -435,9 +492,10 @@ public class Generator {
 					StoneOfAggression.class,
 					StoneOfBlast.class,
 					StoneOfFear.class,
-					StoneOfAugmentation.class  //1 is sold in each shop
+					StoneOfAugmentation.class,  //1 is sold in each shop
+					StoneOfReforging.class,
 			};
-			STONE.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0 };
+			STONE.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2 };
 			STONE.probs = STONE.defaultProbs.clone();
 
 			WAND.classes = new Class<?>[]{
@@ -466,9 +524,12 @@ public class Generator {
 					MagesStaff.class,
 					Dagger.class,
 					Gloves.class,
-					Rapier.class
+					Rapier.class,
+					Greatgreatsword.class,
+					Branch.class,
+					SilverKnife.class,
 			};
-			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2 };
+			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 1, 1, 1 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T2.classes = new Class<?>[]{
@@ -478,9 +539,10 @@ public class Generator {
 					Quarterstaff.class,
 					Dirk.class,
 					Sickle.class,
-					Pickaxe.class
+					Pickaxe.class,
+					SmallGreatsword.class,
 			};
-			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0 };
+			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0, 1.5f };
 			WEP_T2.probs = WEP_T2.defaultProbs.clone();
 			
 			WEP_T3.classes = new Class<?>[]{
@@ -489,9 +551,11 @@ public class Generator {
 					Scimitar.class,
 					RoundShield.class,
 					Sai.class,
-					Whip.class
+					Whip.class,
+					PileOfSais.class,
+					Spearaxe.class,
 			};
-			WEP_T3.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T3.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 1, 2 };
 			WEP_T3.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T4.classes = new Class<?>[]{
@@ -529,9 +593,12 @@ public class Generator {
 					MageArmor.class,
 					RogueArmor.class,
 					HuntressArmor.class,
-					DuelistArmor.class
+					DuelistArmor.class,
+					MaleArmor.class,
+					PostArmor.class,
+					PlateCarrier.class,
 			};
-			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0.1f, 0.1f, 0.1f };
 			
 			//see Generator.randomMissile
 			MISSILE.classes = new Class<?>[]{};
@@ -581,8 +648,9 @@ public class Generator {
 			FOOD.classes = new Class<?>[]{
 					Food.class,
 					Pasty.class,
-					MysteryMeat.class };
-			FOOD.defaultProbs = new float[]{ 4, 1, 0 };
+					MysteryMeat.class,
+					UntaxedFood.class,};
+			FOOD.defaultProbs = new float[]{ 4, 1, 0, 0.5f };
 			FOOD.probs = FOOD.defaultProbs.clone();
 			
 			RING.classes = new Class<?>[]{
@@ -612,9 +680,10 @@ public class Generator {
 					SandalsOfNature.class,
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
-					UnstableSpellbook.class
+					UnstableSpellbook.class,
+					MusicPlayer.class,
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 
 			//Trinkets are unique like artifacts, but unlike them you can only have one at once
@@ -675,31 +744,67 @@ public class Generator {
 			ALBUM.probs = ALBUM.defaultProbs.clone();
 
 			FOOD_NEW.classes = new Class<?>[]{
+					RatatouilleFood.class,
+					CoffeeBean.class,
+					DeepfriedRat.class,
+					Egg.class,
 					FriedEgg.class,
-					Sashimi.class,
-					Bread.class,
-					BakedFish.class,
-					BerryBalls.class,
-					Coffee.class,
+					Milk.class,
 					Omelet.class,
-					CrispyBass.class,
-					Hashbrowns.class,
-					Meatballs.class,
+					Cheese.class,
+					Flour.class,
 					Pancakes.class,
-					Pizza.class,
-					Spaghetti.class,
+
+					PancakesWithCheese.class,
+					Tomato.class,
+					Wheat.class,
+					Bread.class,
+					Oil.class,
+					Potato.class,
+					Hashbrowns.class,
+					CompleteBreakfast.class,
 					Bruschetta.class,
+					Pizza.class,
+
+					Spaghetti.class,
+					Coffee.class,
 					TripleShotEspresso.class,
 					StirFry.class,
-					CompleteBreakfast.class,
-
+					Fish.class,
 					BakedFish.class,
-					BasedCake.class,
-					BerryCake.class,
-					Cheese.class,
+					CrispyBass.class,
+					BerryBalls.class,
+					Sashimi.class,
+					Meatballs.class,
+
+					Sugar.class,
+					CookedWarrior.class,
+					Cookies.class,
 					IceCream.class,
+					DanishPastry.class,
+					CakeBase.class,
+					BerryCake.class,
+					ChocolateCake.class,
+					BasedCake.class,
+					CheeseSlice.class,
+
+					SmallMeat.class,
+					ChargrilledSmallMeat.class,
+					StewedSmallMeat.class,
+					SmallFrozenCarpaccio.class,
+					GoldenMeat.class,
+					WaxBar.class,
+					Nuts.class,
+					Piethon.class,
+					TidePod.class,
 			};
-			FOOD_NEW.probs = new float[]{ 0.4f, 0.4f, 0.4f,0.3f,0.3f,0.3f,0.3f,0.2f,0.2f,0.1f,0.1f,  0.2f,0.03f,0.05f,0.25f,0.2f};
+			FOOD_NEW.probs = new float[]{
+					0.2f,  0.1f,  0.2f, 0.4f, 0.3f,  0.4f,  0.3f,  0.3f,  0.4f,  0.2f,
+					0.05f, 0.4f,  0.5f, 0.3f, 0.4f,  0.5f,  0.2f,  0.1f,  0.15f, 0.15f,
+					0.2f,  0.2f,  0.1f, 0.2f, 0.4f,  0.25f, 0.2f,  0.2f,  0.3f,  0.15f,
+					0.4f,  0.05f, 0.2f, 0.2f, 0.2f,  0.1f,  0.06f, 0.04f, 0.02f, 0.3f,
+					0.7f,  0.5f,  0.5f, 0.4f, 0.01f, 0.06f, 0.1f,  0.1f,  0.05f
+			};
 
 
 			for (Category cat : Category.values()){

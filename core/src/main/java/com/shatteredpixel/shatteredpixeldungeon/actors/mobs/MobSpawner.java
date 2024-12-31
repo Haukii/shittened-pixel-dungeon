@@ -312,10 +312,10 @@ public class MobSpawner extends Actor {
 				return;
 
 			// Caves
-			case 13: case 14:
-				if (Random.Float() < 0.025f) rotation.add(DM16.class);
-				if (Random.Float() < 0.02f) rotation.add(DM249.class);
-				if (Random.Float() < 0.02f) rotation.add(RGBCrab.class);
+			case 13: case 14: case 15:
+				if (Random.Float() < 0.03f) rotation.add(DM16.class);
+				if (Random.Float() < 0.02f)  rotation.add(DM249.class);
+				if (Random.Float() < 0.02f)  rotation.add(RGBCrab.class);
 				return;
 
 			// City

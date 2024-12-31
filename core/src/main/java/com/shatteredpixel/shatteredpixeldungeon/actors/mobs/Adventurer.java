@@ -46,6 +46,8 @@ public class Adventurer extends NPC {
 		baseSpeed = 0.8f;
 		state = WANDERING;
 		properties.add(Property.HUMAN);
+		//Default texture for instantiatiaing from class
+		spriteClass = AdventurerSprite.Blond.class;
 	}
 
 	int stateTime = 0;

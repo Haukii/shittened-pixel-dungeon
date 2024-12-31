@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.UnstableBrew;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -221,7 +221,7 @@ public class Glaive extends MeleeWeapon {
 			if (item != null && itemSelectable(item)) {
 				Skin skin = Skin.fromIngredient(item, Glaive.class);
 
-				if (item instanceof AlchemicalCatalyst && skin == Skin.RAINBOWGLAIVE) {
+				if (item instanceof UnstableBrew && skin == Skin.RAINBOWGLAIVE) {
 					skin = Skin.FULLRAINBOWGLAIVE;
 				}
 
@@ -238,7 +238,7 @@ public class Glaive extends MeleeWeapon {
 				GLog.p(Messages.get(Glaive.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

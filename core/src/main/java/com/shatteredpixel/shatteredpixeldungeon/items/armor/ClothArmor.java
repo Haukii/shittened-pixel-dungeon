@@ -117,7 +117,7 @@ public class ClothArmor extends Armor {
 				GLog.p(Messages.get(LeatherArmor.class, "applyskin"));
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH, 0.8f, Random.Float(0.9f, 1.1f));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

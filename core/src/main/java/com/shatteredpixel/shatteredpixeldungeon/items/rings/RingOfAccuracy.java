@@ -25,11 +25,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class RingOfAccuracy extends Ring {
 
 	{
-		icon = ItemSpriteSheet.Icons.RING_ACCURACY;
+		icon = Random.oneOf(
+				ItemSpriteSheet.Icons.ALT_ACC_1,
+				ItemSpriteSheet.Icons.ALT_ACC_2,
+				ItemSpriteSheet.Icons.ALT_ACC_3,
+				ItemSpriteSheet.Icons.ALT_ACC_4,
+				ItemSpriteSheet.Icons.RING_ACCURACY
+		);
 	}
 	
 	public String statsInfo() {

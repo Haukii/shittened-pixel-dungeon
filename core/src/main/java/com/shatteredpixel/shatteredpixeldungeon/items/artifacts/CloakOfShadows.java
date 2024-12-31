@@ -44,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -492,7 +491,7 @@ public class CloakOfShadows extends Artifact {
 				GLog.p(Messages.get(CloakOfShadows.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
-				((CloakOfShadows) curItem).changeSkin(skin);
+				((CloakOfShadows) curItem).applySkin(skin);
 			}
 		}
 	};

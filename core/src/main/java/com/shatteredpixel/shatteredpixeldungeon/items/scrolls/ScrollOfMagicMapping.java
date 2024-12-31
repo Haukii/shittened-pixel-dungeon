@@ -32,11 +32,18 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class ScrollOfMagicMapping extends Scroll {
 
 	{
-		icon = ItemSpriteSheet.Icons.SCROLL_MAGICMAP;
+		icon = Random.oneOf(
+				ItemSpriteSheet.Icons.SCROLL_MAGICMAP,
+				ItemSpriteSheet.Icons.ALT_MAP_1,
+				ItemSpriteSheet.Icons.ALT_MAP_2,
+				ItemSpriteSheet.Icons.ALT_MAP_3,
+				ItemSpriteSheet.Icons.ALT_MAP_4
+		);
 	}
 
 	@Override

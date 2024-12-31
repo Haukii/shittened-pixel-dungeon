@@ -65,10 +65,25 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.PhantomMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SupplyRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Armadillo;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Car;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.LootBag;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Pillow;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Pug;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.RatItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Saw;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.SilverAmulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Sparrow;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.SprayPaint;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.VeggieBag;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Warriorium;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Willow;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
@@ -98,6 +113,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.remains.CloakScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.SealShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.CurseInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
@@ -147,7 +163,9 @@ public enum Catalog {
 	TIPPED_DARTS,
 	BREWS_ELIXIRS,
 	SPELLS,
-	MISC_CONSUMABLES;
+	MISC_CONSUMABLES,
+	ALBUMS
+	;
 
 	//tracks whether an item has been collected while identified
 	private final LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
@@ -231,7 +249,9 @@ public enum Catalog {
 
 		FOOD.addItems( Food.class, Pasty.class, MysteryMeat.class, ChargrilledMeat.class,
 				StewedMeat.class, FrozenCarpaccio.class, SmallRation.class, Berry.class,
-				SupplyRation.class, Blandfruit.class, PhantomMeat.class, MeatPie.class );
+				SupplyRation.class, Blandfruit.class, PhantomMeat.class, MeatPie.class, UntaxedFood.class );
+
+		FOOD.addItems(Generator.Category.FOOD_NEW.classes);
 
 		EXOTIC_POTIONS.addItems(ExoticPotion.exoToReg.keySet().toArray(new Class[0]));
 
@@ -257,7 +277,13 @@ public enum Catalog {
 				CorpseDust.class, Embers.class, CeremonialCandle.class, DarkGold.class, DwarfToken.class,
 				GooBlob.class, TengusMask.class, MetalShard.class, KingsCrown.class,
 				LiquidMetal.class, ArcaneResin.class,
-				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class);
+				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class,
+				Car.class, Armadillo.class, Pillow.class, Willow.class, Sparrow.class, Pug.class, RatItem.class,
+				SprayPaint.class, LootBag.class, VeggieBag.class, Saw.class, GoldBar.class, SilverAmulet.class,
+				Warriorium.class, ArcaneCatalyst.class
+		);
+
+		ALBUMS.addItems(Generator.Category.ALBUM.classes);
 
 	}
 
@@ -301,6 +327,7 @@ public enum Catalog {
 		consumableCatalogs.add(BREWS_ELIXIRS);
 		consumableCatalogs.add(SPELLS);
 		consumableCatalogs.add(MISC_CONSUMABLES);
+		consumableCatalogs.add(ALBUMS);
 	}
 	
 	public static boolean isSeen(Class<?> cls){

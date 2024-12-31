@@ -73,9 +73,11 @@ public class GreenGooSprite extends MobSprite {
 		play(idle);
 
 		spray = centerEmitter();
-		spray.autoKill = false;
-		spray.pour( GreenGooParticle.FACTORY, 0.04f );
-		spray.on = false;
+		if (spray != null) {
+			spray.autoKill = false;
+			spray.pour( GreenGooParticle.FACTORY, 0.04f );
+			spray.on = false;
+		}
 	}
 
 	@Override

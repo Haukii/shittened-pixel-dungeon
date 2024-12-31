@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
@@ -44,11 +45,11 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-			//FIXME this item is obsolete, and should be deleted
+
 public class ArcaneCatalyst extends Spell {
 	
 	{
-		image = ItemSpriteSheet.EMPTY_PLATE;
+		image = ItemSpriteSheet.CATALYST;
 	}
 	
 	private static HashMap<Class<? extends Scroll>, Float> scrollChances = new HashMap<>();
@@ -63,6 +64,7 @@ public class ArcaneCatalyst extends Spell {
 		scrollChances.put( ScrollOfRage.class,          2f );
 		scrollChances.put( ScrollOfTeleportation.class, 2f );
 		scrollChances.put( ScrollOfTerror.class,        2f );
+		scrollChances.put( ScrollOfShit.class,			2f );
 		scrollChances.put( ScrollOfTransmutation.class, 1f );
 	}
 	
@@ -86,53 +88,5 @@ public class ArcaneCatalyst extends Spell {
 	@Override
 	public int energyVal() {
 		return 8 * quantity;
-	}
-
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
-		
-		@Override
-		public boolean testIngredients(ArrayList<Item> ingredients) {
-			boolean scroll = false;
-			boolean secondary = false;
-			
-			for (Item i : ingredients){
-				if (i instanceof Plant.Seed || i instanceof Runestone){
-					secondary = true;
-					//if it is a regular or exotic potion
-				} else if (ExoticScroll.regToExo.containsKey(i.getClass())
-						|| ExoticScroll.regToExo.containsValue(i.getClass())) {
-					scroll = true;
-				}
-			}
-			
-			return scroll && secondary;
-		}
-		
-		@Override
-		public int cost(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (i instanceof Plant.Seed){
-					return 1;
-				} else if (i instanceof Runestone){
-					return 0;
-				}
-			}
-			return 0;
-		}
-		
-		@Override
-		public Item brew(ArrayList<Item> ingredients) {
-			
-			for (Item i : ingredients){
-				i.quantity(i.quantity()-1);
-			}
-			
-			return sampleOutput(null);
-		}
-		
-		@Override
-		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new ArcaneCatalyst();
-		}
 	}
 }

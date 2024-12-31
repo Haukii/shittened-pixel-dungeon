@@ -14,12 +14,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.albums.NonsenseAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.DuelistArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MageArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateCarrier;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
@@ -28,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.LootBag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Pillow;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.VeggieBag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
@@ -62,11 +67,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.misc.Insulin;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.Painting;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.RatItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.Willow;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.UnstableBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
@@ -109,6 +115,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PileOfSais;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SmallGreatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
@@ -158,7 +165,7 @@ public enum Skin implements Bundlable {
 
 
     //SEALS
-    SEAL                (BrokenSeal.class, ItemSpriteSheet.SEAL,            0, "Red",           null),
+    SEAL                (BrokenSeal.class, ItemSpriteSheet.SEAL,            0, "Red",           new BrokenSeal()),
     YELLOWSEAL          (BrokenSeal.class, ItemSpriteSheet.YELLOWSEAL,      1, "Yellow",        new Swiftthistle.Seed()),
     GREENSEAL           (BrokenSeal.class, ItemSpriteSheet.GREENSEAL,       1, "Green",         new Sungrass.Seed()),
     BLUESEAL            (BrokenSeal.class, ItemSpriteSheet.BLUESEAL,        1, "Blue",          new Icecap.Seed()),
@@ -181,7 +188,7 @@ public enum Skin implements Bundlable {
     CUBESEAL      	    (BrokenSeal.class, ItemSpriteSheet.CUBESEAL,        2, "Cube",          new ForceCube()),
 
     RINGSEAL         	(BrokenSeal.class, ItemSpriteSheet.RINGSEAL,        3, "Ring",          new Ring()),
-    RAINBOWSEAL      	(BrokenSeal.class, ItemSpriteSheet.RAINBOWSEAL,     3, "Rainbow",       new AlchemicalCatalyst(), "Not for boring people."),
+    RAINBOWSEAL      	(BrokenSeal.class, ItemSpriteSheet.RAINBOWSEAL,     3, "Rainbow",       new UnstableBrew(), "Not for boring people."),
     GOLDSEAL         	(BrokenSeal.class, ItemSpriteSheet.GOLDSEAL,        3, "Golden",        new GoldBar()),
     CORPSESEAL       	(BrokenSeal.class, ItemSpriteSheet.CORPSESEAL,      3, "Skull",         new CorpseDust()),
     HEARTSEAL        	(BrokenSeal.class, ItemSpriteSheet.HEARTSEAL,       3, "Heart",         new Rotberry.Seed()),
@@ -224,7 +231,7 @@ public enum Skin implements Bundlable {
     LEATHERCLOAK  	    (CloakOfShadows.class, ItemSpriteSheet.LEATHERCLOAK,        2, "Leather",       new LeatherArmor()),
     RATIONCLOAK    	    (CloakOfShadows.class, ItemSpriteSheet.RATIONCLOAK,         2, "Ration",        new SmallRation()),
     PINKAMULETCLOAK	    (CloakOfShadows.class, ItemSpriteSheet.PINKAMULETCLOAK,     2, "Extra Pink",    new PinkAmulet()),
-    RAINBOWCLOAK   	    (CloakOfShadows.class, ItemSpriteSheet.RAINBOWCLOAK,        2, "Rainbow",       new AlchemicalCatalyst()),
+    RAINBOWCLOAK   	    (CloakOfShadows.class, ItemSpriteSheet.RAINBOWCLOAK,        2, "Rainbow",       new UnstableBrew()),
     TINYCLOAK	  	    (CloakOfShadows.class, ItemSpriteSheet.TINYCLOAK,           2, "Tiny",          new SmallGreatsword(), "What's this? A cloak for ants?"),
     WAXCLOAK		  	(CloakOfShadows.class, ItemSpriteSheet.WAXCLOAK,            2, "Wax",           new WaxBar()),
     CANDYCLOAK	  	    (CloakOfShadows.class, ItemSpriteSheet.CANDYCLOAK,          2, "Candy",         new Pasty()),
@@ -266,7 +273,7 @@ public enum Skin implements Bundlable {
     CATALYSTBOW         (SpiritBow.class, ItemSpriteSheet.CATALYSTBOW,      2, "Catalyst",      new ArcaneCatalyst(), "The catalyst has somehow formed a stable substance."),
     TAXEDBOW            (SpiritBow.class, ItemSpriteSheet.TAXEDBOW,         2, "Taxed",         new Food(), "You paid your fair share."),
     MEATBOW             (SpiritBow.class, ItemSpriteSheet.MEATBOW,          2, "Meat",          new MysteryMeat()),
-    RAINBOWBOW          (SpiritBow.class, ItemSpriteSheet.RAINBOWBOW,       2, "Rainbow",       new AlchemicalCatalyst()),
+    RAINBOWBOW          (SpiritBow.class, ItemSpriteSheet.RAINBOWBOW,       2, "Rainbow",       new UnstableBrew()),
     LOVEBOW             (SpiritBow.class, ItemSpriteSheet.LOVEBOW,          2, "Love",          new Rotberry.Seed(), "Kill them with love."),
     EGGBOW             (SpiritBow.class, ItemSpriteSheet.EGGBOW,            2, "Egg",           new Egg(), "Shoots eggs instead of arrows!"),
 
@@ -393,7 +400,7 @@ public enum Skin implements Bundlable {
     WARRIORBOOK         (UnstableSpellbook.class, ItemSpriteSheet.WARRIORBOOK,      2, "Cursed",                new Warriorium(), "It seems to have dried blood drops all over it"),
     PISSBOOK            (UnstableSpellbook.class, ItemSpriteSheet.PISSBOOK,         2, "Unstable Bladder",      new ChaliceOfBlood(), "Why the fuck did you take a piss on this rare artifact?"),
     TREEBOOK            (UnstableSpellbook.class, ItemSpriteSheet.TREEBOOK,         2, "Foraging Guide",        new Saw()),
-    RAINBOWBOOK         (UnstableSpellbook.class, ItemSpriteSheet.RAINBOWBOOK,      2, "Rainbow",               new AlchemicalCatalyst()),
+    RAINBOWBOOK         (UnstableSpellbook.class, ItemSpriteSheet.RAINBOWBOOK,      2, "Rainbow",               new UnstableBrew()),
     CARBOOK             (UnstableSpellbook.class, ItemSpriteSheet.CARBOOK,          2, "Car magazine",          new Car()),
     WESTERNBOOK         (UnstableSpellbook.class, ItemSpriteSheet.WESTERNBOOK,      2, "Western magazine",      new TengusMask(), "Featuring the famous Texture Will"),
     FISHBOOK            (UnstableSpellbook.class, ItemSpriteSheet.FISHBOOK,         2, "Fishing guide",         new Fish()),
@@ -425,7 +432,7 @@ public enum Skin implements Bundlable {
     REDRUNIC            (RunicBlade.class, ItemSpriteSheet.REDRUNIC,        2, "Red",           new Rotberry.Seed()),
     BROKENRUNIC         (RunicBlade.class, ItemSpriteSheet.BROKENRUNIC,     2, "Shattered", null, "Well..."),
     TIDEPODRUNIC        (RunicBlade.class, ItemSpriteSheet.TIDEPODRUNIC,    2, "Tide pod",      new TidePod()),
-    RAINBOWRUNIC        (RunicBlade.class, ItemSpriteSheet.RAINBOWRUNIC,    2, "Rainbow",       new AlchemicalCatalyst()),
+    RAINBOWRUNIC        (RunicBlade.class, ItemSpriteSheet.RAINBOWRUNIC,    2, "Rainbow",       new UnstableBrew()),
     OBSIDIANRUNIC       (RunicBlade.class, ItemSpriteSheet.OBSIDIANRUNIC,   2, "Obsidian",      new AssassinsBlade()),
     CANDLERUNIC         (RunicBlade.class, ItemSpriteSheet.CANDLERUNIC,     2, "Candle",        new CeremonialCandle()),
     MEATRUNIC           (RunicBlade.class, ItemSpriteSheet.MEATRUNIC,       2, "Meaty",         new MysteryMeat()),
@@ -477,7 +484,7 @@ public enum Skin implements Bundlable {
     CURSEDLSWORD         (Longsword.class, ItemSpriteSheet.CURSEDLSWORD,    2, "Cursed",        new MetalShard()),
     RUSTYLSWORD          (Longsword.class, ItemSpriteSheet.RUSTYLSWORD,     2, "Rusty",         new Saw()),
     COPPERLSWORD         (Longsword.class, ItemSpriteSheet.COPPERLSWORD,    2, "Copper",        new Pickaxe()),
-    RAINBOWLSWORD        (Longsword.class, ItemSpriteSheet.RAINBOWLSWORD,   2, "Rainbow",       new AlchemicalCatalyst()),
+    RAINBOWLSWORD        (Longsword.class, ItemSpriteSheet.RAINBOWLSWORD,   2, "Rainbow",       new UnstableBrew()),
     BENTLSWORD           (Longsword.class, ItemSpriteSheet.BENTLSWORD,      2, "Bent", null, "Well..."),
     RESINLSWORD          (Longsword.class, ItemSpriteSheet.RESINLSWORD,     2, "Resin",         new ArcaneResin()),
     CATALYSTLSWORD       (Longsword.class, ItemSpriteSheet.CATALYSTLSWORD,  2, "Catalyst",      new ArcaneCatalyst()),
@@ -511,8 +518,8 @@ public enum Skin implements Bundlable {
     BERRYGLAIVE         (Glaive.class, ItemSpriteSheet.BERRYGLAIVE,         1, "Berry",         new Berry()),
 
     METALGLAIVE         (Glaive.class, ItemSpriteSheet.METALGLAIVE,         2, "Liquid Metal",  new LiquidMetal()),
-    RAINBOWGLAIVE       (Glaive.class, ItemSpriteSheet.RAINBOWGLAIVE,       2, "Rainbow",       new AlchemicalCatalyst(), "Apply again for even more rainbow."),
-    FULLRAINBOWGLAIVE   (Glaive.class, ItemSpriteSheet.FULLRAINBOWGLAIVE,   2, "Extra rainbow", new AlchemicalCatalyst()),
+    RAINBOWGLAIVE       (Glaive.class, ItemSpriteSheet.RAINBOWGLAIVE,       2, "Rainbow",       new UnstableBrew(), "Apply again for even more rainbow."),
+    FULLRAINBOWGLAIVE   (Glaive.class, ItemSpriteSheet.FULLRAINBOWGLAIVE,   2, "Extra rainbow", new UnstableBrew()),
     RESINGLAIVE         (Glaive.class, ItemSpriteSheet.RESINGLAIVE,         2, "Resin",         new ArcaneResin()),
     CATALYSTGLAIVE      (Glaive.class, ItemSpriteSheet.CATALYSTGLAIVE,      2, "Catalyst",      new ArcaneCatalyst()),
     EMBERGLAIVE         (Glaive.class, ItemSpriteSheet.EMBERGLAIVE,         2, "Ember",         new Embers()),
@@ -565,7 +572,7 @@ public enum Skin implements Bundlable {
     BERRYAXE            (BattleAxe.class, ItemSpriteSheet.BERRYAXE,         1, "Berry",         new Berry()),
 
     COPPERAXE           (BattleAxe.class, ItemSpriteSheet.COPPERAXE,        2, "Copper",        new Pickaxe()),
-    RAINBOWAXE          (BattleAxe.class, ItemSpriteSheet.RAINBOWAXE,       2, "Rainbow",       new AlchemicalCatalyst()),
+    RAINBOWAXE          (BattleAxe.class, ItemSpriteSheet.RAINBOWAXE,       2, "Rainbow",       new UnstableBrew()),
     RESINAXE            (BattleAxe.class, ItemSpriteSheet.RESINAXE,         2, "Resin",         new ArcaneResin()),
     CATALYSTAXE         (BattleAxe.class, ItemSpriteSheet.CATALYSTAXE,      2, "Catalyst",      new ArcaneCatalyst()),
     EMBERAXE            (BattleAxe.class, ItemSpriteSheet.EMBERAXE,         2, "Ember",         new Embers()),
@@ -684,6 +691,41 @@ public enum Skin implements Bundlable {
 
     TRUEGOLDSHIELD      (Greatshield.class, ItemSpriteSheet.TRUEGOLDSHIELD,   4, "True Golden Shield",      new GoldenMeat()),
 
+
+    SCIMITAR            (Scimitar.class, ItemSpriteSheet.SCIMITAR,          0, "Default",       new Greatshield()),
+    ORANGESCIMITAR      (Scimitar.class, ItemSpriteSheet.ORANGESCIMITAR,    1, "Orange",        new Firebloom.Seed()),
+    YELLOWSCIMITAR      (Scimitar.class, ItemSpriteSheet.YELLOWSCIMITAR,    1, "Yellow",        new Swiftthistle.Seed()),
+    GREENSCIMITAR       (Scimitar.class, ItemSpriteSheet.GREENSCIMITAR,     1, "Green",         new Sungrass.Seed()),
+    BLUESCIMITAR        (Scimitar.class, ItemSpriteSheet.BLUESCIMITAR,      1, "Blue",          new Icecap.Seed()),
+    TURQUOISESCIMITAR   (Scimitar.class, ItemSpriteSheet.TURQUOISESCIMITAR, 1, "Turquoise",     new Stormvine.Seed()),
+    PURPLESCIMITAR      (Scimitar.class, ItemSpriteSheet.PURPLESCIMITAR,    1, "Purple",        new Sorrowmoss.Seed()),
+    PINKSCIMITAR        (Scimitar.class, ItemSpriteSheet.PINKSCIMITAR,      1, "Pink",          new Mageroyal.Seed()),
+    BROWNSCIMITAR       (Scimitar.class, ItemSpriteSheet.BROWNSCIMITAR,     1, "Brown",         new Earthroot.Seed()),
+    BLACKSCIMITAR       (Scimitar.class, ItemSpriteSheet.BLACKSCIMITAR,     1, "Black",         new Starflower.Seed()),
+    GRAYSCIMITAR        (Scimitar.class, ItemSpriteSheet.GRAYSCIMITAR,      1, "Grey",          new Fadeleaf.Seed()),
+    WHITESCIMITAR       (Scimitar.class, ItemSpriteSheet.WHITESCIMITAR,     1, "White",         new Blindweed.Seed()),
+    RUSSETSCIMITAR      (Scimitar.class, ItemSpriteSheet.RUSSETSCIMITAR,    1, "Russet",        new CoffeeBush.Seed()),
+    MAROONSCIMITAR      (Scimitar.class, ItemSpriteSheet.MAROONSCIMITAR,    1, "Maroon",        new TomatoPlant.Seed()),
+    SEPIASCIMITAR       (Scimitar.class, ItemSpriteSheet.SEPIASCIMITAR,     1, "Sepia",         new PotatoPlant.Seed()),
+    CARDINALSCIMITAR    (Scimitar.class, ItemSpriteSheet.CARDINALSCIMITAR,  1, "Cardinal",      new Rotberry.Seed()),
+    BERRYSCIMITAR       (Scimitar.class, ItemSpriteSheet.BERRYSCIMITAR,     1, "Berry",         new Berry()),
+
+    BIGSCIMITAR         (Scimitar.class, ItemSpriteSheet.BIGSCIMITAR,       2, "Bigitar",       new PotionOfStrength(), "Damn boi it thicc."),
+    CUTSCIMITAR         (Scimitar.class, ItemSpriteSheet.CUTSCIMITAR,       2, "Cut",           new Saw()),
+    MEATSCIMITAR        (Scimitar.class, ItemSpriteSheet.MEATSCIMITAR,      2, "Meatimitar",    new MysteryMeat()),
+    GOOSCIMITAR         (Scimitar.class, ItemSpriteSheet.GOOSCIMITAR,       2, "Gooitar",       new GooBlob()),
+    ICESCIMITAR         (Scimitar.class, ItemSpriteSheet.ICESCIMITAR,       2, "Icemitar",      new PotionOfFrost()),
+
+    GOLDSCIMITAR        (Scimitar.class, ItemSpriteSheet.GOLDSCIMITAR,      3, "Gold",          new GoldBar()),
+    BENTSCIMITAR        (Scimitar.class, ItemSpriteSheet.BENTSCIMITAR,      3, "Curved",        null),
+    RINGSCIMITAR        (Scimitar.class, ItemSpriteSheet.RINGSCIMITAR,      3, "Ringitar",      new Ring()),
+    DUELISTSCIMITAR     (Scimitar.class, ItemSpriteSheet.DUELISTSCIMITAR,   3, "Duelist",       new DuelistArmor(), "Looks like a miniature version of you."),
+    WARRIORSCIMITAR     (Scimitar.class, ItemSpriteSheet.WARRIORSCIMITAR,   3, "Warrior",       new WarriorArmor(), "As heroic as you."),
+    MAGESCIMITAR        (Scimitar.class, ItemSpriteSheet.MAGESCIMITAR,      3, "Mage",          new MageArmor(), "It even knows how to cast firebolt!"),
+    RIPOSTESCIMITAR     (Scimitar.class, ItemSpriteSheet.RIPOSTESCIMITAR,   3, "Riposte",       new DriedRose()),
+
+    TRUEGOLDSCIMITAR    (Scimitar.class, ItemSpriteSheet.TRUEGOLDSCIMITAR,  4, "True Gold",     new GoldenMeat()),
+    FEATHERSCIMITAR     (Scimitar.class, ItemSpriteSheet.FEATHERSCIMITAR,   4, "Feather",       new Pillow()),
     ;
 
     public static final String DEFAULT = "Default";
@@ -775,6 +817,40 @@ public enum Skin implements Bundlable {
                 return MYTHIC;
             default:
                 return DEFAULT;
+        }
+    }
+
+    public String fullRarity() {
+        switch (this.rarity) {
+            case 1:
+                return "a " + COMMON;
+            case 2:
+                return "a " + RARE;
+            case 3:
+                return "an " + EPIC;
+            case 4:
+                return "a " + LEGENDARY;
+            case 5:
+                return "a " + MYTHIC;
+            default:
+                return "the " + DEFAULT;
+        }
+    }
+
+    public String rarityChar() {
+        switch (this.rarity) {
+            case 1:
+                return "å";
+            case 2:
+                return "Å";
+            case 3:
+                return "ö";
+            case 4:
+                return "Ö";
+            case 5:
+                return "ä";
+            default:
+                return "";
         }
     }
 
@@ -1252,7 +1328,39 @@ public enum Skin implements Bundlable {
                 GRASSSHIELD,
                 FUSIONSHIELD,
                 SHIELDSHIELD,
-                TRUEGOLDSHIELD
+                TRUEGOLDSHIELD,
+
+                SCIMITAR,
+                ORANGESCIMITAR,
+                YELLOWSCIMITAR,
+                GREENSCIMITAR,
+                BLUESCIMITAR,
+                TURQUOISESCIMITAR,
+                PURPLESCIMITAR,
+                PINKSCIMITAR,
+                BROWNSCIMITAR,
+                BLACKSCIMITAR,
+                GRAYSCIMITAR,
+                WHITESCIMITAR,
+                RUSSETSCIMITAR,
+                MAROONSCIMITAR,
+                SEPIASCIMITAR,
+                CARDINALSCIMITAR,
+                BERRYSCIMITAR,
+                BIGSCIMITAR,
+                CUTSCIMITAR,
+                MEATSCIMITAR,
+                GOOSCIMITAR,
+                ICESCIMITAR,
+                GOLDSCIMITAR,
+                BENTSCIMITAR,
+                RINGSCIMITAR,
+                DUELISTSCIMITAR,
+                WARRIORSCIMITAR,
+                MAGESCIMITAR,
+                RIPOSTESCIMITAR,
+                TRUEGOLDSCIMITAR,
+                FEATHERSCIMITAR
         ));
     }
 
@@ -1300,6 +1408,16 @@ public enum Skin implements Bundlable {
             skin = Skin.all().get(Random.Int(Skin.all().size()));
         } while (skin.skinFor() != itemClass || skin.rarityTier() != rarity);
         return skin;
+    }
+
+    public static List<Skin> allFor(Class<? extends Item> itemClass) {
+        List<Skin> skins = new ArrayList<>();
+        for (Skin skin : all()) {
+            if (skin.skinFor == itemClass) {
+                skins.add(skin);
+            }
+        }
+        return skins;
     }
 
     public String fullSkinName() {
@@ -1356,6 +1474,10 @@ public enum Skin implements Bundlable {
             if (skinName().toLowerCase().contains("shield"))
                 return skinName;
             skinName += " Shield";
+        } else if (skinFor() == Scimitar.class) {
+            if (skinName().toLowerCase().contains("itar"))
+                return skinName;
+            skinName += " Scimitar";
         }
         return skinName;
     }
@@ -1387,6 +1509,10 @@ public enum Skin implements Bundlable {
             return ItemSpriteSheet.EMPTY_AXE;
         } else if (skinFor() == WarHammer.class) {
             return ItemSpriteSheet.EMPTY_HAMMER;
+        } else if (skinFor() == Greatshield.class) {
+            return ItemSpriteSheet.EMPTY_SHIELD;
+        } else if (skinFor() == Scimitar.class) {
+            return ItemSpriteSheet.EMPTY_SCIMITAR;
         }
         return ItemSpriteSheet.SOMETHING;
     }

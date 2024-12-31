@@ -39,7 +39,10 @@ import java.util.ArrayList;
 public class ScrollOfMirrorImage extends Scroll {
 
 	{
-		icon = ItemSpriteSheet.Icons.SCROLL_MIRRORIMG;
+		if (Random.Float() < 0.1f)
+			icon = ItemSpriteSheet.Icons.LOSS;
+		else
+			icon = ItemSpriteSheet.Icons.SCROLL_MIRRORIMG;
 	}
 
 	private static final int NIMAGES	= 2;

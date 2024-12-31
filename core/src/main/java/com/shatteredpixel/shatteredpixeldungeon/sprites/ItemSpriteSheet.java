@@ -953,10 +953,10 @@ public class ItemSpriteSheet {
 	private static final int WEAPONS_NEW =                                       xy(1, 40);
 	public static final int GREATGREATSWORD = WEAPONS_NEW;
 	public static final int SMALLGREATSWORD = WEAPONS_NEW+2;
-	public static final int PILE_OF_SAIS    = WEAPONS_NEW+4;
-	public static final int SPEARAXE    	= WEAPONS_NEW+5;
-	public static final int BRANCH			= WEAPONS_NEW+6;
-	public static final int SILVER_KNIFE	= WEAPONS_NEW+7;
+	public static final int PILE_OF_SAIS    = WEAPONS_NEW+3;
+	public static final int SPEARAXE    	= WEAPONS_NEW+4;
+	public static final int BRANCH			= WEAPONS_NEW+5;
+	public static final int SILVER_KNIFE	= WEAPONS_NEW+6;
 
 	static{
 		assignItemRect(GREATGREATSWORD, 32, 32);
@@ -1000,6 +1000,8 @@ public class ItemSpriteSheet {
 	public static final int EMPTY_GLAIVE			= EMPTIES +10;
 	public static final int EMPTY_AXE				= EMPTIES +11;
 	public static final int EMPTY_HAMMER			= EMPTIES +12;
+	public static final int EMPTY_SHIELD			= EMPTIES +13;
+	public static final int EMPTY_SCIMITAR			= EMPTIES +14;
 
 	static{
 		assignItemRect(EMPTY_SEAL,			9, 15);
@@ -1015,6 +1017,8 @@ public class ItemSpriteSheet {
 		assignItemRect(EMPTY_GLAIVE,		16, 16);
 		assignItemRect(EMPTY_AXE,			16, 16);
 		assignItemRect(EMPTY_HAMMER,		16, 16);
+		assignItemRect(EMPTY_SHIELD,		12, 16);
+		assignItemRect(EMPTY_SCIMITAR,		13, 16);
 	}
 
 
@@ -1040,6 +1044,7 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_MP3_PLAYER_1 	= MISC+18;
 	public static final int ARTIFACT_MP3_PLAYER_2   = MISC+19;
 	public static final int WARRIORIUM   			= MISC+20;
+	public static final int CATALYST   				= MISC+21;
 	static{
 		assignItemRect(TENGU_STONE, 		9,  8);
 		assignItemRect(INSULIN,				10, 10);
@@ -1059,9 +1064,10 @@ public class ItemSpriteSheet {
 		assignItemRect(GOLDAMULET,     		12, 14);
 		assignItemRect(PINKAMULET,     		12, 14);
 		assignItemRect(STONEAMULET,     	12, 14);
-		assignItemRect(ARTIFACT_MP3_PLAYER_1,      	13, 16);
-		assignItemRect(ARTIFACT_MP3_PLAYER_2,      	13, 16);
+		assignItemRect(ARTIFACT_MP3_PLAYER_1,13, 16);
+		assignItemRect(ARTIFACT_MP3_PLAYER_2,13, 16);
 		assignItemRect(WARRIORIUM,  		10,  8);
+		assignItemRect(CATALYST,  			12,  11);
 	}
 
 	private static final int SKINS       =                  xy(1, 49);
@@ -2205,6 +2211,81 @@ public class ItemSpriteSheet {
 		assignItemRect(TRUEGOLDSHIELD,			16, 16);
 	}
 
+	private static final int SKIN_SCIMITAR =						xy(1, 81);
+	//Common Scimitars
+	public static final int ORANGESCIMITAR				= SKIN_SCIMITAR    ;
+	public static final int YELLOWSCIMITAR				= SKIN_SCIMITAR  +1;
+	public static final int GREENSCIMITAR				= SKIN_SCIMITAR  +2;
+	public static final int BLUESCIMITAR				= SKIN_SCIMITAR  +3;
+	public static final int TURQUOISESCIMITAR			= SKIN_SCIMITAR  +4;
+	public static final int PURPLESCIMITAR				= SKIN_SCIMITAR  +5;
+	public static final int PINKSCIMITAR				= SKIN_SCIMITAR  +6;
+	public static final int BROWNSCIMITAR				= SKIN_SCIMITAR  +7;
+	public static final int BLACKSCIMITAR				= SKIN_SCIMITAR  +8;
+	public static final int GRAYSCIMITAR				= SKIN_SCIMITAR  +9;
+	public static final int WHITESCIMITAR				= SKIN_SCIMITAR +10;
+	public static final int RUSSETSCIMITAR				= SKIN_SCIMITAR +11;
+	public static final int MAROONSCIMITAR				= SKIN_SCIMITAR +12;
+	public static final int SEPIASCIMITAR				= SKIN_SCIMITAR +13;
+	public static final int CARDINALSCIMITAR			= SKIN_SCIMITAR +14;
+	public static final int BERRYSCIMITAR				= SKIN_SCIMITAR +15;
+	//Rare Scimitars
+	public static final int BIGSCIMITAR					= SKIN_SCIMITAR +16;
+	public static final int CUTSCIMITAR					= SKIN_SCIMITAR +17;
+	public static final int MEATSCIMITAR				= SKIN_SCIMITAR +18;
+	public static final int GOOSCIMITAR					= SKIN_SCIMITAR +19;
+	public static final int ICESCIMITAR					= SKIN_SCIMITAR +20;
+//	public static final int SCIMITAR					= SKIN_SCIMITAR +21;
+	//Epic Scimitars
+	public static final int GOLDSCIMITAR				= SKIN_SCIMITAR +22;
+	public static final int BENTSCIMITAR				= SKIN_SCIMITAR +23;
+	public static final int RINGSCIMITAR				= SKIN_SCIMITAR +24;
+	public static final int DUELISTSCIMITAR				= SKIN_SCIMITAR +25;
+	public static final int WARRIORSCIMITAR				= SKIN_SCIMITAR +26;
+	public static final int MAGESCIMITAR				= SKIN_SCIMITAR +27;
+	public static final int RIPOSTESCIMITAR				= SKIN_SCIMITAR +28;
+	//Legendary Scimitars
+	public static final int TRUEGOLDSCIMITAR			= SKIN_SCIMITAR +29;
+	public static final int FEATHERSCIMITAR				= SKIN_SCIMITAR +30;
+
+	static {
+		assignItemRect(ORANGESCIMITAR, 			13, 16);
+		assignItemRect(YELLOWSCIMITAR, 			13, 16);
+		assignItemRect(GREENSCIMITAR, 			13, 16);
+		assignItemRect(BLUESCIMITAR, 			13, 16);
+		assignItemRect(TURQUOISESCIMITAR, 		13, 16);
+		assignItemRect(PURPLESCIMITAR, 			13, 16);
+		assignItemRect(PINKSCIMITAR, 			13, 16);
+		assignItemRect(BROWNSCIMITAR, 			13, 16);
+		assignItemRect(BLACKSCIMITAR, 			13, 16);
+		assignItemRect(GRAYSCIMITAR, 			13, 16);
+		assignItemRect(WHITESCIMITAR, 			13, 16);
+		assignItemRect(RUSSETSCIMITAR, 			13, 16);
+		assignItemRect(MAROONSCIMITAR, 			13, 16);
+		assignItemRect(SEPIASCIMITAR, 			13, 16);
+		assignItemRect(CARDINALSCIMITAR, 		13, 16);
+		assignItemRect(BERRYSCIMITAR, 			13, 16);
+
+		assignItemRect(BIGSCIMITAR, 			13, 16);
+		assignItemRect(CUTSCIMITAR, 			10, 16);
+		assignItemRect(MEATSCIMITAR, 			13, 16);
+		assignItemRect(GOOSCIMITAR, 			13, 16);
+		assignItemRect(ICESCIMITAR, 			13, 16);
+//		assignItemRect(SCIMITAR, 			13, 16);
+		assignItemRect(GOLDSCIMITAR, 			13, 16);
+		assignItemRect(BENTSCIMITAR, 			11, 16);
+		assignItemRect(RINGSCIMITAR, 			13, 16);
+		assignItemRect(DUELISTSCIMITAR, 		13, 16);
+		assignItemRect(WARRIORSCIMITAR, 		13, 16);
+		assignItemRect(MAGESCIMITAR, 			14, 16);
+		assignItemRect(RIPOSTESCIMITAR, 		14, 14);
+
+		assignItemRect(TRUEGOLDSCIMITAR, 		16, 16);
+		assignItemRect(FEATHERSCIMITAR, 		14, 16);
+
+
+	}
+
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {
 
@@ -2386,6 +2467,35 @@ public class ItemSpriteSheet {
 
 		                                                                                //16 free slots
 
+
+		private static final int MISC_ICONS =                            xy(1, 9);
+		public static final int ALT_MAP_1 	= MISC_ICONS;
+		public static final int ALT_MAP_2 	= MISC_ICONS+1;
+		public static final int ALT_MAP_3 	= MISC_ICONS+2;
+		public static final int ALT_MAP_4 	= MISC_ICONS+3;
+		public static final int ALT_TELE 	= MISC_ICONS+4;
+		public static final int ALT_LULLABY = MISC_ICONS+5;
+		public static final int LOSS 		= MISC_ICONS+6;
+		public static final int SUS 		= MISC_ICONS+7;
+		public static final int ALT_ACC_1 	= MISC_ICONS+8;
+		public static final int ALT_ACC_2 	= MISC_ICONS+9;
+		public static final int ALT_ACC_3 	= MISC_ICONS+10;
+		public static final int ALT_ACC_4 	= MISC_ICONS+11;
+
+		static {
+			assignIconRect(ALT_MAP_1,     7, 7 );
+			assignIconRect(ALT_MAP_2,     7, 7 );
+			assignIconRect(ALT_MAP_3,     7, 7 );
+			assignIconRect(ALT_MAP_4,     7, 7 );
+			assignIconRect(ALT_TELE,  7, 7 );
+			assignIconRect(ALT_LULLABY,  7, 7 );
+			assignIconRect(LOSS,  7, 7 );
+			assignIconRect(SUS,  6, 7 );
+			assignIconRect(ALT_ACC_1,  6, 7 );
+			assignIconRect(ALT_ACC_2,  5, 5 );
+			assignIconRect(ALT_ACC_3,  8, 8 );
+			assignIconRect(ALT_ACC_4,  5, 5 );
+		}
 	}
 
 	public static class Prefix {

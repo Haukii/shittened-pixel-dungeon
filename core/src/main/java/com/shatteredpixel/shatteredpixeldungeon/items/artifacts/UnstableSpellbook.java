@@ -411,7 +411,7 @@ public class UnstableSpellbook extends Artifact {
 				GLog.p(Messages.get(UnstableSpellbook.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

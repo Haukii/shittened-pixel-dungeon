@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.albums.SynthAlbum;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.UnstableBrew;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RGBCrabSprite;
 import com.watabou.utils.Random;
 
@@ -40,7 +40,7 @@ public class RGBCrab extends Crab {
 		
 		EXP = 3;
 		
-		loot = AlchemicalCatalyst.class;
+		loot = UnstableBrew.class;
 		lootChance = 0.5f;
 	}
 

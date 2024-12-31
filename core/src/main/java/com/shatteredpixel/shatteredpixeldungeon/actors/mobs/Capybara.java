@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cancelled;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodCrate;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Egg;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.Warriorium;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CapybaraSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -25,7 +26,7 @@ public class Capybara extends Mob {
         EXP = 0;
         maxLvl = 30;
 
-        loot = new Warriorium();
+        loot = new ArcaneCatalyst();
         lootChance = 0.2f;
         baseSpeed = 0.5f;
     }

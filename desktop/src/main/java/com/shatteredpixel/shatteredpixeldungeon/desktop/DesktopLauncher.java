@@ -97,13 +97,14 @@ public class DesktopLauncher {
 							title + " was not able to initialize its graphics display, sorry about that!\n\n" +
 									"This usually happens when your graphics card has misconfigured drivers or does not support openGL 2.0+.\n\n" +
 									"If you are certain the game should work on your computer, please message the developer (Evan@ShatteredPixel.com)\n\n" +
+									"Or you know, just get a better fucking PC you fucking cheap ass dumb ass stupid person. I HATE you in particular and you should take this insult personally\n\n" +
 									"version: " + Game.version + "\n" +
 									exceptionMsg,
 							"ok", "error", false);
 				} else {
 					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
 							title + " has run into an error it cannot recover from and has crashed, sorry about that!\n\n" +
-									"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
+									"If you could, please contact me maybe or somethind idk:\n\n" +
 									"version: " + Game.version + "\n" +
 									exceptionMsg,
 							"ok", "error", false);

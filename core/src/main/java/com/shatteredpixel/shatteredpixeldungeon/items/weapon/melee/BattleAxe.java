@@ -160,7 +160,7 @@ public class BattleAxe extends MeleeWeapon {
 				GLog.p(Messages.get(BattleAxe.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

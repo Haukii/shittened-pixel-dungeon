@@ -438,7 +438,7 @@ public class MagesStaff extends MeleeWeapon {
 				GLog.p(Messages.get(MagesStaff.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_WOOD);
-				((MagesStaff) curItem).changeSkin(skin);
+				((MagesStaff) curItem).applySkin(skin);
 			}
 		}
 	};

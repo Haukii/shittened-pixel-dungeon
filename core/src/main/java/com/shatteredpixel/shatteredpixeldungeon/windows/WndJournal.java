@@ -26,8 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -50,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -558,7 +561,7 @@ public class WndJournal extends WndTabbed {
 	public static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 4;
+		private static final int NUM_BUTTONS = 5;
 
 		public static int currentItemIdx   = 0;
 		private static float[] scrollPositions = new float[NUM_BUTTONS];
@@ -568,6 +571,7 @@ public class WndJournal extends WndTabbed {
 		private static final int CONSUM_IDX = 1;
 		private static final int BESTIARY_IDX = 2;
 		private static final int LORE_IDX = 3;
+		private static final int SKIN_IDX = 4;
 
 		private ScrollingGridPane grid;
 		
@@ -589,6 +593,7 @@ public class WndJournal extends WndTabbed {
 			itemButtons[CONSUM_IDX].icon(new ItemSprite(ItemSpriteSheet.POTION_HOLDER));
 			itemButtons[BESTIARY_IDX].icon(new ItemSprite(ItemSpriteSheet.MOB_HOLDER));
 			itemButtons[LORE_IDX].icon(new ItemSprite(ItemSpriteSheet.DOCUMENT_HOLDER));
+			itemButtons[SKIN_IDX].icon(new ItemSprite(ItemSpriteSheet.EMPTY_SEAL));
 
 			grid = new ScrollingGridPane(){
 				@Override
@@ -676,7 +681,7 @@ public class WndJournal extends WndTabbed {
 					addGridEntities(grid, bestiary.entities());
 				}
 
-			} else {
+			} else if (currentItemIdx == LORE_IDX) {
 				int totalItems = 0;
 				int totalSeen = 0;
 				for (Document doc : Document.values()){
@@ -721,6 +726,19 @@ public class WndJournal extends WndTabbed {
 						grid.addHeader("_" + Messages.titleCase(doc.title()) + "_ (" + totalSeen + "/" + totalItems + "):");
 					}
 					addGridDocuments(grid, doc);
+				}
+			} else if (currentItemIdx == SKIN_IDX){
+				int totalSkins = 0;
+				int totalSeen = 0;
+				for (SkinCatalog catalog : SkinCatalog.skinCatalogs){
+					totalSkins += catalog.totalSkins();
+					totalSeen += catalog.totalSeen();
+				}
+				grid.addHeader("_" + Messages.get(this, "title_skins") + "_ (" + totalSeen + "/" + totalSkins + ")", 9, true);
+
+				for (SkinCatalog catalog : SkinCatalog.skinCatalogs){
+					grid.addHeader("_" + Messages.titleCase(catalog.title()) + "_ (" + catalog.totalSeen() + "/" + catalog.totalSkins() + "):");
+					addGridSkins(grid, catalog.skins());
 				}
 			}
 
@@ -831,6 +849,99 @@ public class WndJournal extends WndTabbed {
 
 			String finalTitle = title;
 			String finalDesc = desc;
+			if (sprite == null) {
+				String finalsTitle = title;
+				finalsTitle = "tle";
+			}
+			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {
+				@Override
+				public boolean onClick(float x, float y) {
+					if (inside(x, y)) {
+						Image sprite = new ItemSprite();
+						sprite.copy(icon);
+						if (ShatteredPixelDungeon.scene() instanceof GameScene){
+							GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
+						} else {
+							ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, finalTitle, finalDesc));
+						}
+						return true;
+					} else {
+						return false;
+					}
+				}
+			};
+			if (secondIcon != null){
+				gridItem.addSecondIcon(secondIcon);
+			}
+			if (!seen) {
+				gridItem.hardLightBG(2f, 1f, 2f);
+			}
+			grid.addItem(gridItem);
+		}
+	}
+
+	private static void addGridSkins( ScrollingGridPane grid, Collection<Skin> skins) {
+		for (Skin skin : skins) {
+
+			boolean seen = SkinCatalog.isSeen(skin);
+			ItemSprite sprite = null;
+			Image secondIcon = null;
+			String title = "";
+			String desc = "";
+
+			if (Item.class.isAssignableFrom(skin.skinFor())) {
+
+				Item item = Reflection.newInstance(skin.skinFor());
+				if (item == null) {
+					return; //FUCK
+				}
+				item.changeSkin(skin);
+
+//				if (seen) {
+//					if (item instanceof Ring) {
+//						((Ring) item).anonymize();
+//					} else if (item instanceof Potion) {
+//						((Potion) item).anonymize();
+//					} else if (item instanceof Scroll) {
+//						((Scroll) item).anonymize();
+//					}
+//				}
+
+				sprite = new ItemSprite(item.image, seen ? item.glowing() : null);
+				if (!seen)  {
+					sprite.lightness(0);
+					title = skin.rarityChar() + "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_skin");
+				} else {
+					title =  skin.rarityChar() + Messages.titleCase(skin.fullSkinName());
+
+					if (skin.rarityTier() == 0) {
+						desc += "\n" + Messages.get(CatalogTab.class, "default_skin");
+					} else {
+						desc += "\n" + Messages.get(CatalogTab.class, "rarity", skin.fullRarity(),  item.trueName());
+					}
+
+					if (SkinCatalog.applyCount(skin) > 1) {
+						desc += "\n\n" + Messages.get(CatalogTab.class, "apply_count", SkinCatalog.applyCount(skin));
+					}
+
+					//mage's staff normally has 2 pixels extra at the top for particle effects, we chop that off here
+					if (item instanceof MagesStaff){
+						RectF frame = sprite.frame();
+						frame.top += frame.height()/8f;
+						sprite.frame(frame);
+					}
+
+					if (item.icon != -1) {
+						secondIcon = new Image(Assets.Sprites.ITEM_ICONS);
+						secondIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
+					}
+				}
+
+			}
+
+			String finalTitle = title;
+			String finalDesc = desc;
 			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {
 				@Override
 				public boolean onClick(float x, float y) {
@@ -870,6 +981,8 @@ public class WndJournal extends WndTabbed {
 			if (Mob.class.isAssignableFrom(entityCls)) {
 
 				mob = (Mob) Reflection.newInstance(entityCls);
+				if (mob instanceof ShadowClone.ShadowAlly)
+					return; //FIXME!!!!
 
 				if (mob instanceof Mimic || mob instanceof Pylon || mob instanceof CrystalSpire) {
 					mob.alignment = Char.Alignment.ENEMY;
@@ -886,7 +999,8 @@ public class WndJournal extends WndTabbed {
 				}
 
 				CharSprite sprite = mob.sprite();
-				sprite.idle();
+				if (sprite != null)
+					sprite.idle();
 
 				icon = new Image(sprite);
 				if (seen) {

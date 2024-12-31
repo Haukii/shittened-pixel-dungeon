@@ -166,7 +166,7 @@ public class Greatshield extends MeleeWeapon {
 				GLog.p(Messages.get(Greatshield.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_AXE);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

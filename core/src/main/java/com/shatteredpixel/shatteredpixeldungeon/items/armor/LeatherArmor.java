@@ -118,7 +118,7 @@ public class LeatherArmor extends Armor {
 				GLog.p(Messages.get(LeatherArmor.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_CLOTH);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

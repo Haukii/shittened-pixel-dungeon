@@ -26,6 +26,8 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
@@ -146,6 +148,8 @@ public class Messages {
 			if (c != null && c.getSuperclass() != null){
 				return get(c.getSuperclass(), k, args);
 			} else {
+				if (DeviceCompat.isDebug())
+					GLog.n("No text found for: \"" + k + "\", " + c.getName());
 				return NO_TEXT_FOUND;
 			}
 		}

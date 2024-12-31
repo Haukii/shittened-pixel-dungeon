@@ -159,7 +159,7 @@ public class Longsword extends MeleeWeapon {
 				GLog.p(Messages.get(Longsword.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_SWORD);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

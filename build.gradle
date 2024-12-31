@@ -17,8 +17,8 @@ buildscript {
 allprojects {
 
     ext {
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = 'Shittened Pixel Dungeon'
+        appPackageName = 'com.shatteredpixel.shittenedpixeldungeon'
 
         appVersionCode = 802
         appVersionName = '2.5.4'

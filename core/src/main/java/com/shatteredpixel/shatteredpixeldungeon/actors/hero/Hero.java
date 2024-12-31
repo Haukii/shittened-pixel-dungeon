@@ -184,10 +184,8 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class Hero extends Char {
 
@@ -2289,17 +2287,21 @@ public class Hero extends Char {
 		if (Random.Int(3500) == 6) {
 			GameScene.legoBanner();
 			Dungeon.hero.damage(Dungeon.hero.HP / 6 + Dungeon.depth, Dungeon.hero);
-			if (belongings.weapon() instanceof MagesStaff && ((MagesStaff) belongings.weapon).skin == Skin.WAND) {
-				((MagesStaff) belongings.weapon).changeSkin(Skin.BENTWAND);
+			if (belongings.weapon() instanceof MagesStaff && (belongings.weapon).skin == Skin.WAND) {
+				(belongings.weapon).applySkin(Skin.BENTWAND);
 				GLog.w("You fell over and bent your staff.");
 			}
 			if (belongings.weapon() instanceof RunicBlade && belongings.weapon.skin == Skin.RUNIC) {
-				belongings.weapon.changeSkin(Skin.BROKENRUNIC);
+				belongings.weapon.applySkin(Skin.BROKENRUNIC);
 				GLog.w("You fell over and shattered your sword.");
 			}
 			if (belongings.weapon() instanceof Longsword && belongings.weapon.skin == Skin.LSWORD) {
-				belongings.weapon.changeSkin(Skin.BENTLSWORD);
+				belongings.weapon.applySkin(Skin.BENTLSWORD);
 				GLog.w("You fell over and bent your sword.");
+			}
+			if (belongings.weapon() instanceof Scimitar && belongings.weapon.skin == Skin.SCIMITAR) {
+				belongings.weapon.applySkin(Skin.BENTSCIMITAR);
+				GLog.w("You fell over and bent your scimitar... Wait, it actually looks kinda cool now.");
 			}
 		}
 

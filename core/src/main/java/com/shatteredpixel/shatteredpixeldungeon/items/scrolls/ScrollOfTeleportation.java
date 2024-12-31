@@ -51,7 +51,7 @@ import java.util.ArrayList;
 public class ScrollOfTeleportation extends Scroll {
 
 	{
-		icon = ItemSpriteSheet.Icons.SCROLL_TELEPORT;
+		icon = Random.oneOf(ItemSpriteSheet.Icons.SCROLL_TELEPORT, ItemSpriteSheet.Icons.ALT_TELE);
 	}
 
 	@Override

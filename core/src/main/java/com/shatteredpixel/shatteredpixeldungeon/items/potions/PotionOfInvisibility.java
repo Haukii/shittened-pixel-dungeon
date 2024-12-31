@@ -29,11 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class PotionOfInvisibility extends Potion {
 
 	{
-		icon = ItemSpriteSheet.Icons.POTION_INVIS;
+		if (Random.Float() < 0.1f)
+			icon = ItemSpriteSheet.Icons.SUS;
+		else
+			icon = ItemSpriteSheet.Icons.POTION_INVIS;
 	}
 
 	@Override

@@ -231,7 +231,7 @@ public class RunicBlade extends MeleeWeapon {
 				GLog.p(Messages.get(RunicBlade.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_SWORD);
-				curItem.changeSkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

@@ -31,11 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class ScrollOfLullaby extends Scroll {
 
 	{
-		icon = ItemSpriteSheet.Icons.SCROLL_LULLABY;
+		icon = Random.oneOf(ItemSpriteSheet.Icons.SCROLL_LULLABY, ItemSpriteSheet.Icons.ALT_LULLABY);
 	}
 
 	@Override

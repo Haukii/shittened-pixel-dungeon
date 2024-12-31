@@ -81,6 +81,10 @@ public class TextureFilm {
 		float vh = (float)height / texHeight;
 		int cols = (int)(width( patch ) / width);
 		int rows = (int)(height( patch ) / height);
+
+		//I don't know if its some sort of float inaccuracy or something, but rows is sometimes 0 on skins with id > 10.
+		//Hopefully this hack will fix it and i can forget about this possible bug
+		if (rows == 0) rows++;
 		
 		for (int i=0; i < rows; i++) {
 			for (int j=0; j < cols; j++) {
