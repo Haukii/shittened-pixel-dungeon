@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.RatItem;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class DeepfriedRat extends Food {
+public class DeepfriedRat extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.FRIED_RAT;

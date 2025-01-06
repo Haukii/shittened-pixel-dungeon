@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.misc.Warriorium;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class CookedWarrior extends Food {
+public class CookedWarrior extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.COOKED_WARRIOR;

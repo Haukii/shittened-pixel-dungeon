@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class Sashimi extends Food {
+public class Sashimi extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.SASHIMI;

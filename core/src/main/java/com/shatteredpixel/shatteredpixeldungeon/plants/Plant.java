@@ -61,7 +61,7 @@ public abstract class Plant implements Bundlable {
 
 		Char ch = Actor.findChar(pos);
 
-		if (ch instanceof Hero){
+		if (ch instanceof Hero && !(this instanceof WheatPlant)){
 			((Hero) ch).interrupt();
 		}
 

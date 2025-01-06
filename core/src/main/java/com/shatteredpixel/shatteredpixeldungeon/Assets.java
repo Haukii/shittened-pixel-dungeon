@@ -630,5 +630,6 @@ public class Assets {
 		public static final String HUNTRESS_HEAD = "sprites/huntress_head.png";
 		public static final String DUELIST_HEAD = "sprites/duelist_head.png";
 		public static final String SLOTMACHINE = "sprites/slotmachine.png";
+		public static final String GOBLIN = "sprites/goblin.png";
 	}
 }

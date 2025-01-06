@@ -151,7 +151,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public void die(Object cause) {
-		if (cause != Chasm.class && cause != GhoulLifeLink.class && !Dungeon.level.pit[pos]){
+		if (cause != Chasm.class && cause != GhoulLifeLink.class && !Dungeon.level.pit[pos] && !(this instanceof DwarfKing.DKGhoul)){
 			Ghoul nearby = GhoulLifeLink.searchForHost(this);
 			if (nearby != null){
 				beingLifeLinked = true;

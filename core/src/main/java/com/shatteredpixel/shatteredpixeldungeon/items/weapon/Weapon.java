@@ -192,6 +192,7 @@ abstract public class Weapon extends KindOfWeapon {
 		enchantHardened = bundle.getBoolean( ENCHANT_HARDENED );
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
+		prefix = bundle.getEnum( PREFIX, Prefix.class );
 		if (prefix != null && prefix != Prefix.NONE) {
 			extraIcon = prefix.icon();
 			updateQuickslot();
@@ -242,7 +243,7 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 		}
 
-		float ACC = this.ACC;
+		float ACC = this.ACC + prefix.acc();
 
 		if (owner.buff(Wayward.WaywardBuff.class) != null && enchantment instanceof Wayward){
 			ACC /= 5;
@@ -273,6 +274,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		if ( Dungeon.hero.buff( Acceleration.class ) != null) multi *= Acceleration.multiplier(owner);
 		if ( Dungeon.hero.buff( Furor.class ) != null) multi *= 2f;
+		multi *= 1 + prefix.speed();
 
 		if (owner.buff(Scimitar.SwordDance.class) != null){
 			multi += 0.6f;

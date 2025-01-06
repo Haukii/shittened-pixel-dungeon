@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Warriorium;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -122,6 +123,14 @@ public class GnollGuard extends Mob {
 		} else {
 			return super.description();
 		}
+	}
+
+	@Override
+	public void die(Object cause) {
+		if (Random.Float() < lootChance) {
+			Dungeon.level.drop(new Warriorium(), pos);
+		}
+		super.die(cause);
 	}
 
 	private static final String SAPPER_ID = "sapper_id";

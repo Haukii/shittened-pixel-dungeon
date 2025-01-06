@@ -123,6 +123,13 @@ public enum Prefix {
                     ABYSMAL,
                     KNOCKOFF,
                     PLASTIC,
+                    BENT,
+                    STICKY,
+                    HUMBLE,
+                    BULKY,
+                    WOBBLY,
+                    DUSTY,
+                    SHATTERED,
             };
 
     public static Prefix random() {

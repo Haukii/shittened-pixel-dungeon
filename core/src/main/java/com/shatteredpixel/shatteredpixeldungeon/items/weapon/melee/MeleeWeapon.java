@@ -248,14 +248,23 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public int min(int lvl) {
-		return  tier +  //base
-				lvl;    //level scaling
+		//Regular damage * Prefix damage
+		//then * Strongman damage
+		int damage = (int) Math.floor((tier + lvl) * (1f + prefix.min()));
+		if (Dungeon.hero.pointsInTalent(Talent.STRONGMAN) > 0) {
+			damage = (int) (damage * (1f + 0.05f * Dungeon.hero.pointsInTalent(Talent.STRONGMAN)));
+		}
+		return damage;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  5*(tier+1) +    //base
-				lvl*(tier+1);   //level scaling
+		return (int) Math.ceil((5*(tier+1) + lvl*(tier+1)) * (1f + prefix.max()));
+	}
+
+
+	public int trueMax(int baseDmg) {
+		return (int) Math.ceil(baseDmg * (1f + prefix.max()));
 	}
 
 	public int STRReq(int lvl){

@@ -1045,6 +1045,7 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_MP3_PLAYER_2   = MISC+19;
 	public static final int WARRIORIUM   			= MISC+20;
 	public static final int CATALYST   				= MISC+21;
+	public static final int GOBLIN_CURSE   			= MISC+22;
 	static{
 		assignItemRect(TENGU_STONE, 		9,  8);
 		assignItemRect(INSULIN,				10, 10);
@@ -1068,6 +1069,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARTIFACT_MP3_PLAYER_2,13, 16);
 		assignItemRect(WARRIORIUM,  		10,  8);
 		assignItemRect(CATALYST,  			12,  11);
+		assignItemRect(GOBLIN_CURSE,  		12,  13);
 	}
 
 	private static final int SKINS       =                  xy(1, 49);
@@ -2477,10 +2479,10 @@ public class ItemSpriteSheet {
 		public static final int ALT_LULLABY = MISC_ICONS+5;
 		public static final int LOSS 		= MISC_ICONS+6;
 		public static final int SUS 		= MISC_ICONS+7;
-		public static final int ALT_ACC_1 	= MISC_ICONS+8;
-		public static final int ALT_ACC_2 	= MISC_ICONS+9;
-		public static final int ALT_ACC_3 	= MISC_ICONS+10;
-		public static final int ALT_ACC_4 	= MISC_ICONS+11;
+		public static final int ALT_EVA_1   = MISC_ICONS+8;
+		public static final int ALT_EVA_2   = MISC_ICONS+9;
+		public static final int ALT_EVA_3   = MISC_ICONS+10;
+		public static final int ALT_EVA_4   = MISC_ICONS+11;
 
 		static {
 			assignIconRect(ALT_MAP_1,     7, 7 );
@@ -2491,10 +2493,10 @@ public class ItemSpriteSheet {
 			assignIconRect(ALT_LULLABY,  7, 7 );
 			assignIconRect(LOSS,  7, 7 );
 			assignIconRect(SUS,  6, 7 );
-			assignIconRect(ALT_ACC_1,  6, 7 );
-			assignIconRect(ALT_ACC_2,  5, 5 );
-			assignIconRect(ALT_ACC_3,  8, 8 );
-			assignIconRect(ALT_ACC_4,  5, 5 );
+			assignIconRect(ALT_EVA_1,  6, 7 );
+			assignIconRect(ALT_EVA_2,  5, 5 );
+			assignIconRect(ALT_EVA_3,  8, 8 );
+			assignIconRect(ALT_EVA_4,  5, 5 );
 		}
 	}
 

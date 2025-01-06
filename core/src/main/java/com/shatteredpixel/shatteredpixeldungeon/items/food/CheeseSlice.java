@@ -33,7 +33,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.Calendar;
 
-public class CheeseSlice extends Food {
+public class CheeseSlice extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.CHEESE_SLICE;

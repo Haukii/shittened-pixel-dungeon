@@ -164,6 +164,15 @@ public enum HeroClass {
 			}
 		}
 
+		if (DeviceCompat.isDebug()) {
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, hero.belongings.getItem(ScrollOfDebug.class));
+					break;
+				}
+			}
+		}
+
 	}
 
 	public Badges.Badge masteryBadge() {
@@ -185,7 +194,7 @@ public enum HeroClass {
 	private static void initWarrior( Hero hero ) {
 		WornShortsword sword = new WornShortsword();
 		sword.identify();
-		sword.reforge(Prefix.NONE);
+		sword.prefix = Prefix.NONE;
 		hero.belongings.weapon = sword;
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
@@ -204,6 +213,7 @@ public enum HeroClass {
 		MagesStaff staff;
 
 		staff = new MagesStaff(new WandOfMagicMissile());
+		staff.prefix = Prefix.NONE;
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
@@ -215,7 +225,10 @@ public enum HeroClass {
 	}
 
 	private static void initRogue( Hero hero ) {
-		(hero.belongings.weapon = new Dagger()).identify();
+		Dagger dagger = new Dagger();
+		dagger.identify();
+		dagger.prefix = Prefix.NONE;
+		hero.belongings.weapon = dagger;
 
 		CloakOfShadows cloak = new CloakOfShadows();
 		(hero.belongings.artifact = cloak).identify();
@@ -233,7 +246,10 @@ public enum HeroClass {
 
 	private static void initHuntress( Hero hero ) {
 
-		(hero.belongings.weapon = new Gloves()).identify();
+		Gloves gloves = new Gloves();
+		gloves.identify();
+		gloves.prefix = Prefix.NONE;
+		hero.belongings.weapon = gloves;
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
 
@@ -245,7 +261,10 @@ public enum HeroClass {
 
 	private static void initDuelist( Hero hero ) {
 
-		(hero.belongings.weapon = new Rapier()).identify();
+		Rapier rapier = new Rapier();
+		rapier.identify();
+		rapier.prefix = Prefix.NONE;
+		hero.belongings.weapon = rapier;
 		hero.belongings.weapon.activate(hero);
 
 		ThrowingSpike spikes = new ThrowingSpike();

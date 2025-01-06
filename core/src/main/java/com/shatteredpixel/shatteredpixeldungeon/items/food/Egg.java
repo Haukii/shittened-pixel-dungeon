@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class Egg extends Food implements Hero.Doom {
+public class Egg extends TastyFood implements Hero.Doom {
 
 	{
 		image = ItemSpriteSheet.EGG;

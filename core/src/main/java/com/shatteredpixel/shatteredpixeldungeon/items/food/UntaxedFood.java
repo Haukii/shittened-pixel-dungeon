@@ -33,4 +33,17 @@ public class UntaxedFood extends Food {
 		energy = Hunger.HUNGRY;
 		salt = 1.8f;
 	}
+
+	public static class TaxedRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{UntaxedFood.class};
+			inQuantity = new int[]{1};
+
+			cost = 0;
+
+			output = Food.class;
+			outQuantity = 1;
+		}
+	}
 }

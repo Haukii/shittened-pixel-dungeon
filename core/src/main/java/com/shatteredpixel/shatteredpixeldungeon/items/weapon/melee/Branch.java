@@ -71,7 +71,8 @@ public class Branch extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return Random.Int(tier + 4,tier+1);
+
+		return trueMax(Random.Int(tier + 4,tier+1));
 	}
 
 	@Override

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goblin;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.BakedFish;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.BasedCake;
@@ -59,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -76,6 +78,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHo
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.GoblinCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -237,6 +240,7 @@ public abstract class Recipe {
 		new Bread.Recipe(),
 		new Sashimi.Recipe(),
 		new CheeseSlice.Recipe(),
+		new UntaxedFood.TaxedRecipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -266,6 +270,7 @@ public abstract class Recipe {
 		new BerryCake.Recipe(),
 		new BasedCake.Recipe(),
 		new DeepfriedRat.Recipe(),
+		new GoblinCurse.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{

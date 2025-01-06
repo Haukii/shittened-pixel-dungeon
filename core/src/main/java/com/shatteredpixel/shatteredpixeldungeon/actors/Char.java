@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupStormed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
@@ -486,11 +487,12 @@ public abstract class Char extends Actor {
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
+			if (buff(KetchupImbue.class) != null) buff(KetchupImbue.class).proc(enemy);
 			if (this instanceof Hero) {
 				MeleeWeapon weapon = null;
 				if (Dungeon.hero.belongings.weapon() instanceof MeleeWeapon)
 					weapon = (MeleeWeapon) Dungeon.hero.belongings.weapon();
-				if (weapon != null && weapon.prefix == Prefix.VENOMOUS && Random.Float() > 0.05f) {
+				if (weapon != null && weapon.prefix == Prefix.VENOMOUS && Random.Float() < 0.05f) {
 					Buff.affect(enemy, Poison.class).set(Math.round(1f + Math.min(weapon.level() / 2f, 3f) + Dungeon.scalingDepth() / 7f));
 				}
 			}

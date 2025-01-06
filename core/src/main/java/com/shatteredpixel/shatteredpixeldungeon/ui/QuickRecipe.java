@@ -69,6 +69,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldAmulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
@@ -89,6 +90,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHo
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.GoblinCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -353,6 +355,7 @@ public class QuickRecipe extends Component {
 								return "";
 							}
 						}));
+				result.add(new QuickRecipe(new UntaxedFood.TaxedRecipe()));
 				result.add(new QuickRecipe(new Flour.Recipe()));
 				result.add(new QuickRecipe(new Cheese.Recipe()));
 				result.add(new QuickRecipe(new Oil.Recipe()));
@@ -447,6 +450,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfFeatherFall.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
+				result.add(new QuickRecipe(new GoblinCurse.Recipe()));
 				return result;
 			case 8:
 				result.add(new QuickRecipe(new UnstableSpell.Recipe(), new ArrayList<>(Arrays.asList(new Scroll.PlaceHolder(), new  Runestone.PlaceHolder())), new UnstableSpell()));

@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class RatatouilleFood extends Food {
+public class RatatouilleFood extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.RATATOUILLE;

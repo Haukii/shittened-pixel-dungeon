@@ -67,6 +67,7 @@ public class PotionOfFumes extends ExoticPotion {
 
 		GLog.n( Messages.get(TidePod.class, "eat_negative") );
 		hero.HT -= 5;
+		hero.damage(5, this);
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){

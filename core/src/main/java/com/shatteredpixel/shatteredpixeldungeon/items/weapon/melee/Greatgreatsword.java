@@ -41,12 +41,12 @@ public class Greatgreatsword extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return Random.Int(10*(tier+8),lvl*(tier*4+5));
+		return super.max(lvl) + lvl * 10 + 20;
 	}
 
 	@Override
 	public int min(int lvl) {
-		return Random.Int(tier+20,lvl * 3);
+		return super.min(lvl) + lvl * 5 + 10;
 	}
 
 	@Override

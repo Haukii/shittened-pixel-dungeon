@@ -28,6 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -55,6 +58,7 @@ public class Frost extends FlavourBuff {
 			
 			target.paralysed++;
 			Buff.detach( target, Chill.class );
+			Buff.detach( target, TickBite.class );
 
 			if (target instanceof Hero) {
 
@@ -63,7 +67,7 @@ public class Frost extends FlavourBuff {
 				//does not reach inside of containers
 				if (!hero.belongings.lostInventory()) {
 					for (Item i : hero.belongings.backpack.items) {
-						if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat)) {
+						if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat || i instanceof StewedMeat || i instanceof SmallMeat || i instanceof StewedSmallMeat)) {
 							freezable.add(i);
 						}
 					}

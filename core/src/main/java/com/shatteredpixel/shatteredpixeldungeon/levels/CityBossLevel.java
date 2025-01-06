@@ -27,9 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlotMachine;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -88,17 +90,14 @@ public class CityBossLevel extends Level {
 
 	@Override
 	public void playLevelMusic() {
-		if (locked){
-			if (BossHealthBar.isBleeding()){
-				Music.INSTANCE.play(Assets.Music.CITY_BOSS_FINALE, true);
-			} else {
-				Music.INSTANCE.play(Assets.Music.CITY_BOSS, true);
-			}
-		//if top door isn't unlocked
-		} else if (map[topDoor] == Terrain.LOCKED_DOOR){
-			Music.INSTANCE.end();
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && !Statistics.kingKilled) {
+			Music.INSTANCE.play(Assets.Music.CITY_TENSE, true);
+		} else if (getKing() != null && getKing().isAlive() && ((DwarfKing)getKing()).getPhase() > 1) {
+			Music.INSTANCE.play(Assets.Music.KING_ANGRY, true);
+		} else if (getKing() != null && getKing().isAlive()){
+			Music.INSTANCE.play(Assets.Music.CITY_BOSS, true);
 		} else {
-			Music.INSTANCE.playTracks(CityLevel.CITY_TRACK_LIST, CityLevel.CITY_TRACK_CHANCES, false);
+			Music.INSTANCE.end();
 		}
 	}
 
@@ -332,6 +331,24 @@ public class CityBossLevel extends Level {
 			boss.notice();
 			boss.sprite.alpha( 0 );
 			boss.sprite.parent.add( new AlphaTweener( boss.sprite, 1, 0.1f ) );
+		}
+
+		SlotMachine slotMachine = new SlotMachine();
+		slotMachine.pos = Random.oneOf(452, 462, 482, 492);
+		GameScene.add(slotMachine);
+		int[] guardPos;
+		//I love randomizing everything
+		if (Random.Int(2) == 0) {
+			guardPos = new int[]{456, 458};
+		} else {
+			guardPos = new int[]{530, 534};
+		}
+
+		for (int i: guardPos) {
+			DwarfKing.DKGhoul guard = new DwarfKing.DKGhoul();
+			guard.HT = guard.HP = guard.HT / 2;
+			guard.pos = i;
+			GameScene.add(guard);
 		}
 
 		set( bottomDoor, Terrain.LOCKED_DOOR );

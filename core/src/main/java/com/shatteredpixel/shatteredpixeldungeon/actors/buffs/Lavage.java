@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -67,6 +68,9 @@ public class Lavage extends Buff {
 			detach();
 		} else {
 			spend(TICK);
+		}
+		if (Dungeon.hero.buff(Overstuffed.class) != null) {
+			Dungeon.hero.buff(Overstuffed.class).detach();
 		}
 		return true;
 	}

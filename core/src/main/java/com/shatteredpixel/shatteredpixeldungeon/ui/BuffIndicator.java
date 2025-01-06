@@ -132,6 +132,11 @@ public class BuffIndicator extends Component {
 	public static final int OILED		= 80;
 	public static final int LAVAGE		= 81;
 	public static final int CANCELLED	= 82;
+	public static final int GOBLINMODE	= 83;
+	public static final int MILDYSAT	= 84;
+	public static final int MEDIUMSAT	= 85;
+	public static final int FULLYSAT	= 86;
+	public static final int OVERSAT		= 87;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

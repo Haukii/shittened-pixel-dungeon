@@ -118,11 +118,11 @@ public class Food extends Item {
 	public String nutritionalInfo() {
 		String info =
 				"NUTRITIONAL FACTS\nper portion\n\n" +
-						"Energy:              " + energy + " kcal\n" +
-						"Fats:                  " + fats + "g\n" +
-						"Carbohydrates: " + carbs + "g\n" +
+						"Energy:              " + energy + " kcal (" + (int) (energy * 4.184) + " kj)" + "\n" +
+						"Fats:                 " + fats + "g\n" +
+						"Carbohydrates:  " + carbs + "g\n" +
 						"Proteins:            " + proteins + "g\n" +
-						"Salt:                    " + salt + "g";
+						"Salt:                   " + salt + "g";
 		return info;
 	}
 

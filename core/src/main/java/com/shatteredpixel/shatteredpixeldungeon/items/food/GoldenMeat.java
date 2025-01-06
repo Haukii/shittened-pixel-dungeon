@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class GoldenMeat extends Food {
+public class GoldenMeat extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.GOLDENMEAT;

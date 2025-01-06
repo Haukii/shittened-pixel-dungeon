@@ -88,6 +88,12 @@ public class Hunger extends Buff implements Hero.Doom {
 			} else {
 
 				float newLevel = level + STEP;
+				if (Dungeon.hero.buff(Acceleration.class) != null) {
+					newLevel += STEP * 4f;
+				}
+				if (Dungeon.hero.buff(Lavage.class) != null) {
+					newLevel += STEP * 20f;
+				}
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );

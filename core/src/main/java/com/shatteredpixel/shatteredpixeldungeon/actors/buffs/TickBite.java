@@ -43,7 +43,8 @@ public class TickBite extends Buff {
 		if (random == 510) {
 			detach();
 		}
-		return super.act();
+		spend(TICK);
+		return true;
 	}
 
 	@Override

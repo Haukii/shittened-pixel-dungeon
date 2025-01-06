@@ -42,9 +42,4 @@ public class SmallGreatsword extends MeleeWeapon {
 		return Random.Int(3*(tier+1),lvl*(tier+1));
 	}
 
-	@Override
-	public int min(int lvl) {
-		return Random.Int((tier+1),lvl * 2);
-	}
-
 }

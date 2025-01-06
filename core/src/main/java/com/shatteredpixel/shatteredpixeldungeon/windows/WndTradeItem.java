@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.watabou.utils.Random;
 
 public class WndTradeItem extends WndInfoItem {
 
@@ -238,6 +240,9 @@ public class WndTradeItem extends WndInfoItem {
 				shop.buybackItems.remove(0);
 			}
 		}
+		if (Dungeon.depth == 20) {
+			talk(item.value() / item.quantity());
+		}
 	}
 
 	public static void sellOne( Item item ) {
@@ -266,6 +271,9 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			}
 		}
+		if (Dungeon.depth == 20) {
+			talk(item.value());
+		}
 	}
 	
 	private void buy( Heap heap ) {
@@ -281,4 +289,18 @@ public class WndTradeItem extends WndInfoItem {
 			Dungeon.level.drop( item, heap.pos ).sprite.drop();
 		}
 	}
+
+	private static void talk(int gold) {
+		ImpShopkeeper imp = new ImpShopkeeper();
+		if (gold > 500) {
+			imp.talk(Messages.get(ImpShopkeeper.class, "luxury_" + Random.Int(3), gold));
+		} else if (gold > 150) {
+			imp.talk(Messages.get(ImpShopkeeper.class, "expensive_" + Random.Int(3), gold));
+		} else if (gold > 25) {
+			imp.talk(Messages.get(ImpShopkeeper.class, "normal_" + Random.Int(3), gold));
+		} else {
+			imp.talk(Messages.get(ImpShopkeeper.class, "cheap_" + Random.Int(4), gold));
+		}
+	}
+
 }

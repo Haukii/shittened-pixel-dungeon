@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 
-public class IceCream extends Food {
+public class IceCream extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.ICE_CREAM;

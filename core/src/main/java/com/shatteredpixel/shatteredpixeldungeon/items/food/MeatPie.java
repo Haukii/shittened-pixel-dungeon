@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
 
-public class MeatPie extends Food {
+public class MeatPie extends TastyFood {
 	
 	{
 		image = ItemSpriteSheet.MEAT_PIE;

@@ -40,7 +40,7 @@ public class WheatPlant extends FoodPlant {
 	
 	@Override
 	public void activate( Char ch ) {
-		if (Random.Float() > 0.5f ) {
+		if (Random.Float() < 0.33f ) {
 			Dungeon.level.drop( new Wheat(), pos ).sprite.drop( pos );
 		}
 
@@ -48,7 +48,7 @@ public class WheatPlant extends FoodPlant {
 			Dungeon.level.drop( new Wheat(), pos ).sprite.drop( pos );
 		}
 
-		if (ch instanceof Hero && Random.Float() < 0.02f) {
+		if (ch instanceof Hero && Random.Float() < 2.02f) {
 			Buff.affect(Dungeon.hero, TickBite.class);
 		}
 	}

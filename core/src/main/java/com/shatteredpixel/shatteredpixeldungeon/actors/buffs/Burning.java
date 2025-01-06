@@ -97,7 +97,11 @@ public class Burning extends Buff implements Hero.Doom {
 
 			acted = true;
 			int damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+			if (target.buff(Oiled.class) != null) {
+				damage = (int) (damage * 1.5f);
+			}
 			Buff.detach( target, Chill.class);
+			Buff.detach( target, TickBite.class);
 
 			if (target instanceof Hero
 					&& target.buff(TimekeepersHourglass.timeStasis.class) == null
@@ -163,10 +167,12 @@ public class Burning extends Buff implements Hero.Doom {
 		}
 		
 		spend( TICK );
-		left -= TICK;
-		
-		if (left <= 0 ||
-			(Dungeon.level.water[target.pos] && !target.flying)) {
+		if (target.buff(Oiled.class) == null) {
+			left -= TICK;
+		}
+
+		if (target.buff(Oiled.class) == null
+				&& (left <= 0 || (Dungeon.level.water[target.pos] && !target.flying))) {
 			
 			detach();
 		}

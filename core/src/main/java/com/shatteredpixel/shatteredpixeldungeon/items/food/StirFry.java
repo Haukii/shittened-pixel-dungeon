@@ -24,11 +24,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.VeggieBag;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class StirFry extends Food {
+public class StirFry extends TastyFood {
 
 	{
 		image = ItemSpriteSheet.STIR_FRY;
-		energy = 124f;
+		energy = 154f;
 		carbs = 8f;
 		fats = 12f;
 		proteins = 10f;

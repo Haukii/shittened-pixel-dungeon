@@ -326,6 +326,9 @@ public class Heap implements Bundlable {
 			if (item instanceof MysteryMeat) {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
 				frozen = true;
+			}else if (item instanceof SmallMeat) {
+				replace( item, SmallFrozenCarpaccio.cook( (SmallMeat)item ) );
+				frozen = true;
 			} else if (item instanceof Potion && !item.unique) {
 				items.remove(item);
 				((Potion) item).shatter(pos);

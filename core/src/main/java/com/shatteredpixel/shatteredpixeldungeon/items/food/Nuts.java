@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -30,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class Nuts extends Food {
-
-	public static float TIME_TO_EAT	= 1f;
 	
 	public float energy = 30f;
 	
@@ -46,28 +47,17 @@ public class Nuts extends Food {
 	@Override
 	public void execute( Hero hero, String action ) {
 
-		super.execute( hero, action );
-
 		if (action.equals( AC_EAT )) {
 			if (Random.Int(6) == 0) {
 				GLog.i( Messages.get(this, "eat_got") );
 				GLog.w( Messages.get(this, "got") );
+				Buff.affect(hero, Gotted.class, Gotted.DURATION);
 				energy += 50;
 			} else {
 				GLog.i( Messages.get(this, "eat_msg") );
 			}
 		}
-	}
-
-	protected float eatingTime(){
-		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
-			|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
-			|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
-			|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
-			return TIME_TO_EAT - 1;
-		} else {
-			return TIME_TO_EAT;
-		}
+		super.execute( hero, action );
 	}
 
 	@Override

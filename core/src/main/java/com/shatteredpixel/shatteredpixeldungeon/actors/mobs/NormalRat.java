@@ -32,7 +32,8 @@ public class NormalRat extends Rat {
 		spriteClass = NormalRatSprite.class;
 		
 		HP = HT = 3;
-		EXP = 0;
+		EXP = 1;
+		maxLvl = 2;
 		
 		loot = new SmallMeat();
 		lootChance = 0.3f;

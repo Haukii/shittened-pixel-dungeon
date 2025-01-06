@@ -25,11 +25,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class RingOfEvasion extends Ring {
 
 	{
-		icon = ItemSpriteSheet.Icons.RING_EVASION;
+		icon = Random.oneOf(
+				ItemSpriteSheet.Icons.ALT_EVA_1,
+				ItemSpriteSheet.Icons.ALT_EVA_2,
+				ItemSpriteSheet.Icons.ALT_EVA_3,
+				ItemSpriteSheet.Icons.ALT_EVA_4,
+				ItemSpriteSheet.Icons.RING_EVASION
+		);
 	}
 
 	public String statsInfo() {

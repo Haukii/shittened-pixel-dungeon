@@ -52,6 +52,7 @@ public class KetchupImbue extends FlavourBuff {
 
 	public void proc(Char enemy){
 		Buff.affect( enemy, Ketchup.class, 10f );
+		Buff.affect( enemy, KetchupStormed.class, 10f );
 
 		enemy.sprite.emitter().burst(Speck.factory(Speck.TOMATO), 3 );
 	}

@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Warriorium;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -56,6 +58,14 @@ public class Gnoll extends Mob {
 	@Override
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 2);
+	}
+
+	@Override
+	public void die(Object cause) {
+		if (Random.Float() < lootChance / 4) {
+			Dungeon.level.drop(new Warriorium(), pos);
+		}
+		super.die(cause);
 	}
 
 	private static final String SPRITE = "SPRITE";

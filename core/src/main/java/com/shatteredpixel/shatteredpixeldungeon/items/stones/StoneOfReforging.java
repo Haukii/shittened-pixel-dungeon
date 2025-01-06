@@ -54,11 +54,8 @@ public class StoneOfReforging extends InventoryStone {
 		Sample.INSTANCE.play(Assets.Sounds.UPGRAGE_ARMOR,1, Random.Float(0.9f,1.1f));
 
 		GLog.p(Messages.get(this, "weapon"));
-
-		new Painting().collect();
 		
 		useAnimation();
-
 		updateQuickslot();
 	}
 }

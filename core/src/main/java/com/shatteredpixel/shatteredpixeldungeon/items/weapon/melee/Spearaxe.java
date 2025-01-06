@@ -41,7 +41,8 @@ public class Spearaxe extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return Random.Int(4*(tier+1),lvl*(tier+1) - 2);
+		return trueMax( 4*(tier+3) +
+				lvl*(tier+1));
 	}
 
 

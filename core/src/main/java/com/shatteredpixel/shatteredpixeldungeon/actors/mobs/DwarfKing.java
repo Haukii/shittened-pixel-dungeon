@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
@@ -42,15 +43,19 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -58,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GuardGhoulSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.KingSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -68,6 +74,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -85,7 +92,7 @@ public class DwarfKing extends Mob {
 		defenseSkill = 22;
 
 		properties.add(Property.BOSS);
-		properties.add(Property.UNDEAD);
+		properties.add(Property.HUMAN);
 	}
 
 	@Override
@@ -105,6 +112,9 @@ public class DwarfKing extends Mob {
 
 	private int phase = 1;
 	private int summonsMade = 0;
+	private int waitTime = DeviceCompat.isDebug() ? 500 : 2500;
+	final int randomSpeech = Random.Int(1,3);
+	private boolean ascended = false;
 
 	private float summonCooldown = 0;
 	private float abilityCooldown = 0;
@@ -122,6 +132,7 @@ public class DwarfKing extends Mob {
 	private static final String SUMMON_CD = "summon_cd";
 	private static final String ABILITY_CD = "ability_cd";
 	private static final String LAST_ABILITY = "last_ability";
+	private static final String WAIT_TIME = "WAIT_TIME";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -131,6 +142,7 @@ public class DwarfKing extends Mob {
 		bundle.put( SUMMON_CD, summonCooldown );
 		bundle.put( ABILITY_CD, abilityCooldown );
 		bundle.put( LAST_ABILITY, lastAbility );
+		bundle.put( WAIT_TIME, waitTime );
 	}
 
 	@Override
@@ -141,11 +153,16 @@ public class DwarfKing extends Mob {
 		summonCooldown = bundle.getFloat( SUMMON_CD );
 		abilityCooldown = bundle.getFloat( ABILITY_CD );
 		lastAbility = bundle.getInt( LAST_ABILITY );
+		waitTime = bundle.getInt( WAIT_TIME );
 
 		if (phase == 2) properties.add(Property.IMMOVABLE);
 
 		BossHealthBar.assignBoss(this);
 		if (phase == 3) BossHealthBar.bleed(true);
+	}
+
+	public int getPhase() {
+		return phase;
 	}
 
 	@Override
@@ -156,45 +173,51 @@ public class DwarfKing extends Mob {
 
 		if (phase == 1) {
 
-			if (summonCooldown <= 0 && summonSubject(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 3)){
-				summonsMade++;
-				summonCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
-			} else if (summonCooldown > 0){
-				summonCooldown--;
+			//just wait
+			if (waitTime > 0) {
+				waitTime--;
 			}
 
-			if (paralysed > 0){
-				spend(TICK);
-				return true;
+			if (HP < HT - 50) {
+				damage(500, Dungeon.hero);
+				Music.INSTANCE.play(Assets.Music.KING_ANGRY, true);
 			}
 
-			if (abilityCooldown <= 0){
+			if(Dungeon.hero.buff(AscensionChallenge.class) != null && !ascended && Dungeon.level.heroFOV[pos]) {
+				ascended = true;
+				talk(Messages.get(this, "ascend"));
+			}
 
-				if (lastAbility == NONE) {
-					//50/50 either ability
-					lastAbility = Random.Int(2) == 0 ? LINK : TELE;
-				} else if (lastAbility == LINK) {
-					//more likely to use tele
-					lastAbility = Random.Int(8) == 0 ? LINK : TELE;
-				} else {
-					//more likely to use link
-					lastAbility = Random.Int(8) != 0 ? LINK : TELE;
+			if (waitTime == 2400) {
+				talk(Messages.get(this, "wait_" + 1 + "_" + Random.Int(1,4)));
+			}
+
+			if (waitTime == 1800) {
+				talk(Messages.get(this, "wait_" + 2 + "_" + randomSpeech));
+			}
+			if (waitTime == 1600) {
+				talk(Messages.get(this, "wait_" + 3 + "_" + randomSpeech));
+			}
+			if (waitTime == 150) {
+				talk(Messages.get(this, "wait_" + 4 + "_" + Random.Int(1,4)));
+			}
+
+			if (waitTime == 0) {
+				Statistics.bossScores[3] += 8000;
+				Dungeon.level.unseal();
+				if (HP == HT ) {
+					talk(Messages.get(this, "goodjob"));
+				} else if (HP < HT - 30) {
+					talk(Messages.get(this, "goodjob") + " " + Messages.get(this, "goodjob_extra"));
 				}
-
-				if (lastAbility == LINK && lifeLinkSubject()){
-					abilityCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
-					spend(TICK);
-					return true;
-				} else if (teleportSubject()) {
-					lastAbility = TELE;
-					abilityCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
-					spend(TICK);
-					return true;
-				}
-
-			} else {
-				abilityCooldown--;
+				Badges.validateFriend();
+				Dungeon.hero.resting = false;
+				waitTime--;
 			}
+
+
+			spend(TICK);
+			return true;
 
 		} else if (phase == 2){
 
@@ -360,7 +383,7 @@ public class DwarfKing extends Mob {
 		if (furthest != null) {
 			Buff.append(furthest, LifeLink.class, 100f).object = id();
 			Buff.append(this, LifeLink.class, 100f).object = furthest.id();
-			yell(Messages.get(this, "lifelink_" + Random.IntRange(1, 2)));
+			talk(Messages.get(this, "lifelink_" + Random.IntRange(1, 2)));
 			sprite.parent.add(new Beam.HealthRay(sprite.destinationCenter(), furthest.sprite.destinationCenter()));
 			return true;
 
@@ -420,7 +443,7 @@ public class DwarfKing extends Mob {
 			}
 
 			if (bestPos != enemy.pos) ScrollOfTeleportation.appear(furthest, bestPos);
-			yell(Messages.get(this, "teleport_" + Random.IntRange(1, 2)));
+			talk(Messages.get(this, "teleport_" + Random.IntRange(1, 2)));
 			return true;
 		}
 		return false;
@@ -431,7 +454,7 @@ public class DwarfKing extends Mob {
 		super.notice();
 		if (!BossHealthBar.isAssigned()) {
 			BossHealthBar.assignBoss(this);
-			yell(Messages.get(this, "notice"));
+			talk(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
 					((DriedRose.GhostHero) ch).sayBoss();
@@ -486,11 +509,17 @@ public class DwarfKing extends Mob {
 			int dmgTaken = preHP - HP;
 			abilityCooldown -= dmgTaken/8f;
 			summonCooldown -= dmgTaken/8f;
+
+			if (dmg < 50) {
+				yell(Messages.get(this, "hurt_" + Random.Int(1,5)));
+			}
+
 			if (HP <= (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50)) {
 				HP = (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50);
 				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 				ScrollOfTeleportation.appear(this, CityBossLevel.throne);
 				properties.add(Property.IMMOVABLE);
+				Music.INSTANCE.play(Assets.Music.KING_ANGRY, true);
 				phase = 2;
 				summonsMade = 0;
 				sprite.idle();
@@ -498,11 +527,11 @@ public class DwarfKing extends Mob {
 				for (Summoning s : buffs(Summoning.class)) {
 					s.detach();
 				}
-				Bestiary.skipCountingEncounters = true;
-				for (Mob m : getSubjects()) {
-					m.die(null);
-				}
-				Bestiary.skipCountingEncounters = false;
+//				Bestiary.skipCountingEncounters = true;
+//				for (Mob m : getSubjects()) {
+//					m.die(null);
+//				}
+//				Bestiary.skipCountingEncounters = false;
 				for (Buff b: buffs()){
 					if (b instanceof LifeLink){
 						b.detach();
@@ -542,6 +571,7 @@ public class DwarfKing extends Mob {
 	public void die(Object cause) {
 
 		GameScene.bossSlain();
+		Statistics.kingKilled = true;
 
 		super.die( cause );
 
@@ -579,6 +609,8 @@ public class DwarfKing extends Mob {
 		}
 
 		yell( Messages.get(this, "defeated") );
+		Music.INSTANCE.play(Assets.Music.KING_DEATH, false);
+		Statistics.bossScores[3] -= 5000;
 	}
 
 	@Override
@@ -590,16 +622,72 @@ public class DwarfKing extends Mob {
 		return super.isImmune(effect);
 	}
 
+	public static Mob getKing(){
+		for (Mob m : Dungeon.level.mobs){
+			if (m instanceof DwarfKing) return m;
+		}
+		return null;
+	}
+
 	public static class DKGhoul extends Ghoul {
 		{
 			properties.add(Property.BOSS_MINION);
+			spriteClass = GuardGhoulSprite.class;
 			state = HUNTING;
 		}
 
 		@Override
 		protected boolean act() {
+			DwarfKing king = (DwarfKing) DwarfKing.getKing();
+			if (king != null && king.phase == 1) {
+				if (Random.Int(25) == 0) {
+					for (Item item : Dungeon.hero.belongings) {
+						if (item.getClass() == UntaxedFood.class && Random.Int(4) == 0) {
+							yell(Messages.get(this, "untaxed_" + Random.Int(1, 4), Dungeon.hero.name()));
+							break;
+						}
+						if (item.getClass() == Amulet.class && Random.Int(4) == 0) {
+							talk(Messages.get(this, "amulet_" + Random.Int(1, 4), Dungeon.hero.name()));
+							break;
+						}
+						if (item.getClass() == ScrollOfUpgrade.class && Random.Int(6) == 0) {
+							talk(Messages.get(this, "upgrade_" + Random.Int(1, 3), Dungeon.hero.name()));
+							break;
+						}
+						if (item.getClass() == WandOfFireblast.class && Random.Int(5) == 0) {
+							talk(Messages.get(this, "firestaff", Dungeon.hero.name()));
+							break;
+						}
+					}
+				}
+
+				spend(5);
+				return true;
+			}
 			partnerID = -2; //no partners
+			if (Random.Int(20) == 1) {
+				yell(Messages.get(this, "shout_" + Random.Int(1,13)));
+			}
 			return super.act();
+		}
+
+		@Override
+		public void damage(int dmg, Object src) {
+			DwarfKing king = (DwarfKing) DwarfKing.getKing();
+			if (king != null && king.phase == 1) {
+				yell(Messages.get(this, "hurt_" + Random.Int(1, 5)));
+			}
+			super.damage(dmg, src);
+		}
+
+		@Override
+		public void die(Object cause) {
+				DwarfKing king = (DwarfKing) DwarfKing.getKing();
+				if (king != null && king.phase == 1) {
+					Music.INSTANCE.play(Assets.Music.KING_ANGRY, false);
+					king.damage(500, Dungeon.hero);
+				}
+			super.die(cause);
 		}
 	}
 
@@ -607,6 +695,14 @@ public class DwarfKing extends Mob {
 		{
 			properties.add(Property.BOSS_MINION);
 			state = HUNTING;
+		}
+
+		@Override
+		protected boolean act() {
+			if (Random.Int(15) == 1) {
+				yell(Messages.get(this, "shout_" + Random.Int(1,4)));
+			}
+			return super.act();
 		}
 	}
 
@@ -622,6 +718,14 @@ public class DwarfKing extends Mob {
 				Statistics.bossScores[3] -= 400;
 			}
 			super.zap();
+		}
+
+		@Override
+		protected boolean act() {
+			if (Random.Int(15) == 1) {
+				yell(Messages.get(this, "shout_" + Random.Int(1,6)));
+			}
+			return super.act();
 		}
 	}
 
@@ -709,6 +813,22 @@ public class DwarfKing extends Mob {
 				}
 
 				detach();
+			}
+
+			if (Dungeon.hero.buff(AscensionChallenge.class) != null) {
+				int rippercount = 0;
+				for (Mob mob : Dungeon.level.mobs) {
+					if (mob.getClass() == RipperDemon.class) {
+						rippercount++;
+					}
+				}
+				if (rippercount <= 4) {
+					RipperDemon demon = new RipperDemon();
+					demon.state = demon.HUNTING;
+					demon.pos = Random.Int(140, 144);
+					GameScene.add(demon);
+					demon.beckon(Dungeon.hero.pos);
+				}
 			}
 
 			spend(TICK);

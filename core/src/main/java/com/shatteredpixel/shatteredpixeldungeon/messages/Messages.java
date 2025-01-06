@@ -149,7 +149,7 @@ public class Messages {
 				return get(c.getSuperclass(), k, args);
 			} else {
 				if (DeviceCompat.isDebug())
-					GLog.n("No text found for: \"" + k + "\", " + c.getName());
+					GLog.n("No text found for: \"" + k);
 				return NO_TEXT_FOUND;
 			}
 		}

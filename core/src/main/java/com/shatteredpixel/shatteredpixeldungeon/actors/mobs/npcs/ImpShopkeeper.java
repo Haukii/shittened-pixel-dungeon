@@ -23,8 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
+import com.watabou.utils.Bundle;
 
 public class ImpShopkeeper extends Shopkeeper {
 
@@ -33,19 +35,90 @@ public class ImpShopkeeper extends Shopkeeper {
 	}
 	
 	private boolean seenBefore = false;
+
+	private int messages = 1;
 	
 	@Override
 	protected boolean act() {
 
 		if (!seenBefore && Dungeon.level.heroFOV[pos]) {
 			if (Dungeon.hero.buff(AscensionChallenge.class) == null) {
-				yell(Messages.get(this, "greetings", Messages.titleCase(Dungeon.hero.name())));
+				if (DwarfKing.getKing() == null || !DwarfKing.getKing().isAlive()) {
+					talk(Messages.get(this, "greetings", Dungeon.hero.name()) + " Wait, why is everyone screaming...?");
+				} else if (messages > 7) {
+					yell(Messages.get(this, "greetingsbad", Dungeon.hero.name()));
+				} else {
+					talk(Messages.get(this, "greetings", Dungeon.hero.name()));
+				}
 			} else {
-				yell(Messages.get(this, "greetings_ascent", Messages.titleCase(Dungeon.hero.name())));
+				yell(Messages.get(this, "greetings_ascent", Dungeon.hero.name()));
 			}
 			seenBefore = true;
 		}
 
+		if (Dungeon.level.heroFOV[pos] && (DwarfKing.getKing() == null || !DwarfKing.getKing().isAlive())) {
+			yell(Messages.get(this, "kingisdead"));
+			flee();
+		}
+		if (Dungeon.hero.pos < 160 && messages == 1) {
+			yell(Messages.get(this, "danger1"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos > 170 && messages == 2) {
+			talk(Messages.get(this, "danger2"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos < 160 && messages == 3) {
+			yell(Messages.get(this, "danger3"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos > 170 && messages == 4) {
+			yell(Messages.get(this, "danger4"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos < 160 && messages == 5) {
+			yell(Messages.get(this, "danger5"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos > 170 && messages == 6) {
+			yell(Messages.get(this, "danger6"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos > 230 && messages == 7) {
+			yell(Messages.get(this, "danger7"));
+			messages++;
+			return super.act();
+		}
+		if (Dungeon.hero.pos < 160 && messages == 8) {
+			yell(Messages.get(this, "danger8"));
+			messages++;
+			return super.act();
+		}
+
 		return super.act();
+	}
+
+	private static final String MESSAGES = "messages";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (messages > 7) {
+			bundle.put( MESSAGES, 10 );
+		} else {
+			bundle.put( MESSAGES, -1 );
+		}
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		messages = bundle.getInt(MESSAGES);
 	}
 }
