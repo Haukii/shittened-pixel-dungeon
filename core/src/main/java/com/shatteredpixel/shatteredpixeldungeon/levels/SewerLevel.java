@@ -231,7 +231,7 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> rooms = super.initRooms();
-		if (Random.Int(5) == 0 ) {
+		if (Random.Int(9) == 0 ) {
 			rooms.add(new CapybaraNestRoom());
 		}
 		return rooms;

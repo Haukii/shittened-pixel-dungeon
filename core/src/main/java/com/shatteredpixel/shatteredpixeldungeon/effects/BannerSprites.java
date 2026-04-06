@@ -46,6 +46,7 @@ public class BannerSprites {
 		PIXEL_DUNGEON_HALLOWEEN,
 		PIXEL_DUNGEON_FINNISH,
 		PIXEL_DUNGEON_VALENTINE,
+		PIXEL_DUNGEON_EASTER,
 		FRIEND_REQUEST,
 		SASS_SLAIN,
 		SAAB_SLAIN,
@@ -114,6 +115,9 @@ public class BannerSprites {
 				break;
 			case PIXEL_DUNGEON_VALENTINE:
 				icon.frame(icon.texture.uvRect(129, 694, 253, 801));
+				break;
+			case PIXEL_DUNGEON_EASTER:
+				icon.frame(icon.texture.uvRect(131, 804, 254, 908));
 				break;
 			case FRIEND_REQUEST:
 				icon.frame(icon.texture.uvRect(0, 368, 46, 383));

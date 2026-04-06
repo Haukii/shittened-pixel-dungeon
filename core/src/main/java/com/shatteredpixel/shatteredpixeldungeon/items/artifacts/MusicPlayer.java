@@ -61,7 +61,7 @@ public class MusicPlayer extends Artifact {
 
 	public static boolean playing = false;
 
-	private List<Album> albums = new ArrayList<>();
+	public List<Album> albums = new ArrayList<>();
 
 	public String selectedSong = null;
 	public String selectedSongName = null;
@@ -292,15 +292,15 @@ public class MusicPlayer extends Artifact {
 	}
 
 	private static final String ALBUMS = "ALBUMS";
-	private static final String SELECTED = "SELECTED";
-	private static final String SELECTEDNAME = "SELECTEDNAME";
+//	private static final String SELECTED = "SELECTED";
+//	private static final String SELECTEDNAME = "SELECTEDNAME";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(ALBUMS, albums);
-		bundle.put(SELECTED, selectedSong);
-		bundle.put(SELECTEDNAME, selectedSongName);
+//		bundle.put(SELECTED, selectedSong);
+//		bundle.put(SELECTEDNAME, selectedSongName);
 	}
 
 	@Override
@@ -309,8 +309,8 @@ public class MusicPlayer extends Artifact {
 		for (Bundlable item : bundle.getCollection(ALBUMS)){
 			albums.add( (Album) item );
 		}
-		selectedSong = bundle.getString(SELECTED);
-		selectedSongName = bundle.getString(SELECTEDNAME);
+//		selectedSong = bundle.getString(SELECTED);
+//		selectedSongName = bundle.getString(SELECTEDNAME);
 	}
 
 	protected WndBag.ItemSelector albumSelector = new WndBag.ItemSelector() {

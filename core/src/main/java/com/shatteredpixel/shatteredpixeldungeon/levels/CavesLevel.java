@@ -88,7 +88,14 @@ public class CavesLevel extends RegularLevel {
 			Music.INSTANCE.stop();
 			Music.INSTANCE.clearQueue();
 		} else {
-			Music.INSTANCE.playTracks(CAVES_TRACK_LIST, CAVES_TRACK_CHANCES, false);
+			if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS) {
+				Music.INSTANCE.playTracks(
+						new String[]{Assets.Music.CAVES_CHRISTMAS_1, Assets.Music.CAVES_CHRISTMAS_2},
+						new float[]{1, 1},
+						true);
+			} else {
+				Music.INSTANCE.playTracks(CAVES_TRACK_LIST, CAVES_TRACK_CHANCES, false);
+			}
 		}
 	}
 

@@ -142,6 +142,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Katana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -2330,6 +2331,10 @@ public class Hero extends Char {
 			if (belongings.weapon() instanceof Scimitar && belongings.weapon.skin == Skin.SCIMITAR) {
 				belongings.weapon.applySkin(Skin.BENTSCIMITAR);
 				GLog.w("You fell over and bent your scimitar... Wait, it actually looks kinda cool now.");
+			}
+			if (belongings.weapon() instanceof Katana && belongings.weapon.skin == Skin.KATANA) {
+				belongings.weapon.applySkin(Skin.MESSEDKATANA);
+				GLog.w("You fell over and messed up your katana.");
 			}
 		}
 

@@ -162,6 +162,10 @@ public class WarHammer extends MeleeWeapon {
 					return "Goolden Hammer";
 				case CAKEHAMMER:
 					return "Hammer of Cake";
+				case SKULLHAMMER:
+					return "Skullcrusher";
+				case UNSTABLEHAMMER:
+					return "Unstable Hammer";
 			}
 		}
 		return super.name();

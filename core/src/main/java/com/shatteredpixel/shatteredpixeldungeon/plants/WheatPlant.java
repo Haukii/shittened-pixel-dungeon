@@ -48,7 +48,7 @@ public class WheatPlant extends FoodPlant {
 			Dungeon.level.drop( new Wheat(), pos ).sprite.drop( pos );
 		}
 
-		if (ch instanceof Hero && Random.Float() < 2.02f) {
+		if (ch instanceof Hero && Random.Float() < 0.02f) {
 			Buff.affect(Dungeon.hero, TickBite.class);
 		}
 	}

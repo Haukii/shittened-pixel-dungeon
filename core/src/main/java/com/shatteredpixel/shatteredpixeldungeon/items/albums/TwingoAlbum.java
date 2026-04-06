@@ -11,5 +11,6 @@ public class TwingoAlbum extends Album {
         songs.put("Cantonese Twingo", Assets.Music.CANTO_TWINGO);
         songs.put("Twigigigi", Assets.Music.TWIGIGIGI);
         songs.put("Twingo Turbo", Assets.Music.TWINGO_TURBO);
+        songs.put("Twingo Tango", Assets.Music.TWINGO_TANGO);
     }
 }

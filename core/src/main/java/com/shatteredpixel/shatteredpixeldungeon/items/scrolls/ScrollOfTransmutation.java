@@ -29,8 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.albums.Album;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Painting;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
@@ -53,7 +56,12 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScrollOfTransmutation extends InventoryScroll {
 	
@@ -87,7 +95,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else {
 			return item instanceof Ring || item instanceof Wand || item instanceof Artifact
 					|| item instanceof Trinket || item instanceof Plant.Seed
-					|| item instanceof Runestone;
+					|| item instanceof Runestone || item instanceof Painting || item instanceof Album;
 		}
 	}
 	
@@ -185,6 +193,10 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			}
 		} else if (item instanceof Trinket) {
 			return changeTrinket( (Trinket)item );
+		} else if (item instanceof Painting) {
+			return changePainting ((Painting) item);
+		} else if (item instanceof Album) {
+			return changeAlbum ((Album) item);
 		} else {
 			return null;
 		}
@@ -373,6 +385,29 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else {
 			return Reflection.newInstance(ExoticPotion.regToExo.get(p.getClass()));
 		}
+	}
+
+	private static Painting changePainting (Painting p) {
+
+		int id = p.id;
+
+		do {
+			p = new Painting();
+		} while (p.id == id);
+
+		return p;
+	}
+
+	private static Album changeAlbum (Album a) {
+
+		Album b;
+		List<Class<?>> albums = Arrays.asList(Generator.Category.ALBUM.classes);
+
+		do {
+			b = (Album) Reflection.newInstance(albums.get(Random.Int(albums.size())));
+		} while (b != null && b.getClass() == a.getClass());
+
+		return b;
 	}
 	
 	@Override

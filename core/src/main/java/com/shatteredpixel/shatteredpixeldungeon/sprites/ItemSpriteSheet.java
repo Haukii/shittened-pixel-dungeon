@@ -1046,6 +1046,7 @@ public class ItemSpriteSheet {
 	public static final int WARRIORIUM   			= MISC+20;
 	public static final int CATALYST   				= MISC+21;
 	public static final int GOBLIN_CURSE   			= MISC+22;
+	public static final int FOFFS   				= MISC+23;
 	static{
 		assignItemRect(TENGU_STONE, 		9,  8);
 		assignItemRect(INSULIN,				10, 10);
@@ -1070,6 +1071,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WARRIORIUM,  		10,  8);
 		assignItemRect(CATALYST,  			12,  11);
 		assignItemRect(GOBLIN_CURSE,  		12,  13);
+		assignItemRect(FOFFS,  				10,  11);
 	}
 
 	private static final int SKINS       =                  xy(1, 49);
@@ -1179,7 +1181,7 @@ public class ItemSpriteSheet {
 	public static final int RAINBOWBOW      	= SKINS +97;
 	public static final int LOVEBOW		      	= SKINS +98;
 	public static final int EGGBOW      		= SKINS +99;
-	//	public static final int BOW      		= SKINS +100;
+	public static final int WATERBOW      		= SKINS +100;
 	//Epic Bows
 	public static final int GOLDENBOW      		= SKINS +101;
 	public static final int NATUREBOW      		= SKINS +102;
@@ -1192,7 +1194,7 @@ public class ItemSpriteSheet {
 	public static final int RINGBOW      		= SKINS +109;
 	//Legendary Bows
 	public static final int FLAMINGBOW      	= SKINS +110;
-//	public static final int BOW      		= SKINS +111;
+	public static final int ASHBOW      		= SKINS +111;
 
 	//Common Wands
 	public static final int ORANGEWAND      	= SKINS +112;
@@ -1252,7 +1254,7 @@ public class ItemSpriteSheet {
 	public static final int RAINBOW_ARROW       = SKINS +161;
 	public static final int LOVE_ARROW		    = SKINS +162;
 	public static final int EGG_ARROW      		= SKINS +163;
-	//	public static final int _ARROW      		= SKINS +164;
+	public static final int WATER_ARROW      	= SKINS +164;
 	public static final int GOLDEN_ARROW        = SKINS +165;
 	public static final int NATURE_ARROW        = SKINS +166;
 	public static final int METAL_ARROW         = SKINS +167;
@@ -1263,7 +1265,7 @@ public class ItemSpriteSheet {
 	public static final int WILLOW_ARROW      	= SKINS +172;
 	public static final int RING_ARROW      	= SKINS +173;
 	public static final int FLAMING_ARROW      	= SKINS +174;
-//	public static final int _ARROW      		= SKINS +175;
+	public static final int ASH_ARROW      		= SKINS +175;
 
 	static {
 		//Common Seals
@@ -1371,8 +1373,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RAINBOWBOW       ,    	16, 16);
 		assignItemRect(LOVEBOW	       	,    	16, 16);
 		assignItemRect(EGGBOW       	,    	16, 16);
-//		assignItemRect(BOW       	,    	16, 16);
-//		assignItemRect(BOW       	,    	16, 16);
+		assignItemRect(WATERBOW       	,    	16, 16);
 		//Epic Bows
 		assignItemRect(GOLDENBOW   		,       16,  16);
 		assignItemRect(NATUREBOW     	,       16,  16);
@@ -1385,7 +1386,7 @@ public class ItemSpriteSheet {
 //		assignItemRect(BOW   		,        16,  16);
 		//Legendary Bows
 		assignItemRect(FLAMINGBOW      	,       16,  16);
-//		assignItemRect(BOW      	,        16,  16);
+		assignItemRect(ASHBOW      		,       16,  12);
 
 		//Common Wands
 		assignItemRect(ORANGEWAND   	,     	15, 16);
@@ -1575,8 +1576,8 @@ public class ItemSpriteSheet {
 	public static final int BOWBOOK    		= SKIN_BOOK+27;
 	public static final int TOOLBOOK    	= SKIN_BOOK+28;
 	public static final int DVDBOOK    		= SKIN_BOOK+29;
-//	public static final int BOOK    		= SKIN_BOOK+30;
-//	public static final int BOOK    		= SKIN_BOOK+31;
+	public static final int OFFBOOK    		= SKIN_BOOK+30;
+	public static final int CRYSTALBOOK    	= SKIN_BOOK+31;
 //	public static final int BOOK    		= SKIN_BOOK+32;
 //	public static final int BOOK    		= SKIN_BOOK+33;
 //	public static final int BOOK    		= SKIN_BOOK+34;
@@ -1621,8 +1622,8 @@ public class ItemSpriteSheet {
 		assignItemRect(BOWBOOK         	,		13, 16);
 		assignItemRect(TOOLBOOK         ,		13, 16);
 		assignItemRect(DVDBOOK         	,		14, 16);
-//		assignItemRect(BOOK         	,		13, 16);
-//		assignItemRect(BOOK         	,		13, 16);
+		assignItemRect(OFFBOOK         	,		13, 16);
+		assignItemRect(CRYSTALBOOK      ,		13, 16);
 //		assignItemRect(BOOK         	,		13, 16);
 //		assignItemRect(BOOK         	,		13, 16);
 //		assignItemRect(BOOK         	,		13, 16);
@@ -1666,11 +1667,11 @@ public class ItemSpriteSheet {
 	public static final int RUSTEDRUNIC        	= SKIN_RUNIC +24;
 	public static final int SEALRUNIC        	= SKIN_RUNIC +25;
 	public static final int LEATHERRUNIC        = SKIN_RUNIC +26;
-	//	public static final int RUNIC        		= SKINS_WEAPONS+27;
-//	public static final int RUNIC        		= SKINS_WEAPONS+28;
-//	public static final int RUNIC        		= SKINS_WEAPONS+29;
-//	public static final int RUNIC        		= SKINS_WEAPONS+30;
-//	public static final int RUNIC        		= SKINS_WEAPONS+31;
+	public static final int WONDERRUNIC        	= SKIN_RUNIC +27;
+	public static final int GOBLINRUNIC        	= SKIN_RUNIC +28;
+	public static final int PAPERRUNIC        	= SKIN_RUNIC +29;
+	public static final int PASTRYRUNIC        	= SKIN_RUNIC +30;
+	public static final int MOSSRUNIC        	= SKIN_RUNIC +31;
 	//Epic Runic blade skins
 	public static final int GOLDENRUNIC     	= SKIN_RUNIC +32;
 	public static final int INSULINRUNIC    	= SKIN_RUNIC +33;
@@ -1680,7 +1681,7 @@ public class ItemSpriteSheet {
 	public static final int WHEATRUNIC        	= SKIN_RUNIC +37;
 	public static final int ICECREAMRUNIC       = SKIN_RUNIC +38;
 	public static final int RATRUNIC        	= SKIN_RUNIC +39;
-	//	public static final int RUNIC        		= SKINS_WEAPONS+40;
+	public static final int CRYSTALRUNIC        = SKIN_RUNIC +40;
 	//Legendary Runic blade skins
 	public static final int TRUEGOLDRUNIC       = SKIN_RUNIC +41;
 	public static final int AMULETRUNIC        	= SKIN_RUNIC +42;
@@ -1719,11 +1720,11 @@ public class ItemSpriteSheet {
 		assignItemRect(RUSTEDRUNIC      ,		14, 14);
 		assignItemRect(SEALRUNIC        ,		14, 14);
 		assignItemRect(LEATHERRUNIC     ,		14, 14);
-//		assignItemRect(RUNIC     		,		14, 14);
-//		assignItemRect(RUNIC     		,		14, 14);
-//		assignItemRect(RUNIC     		,		14, 14);
-//		assignItemRect(RUNIC     		,		14, 14);
-//		assignItemRect(RUNIC     		,		14, 14);
+		assignItemRect(WONDERRUNIC     	,		14, 14);
+		assignItemRect(GOBLINRUNIC     	,		14, 14);
+		assignItemRect(PAPERRUNIC     	,		14, 14);
+		assignItemRect(PASTRYRUNIC     	,		14, 14);
+		assignItemRect(MOSSRUNIC     	,		14, 14);
 		//Epic Runic blades
 		assignItemRect(GOLDENRUNIC      ,		14, 14);
 		assignItemRect(INSULINRUNIC     ,		14, 14);
@@ -1733,7 +1734,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WHEATRUNIC       ,		16, 15);
 		assignItemRect(ICECREAMRUNIC    ,		14, 14);
 		assignItemRect(RATRUNIC         ,		15, 14);
-//		assignItemRect(RUNIC          	,		14, 14);
+		assignItemRect(CRYSTALRUNIC     ,		15, 14);
 		//Legendary Runic blades
 		assignItemRect(TRUEGOLDRUNIC    ,		16, 16);
 		assignItemRect(AMULETRUNIC      ,		16, 16);
@@ -1777,9 +1778,11 @@ public class ItemSpriteSheet {
 	public static final int GOLDLSWORD         		= SKIN_LONGSWORD +25;
 	public static final int RINGLSWORD         		= SKIN_LONGSWORD +26;
 	public static final int TINYLSWORD         		= SKIN_LONGSWORD +27;
-	//	public static final int LSWORD         			= SKIN_LONGSWORD +28;
+	public static final int MOSSYLSWORD         	= SKIN_LONGSWORD +28;
 	//Legendary Longswords
 	public static final int TRUEGOLDLSWORD      	= SKIN_LONGSWORD +29;
+	public static final int STARRYLSWORD      	    = SKIN_LONGSWORD +30;
+	public static final int WAVELSWORD      	    = SKIN_LONGSWORD +31;
 	static {
 		assignItemRect(ORANGELSWORD      ,		15, 15);
 		assignItemRect(YELLOWLSWORD      ,		15, 15);
@@ -1806,13 +1809,16 @@ public class ItemSpriteSheet {
 		assignItemRect(CATALYSTLSWORD    ,		15, 15);
 		assignItemRect(EMBERLSWORD       ,		15, 15);
 		assignItemRect(WOODENLSWORD      ,		15, 15);
-		assignItemRect(SEALLSWORD      ,		15, 15);
+		assignItemRect(SEALLSWORD        ,		15, 15);
 
 		assignItemRect(GOLDLSWORD      	 ,		15, 15);
 		assignItemRect(RINGLSWORD      	 ,		15, 15);
 		assignItemRect(TINYLSWORD      	 ,		9,  9);
+		assignItemRect(MOSSYLSWORD       ,		15, 15);
 
 		assignItemRect(TRUEGOLDLSWORD    ,		16, 16);
+		assignItemRect(STARRYLSWORD    ,		15, 15);
+		assignItemRect(STARRYLSWORD    ,		15, 15);
 	}
 
 	private static final int SKIN_GLAIVE =                  xy(1, 70);
@@ -2046,13 +2052,13 @@ public class ItemSpriteSheet {
 	public static final int CHOCOHAMMER				= SKIN_HAMMER +37;
 	public static final int BITTENHAMMER			= SKIN_HAMMER +38;
 	public static final int FISHHAMMER				= SKIN_HAMMER +39;
+	public static final int UNSTABLEHAMMER			= SKIN_HAMMER +40;
+	public static final int SICKLEHAMMER			= SKIN_HAMMER +41;
 	//Legendary Hammers
-	public static final int TRUEGOLDHAMMER			= SKIN_HAMMER +40;
-	public static final int AMULETHAMMER			= SKIN_HAMMER +41;
-	public static final int CREAMHAMMER				= SKIN_HAMMER +42;
-	//	public static final int HAMMER				= SKIN_HAMMER +43;
-//	public static final int HAMMER				= SKIN_HAMMER +44;
-//	public static final int HAMMER				= SKIN_HAMMER +45;
+	public static final int TRUEGOLDHAMMER			= SKIN_HAMMER +42;
+	public static final int AMULETHAMMER			= SKIN_HAMMER +43;
+	public static final int CREAMHAMMER				= SKIN_HAMMER +44;
+	public static final int SKULLHAMMER				= SKIN_HAMMER +45;
 	//Mythic Hammers
 	public static final int GOOLDENHAMMER			= SKIN_HAMMER +46;
 	public static final int CAKEHAMMER				= SKIN_HAMMER +47;
@@ -2100,10 +2106,13 @@ public class ItemSpriteSheet {
 		assignItemRect(CHOCOHAMMER,				16, 16);
 		assignItemRect(BITTENHAMMER,			16, 16);
 		assignItemRect(FISHHAMMER,				16, 16);
+		assignItemRect(UNSTABLEHAMMER,			16, 16);
+		assignItemRect(SICKLEHAMMER,			16, 16);
 
 		assignItemRect(TRUEGOLDHAMMER,			16, 16);
 		assignItemRect(AMULETHAMMER,			16, 16);
 		assignItemRect(CREAMHAMMER,				16, 16);
+		assignItemRect(SKULLHAMMER,				16, 16);
 
 		assignItemRect(GOOLDENHAMMER,			16, 16);
 		assignItemRect(CAKEHAMMER,				16, 16);
@@ -2284,8 +2293,76 @@ public class ItemSpriteSheet {
 
 		assignItemRect(TRUEGOLDSCIMITAR, 		16, 16);
 		assignItemRect(FEATHERSCIMITAR, 		14, 16);
+	}
 
+	private static final int SKIN_KATANA =						xy(1, 81);
+	//Common Katanas
+	public static final int ORANGEKATANA				= SKIN_KATANA    ;
+	public static final int YELLOWKATANA				= SKIN_KATANA  +1;
+	public static final int GREENKATANA					= SKIN_KATANA  +2;
+	public static final int BLUEKATANA					= SKIN_KATANA  +3;
+	public static final int TURQUOISEKATANA				= SKIN_KATANA  +4;
+	public static final int PURPLEKATANA				= SKIN_KATANA  +5;
+	public static final int PINKKATANA					= SKIN_KATANA  +6;
+	public static final int BROWNKATANA					= SKIN_KATANA  +7;
+	public static final int BLACKKATANA					= SKIN_KATANA  +8;
+	public static final int GRAYKATANA					= SKIN_KATANA  +9;
+	public static final int WHITEKATANA					= SKIN_KATANA  +10;
+	//Rare Katanas
+	public static final int DILLOKATANA					= SKIN_KATANA +11;
+	public static final int CHEESEKATANA				= SKIN_KATANA +12;
+	public static final int OILKATANA					= SKIN_KATANA +13;
+	public static final int SICKLEKATANA				= SKIN_KATANA +14;
+	public static final int GOOKATANA					= SKIN_KATANA +15;
+	public static final int ICECREAMKATANA				= SKIN_KATANA +16;
+	public static final int STYLUSKATANA				= SKIN_KATANA +17;
+	public static final int SAIKATANA					= SKIN_KATANA +18;
+	public static final int AXEKATANA					= SKIN_KATANA +19;
+	public static final int OBSIDIANKATANA				= SKIN_KATANA +20;
+	//Epic Katanas
+	public static final int GOLDKATANA					= SKIN_KATANA +21;
+	public static final int BRANCHKATANA				= SKIN_KATANA +22;
+	public static final int MESSEDKATANA				= SKIN_KATANA +23;
+	public static final int CHAOSKATANA					= SKIN_KATANA +24;
+	public static final int PAINTKATANA					= SKIN_KATANA +25;
+	public static final int SNAKEKATANA					= SKIN_KATANA +26;
+	public static final int DISARMEDKATANA				= SKIN_KATANA +27;
+//	public static final int KATANA				= SKIN_KATANA +28;
+	//Legendary Katanas
+//	public static final int KATANA				= SKIN_KATANA +29;
+//	public static final int KATANA				= SKIN_KATANA +30;
 
+	static {
+		assignItemRect(ORANGEKATANA, 			15, 16);
+		assignItemRect(YELLOWKATANA, 			15, 16);
+		assignItemRect(GREENKATANA, 			15, 16);
+		assignItemRect(BLUEKATANA, 				15, 16);
+		assignItemRect(TURQUOISEKATANA, 		15, 16);
+		assignItemRect(PURPLEKATANA, 			15, 16);
+		assignItemRect(PINKKATANA, 				15, 16);
+		assignItemRect(BROWNKATANA, 			15, 16);
+		assignItemRect(BLACKKATANA, 			15, 16);
+		assignItemRect(GRAYKATANA, 				15, 16);
+		assignItemRect(WHITEKATANA, 			15, 16);
+
+		assignItemRect(DILLOKATANA, 			16, 16);
+		assignItemRect(CHEESEKATANA, 			15, 16);
+		assignItemRect(OILKATANA, 				15, 16);
+		assignItemRect(SICKLEKATANA, 			16, 16);
+		assignItemRect(GOOKATANA, 				15, 16);
+		assignItemRect(ICECREAMKATANA, 			15, 16);
+		assignItemRect(STYLUSKATANA, 			15, 16);
+		assignItemRect(SAIKATANA, 				16, 15);
+		assignItemRect(AXEKATANA, 				16, 16);
+		assignItemRect(OBSIDIANKATANA, 			15, 16);
+
+		assignItemRect(GOLDKATANA, 			14, 16);
+		assignItemRect(BRANCHKATANA, 			14, 16);
+		assignItemRect(MESSEDKATANA, 			16, 16);
+		assignItemRect(CHAOSKATANA, 			15, 16);
+		assignItemRect(PAINTKATANA, 			16, 16);
+		assignItemRect(SNAKEKATANA, 			13, 10);
+		assignItemRect(DISARMEDKATANA, 			15, 16);
 	}
 
 	//for smaller 8x8 icons that often accompany an item sprite

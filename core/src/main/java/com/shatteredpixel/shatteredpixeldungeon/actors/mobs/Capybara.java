@@ -29,28 +29,18 @@ public class Capybara extends Mob {
         loot = new ArcaneCatalyst();
         lootChance = 0.2f;
         baseSpeed = 0.5f;
+        properties.add(Property.ANNOYING);
     }
 
     int eggs = 0;
 
     @Override
     public int damageRoll() {
-
         return Random.NormalIntRange(2, 4);
     }
 
     @Override
     public boolean act() {
-
-        if (this.state == SLEEPING) {
-            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-                if (Dungeon.hero.pos == pos + PathFinder.NEIGHBOURS8[i]) {
-                    this.state = WANDERING;
-                    break;
-                }
-            }
-        }
-
         if ( this.state != SLEEPING && Dungeon.level.heroFOV[pos] && Random.Float() < 0.1f) {
             Sample.INSTANCE.play(Assets.Sounds.CAPYBARA, 0.7f, Random.Float(0.75f, 1f));
         }
@@ -116,7 +106,7 @@ public class Capybara extends Mob {
 
     @Override
     protected Char chooseEnemy() {
-        if (HP == HT && !(this instanceof Minibara)) {
+        if (HP >= HT / 2 && !(this instanceof Minibara)) {
             return null;
         }
         return super.chooseEnemy();

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.N
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -386,9 +387,9 @@ public class SpiritBow extends Weapon {
 			case EGGBOW:
 				arrow.image = ItemSpriteSheet.EGG_ARROW;
 				break;
-//			case BOW:
-//				arrow.image = ItemSpriteSheet._ARROW;
-//				break;
+			case WATERBOW:
+				arrow.image = ItemSpriteSheet.WATER_ARROW;
+				break;
 			case GOLDENBOW:
 				arrow.image = ItemSpriteSheet.GOLDEN_ARROW;
 				break;
@@ -419,9 +420,9 @@ public class SpiritBow extends Weapon {
 			case FLAMINGBOW:
 				arrow.image = ItemSpriteSheet.FLAMING_ARROW;
 				break;
-//			case BOW:
-//				arrow.image = ItemSpriteSheet._ARROW;
-//				break;
+			case ASHBOW:
+				arrow.image = ItemSpriteSheet.ASH_ARROW;
+				break;
 			default:
 				arrow.image = ItemSpriteSheet.SPIRIT_ARROW;
 
@@ -550,9 +551,9 @@ public class SpiritBow extends Weapon {
 					case EGGBOW:
 						color = Random.oneOf(0xCCfbe9a3,0xCCad5d20);
 						break;
-//			case BOW:
-//				color = 0xCC;
-//				break;
+					case WATERBOW:
+						color = 0xCC79bcc9;
+						break;
 					case GOLDENBOW:
 						if (Random.Float() > 0.2f) {
 							color = 0xCCfdf55f;
@@ -600,9 +601,10 @@ public class SpiritBow extends Weapon {
 						amount = 3;
 						color = Random.oneOf(0xCCff5500,0xCCffe566,0xCCffffff,0xCCff9d33);
 						break;
-//			case BOW:
-//				color = 0xCC;
-//				break;
+					case BOW:
+						amount = 6;
+						color = Random.oneOf(0xCC050505, 0xCC262626, 0xCC101010);
+						break;
 				}
 			}
 
@@ -611,6 +613,10 @@ public class SpiritBow extends Weapon {
 				if (skin == Skin.FLAMINGBOW) {
 					for (int i = 0; i < 15; i++) {
 						Splash.FUCK(cell, Random.oneOf(0xCCff5500,0xCCffe566,0xCCffffff,0xCCff9d33), 1, Random.Float(0.1f,4f));
+					}
+				} else if (skin == Skin.ASHBOW) {
+					for (int i = 0; i < 15; i++) {
+						Splash.FUCK(cell, color = Random.oneOf(0xCC050505, 0xCC262626, 0xCC101010), 1, Random.Float(0.1f,2f));
 					}
 				}
 				Splash.at(cell, color, amount);
@@ -775,10 +781,18 @@ public class SpiritBow extends Weapon {
 					return;
 				}
 
+				if (item instanceof Waterskin) {
+					if (curItem.skin == Skin.FLAMINGBOW) {
+						skin = Skin.ASHBOW;
+					} else {
+						skin = Skin.WATERBOW;
+					}
+				}
+
 				GLog.p(Messages.get(SpiritBow.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EQUIP_WOOD);
-				((SpiritBow) curItem).applySkin(skin);
+				curItem.applySkin(skin);
 			}
 		}
 	};

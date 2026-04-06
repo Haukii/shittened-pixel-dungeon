@@ -251,7 +251,7 @@ public class MeleeWeapon extends Weapon {
 		//Regular damage * Prefix damage
 		//then * Strongman damage
 		int damage = (int) Math.floor((tier + lvl) * (1f + prefix.min()));
-		if (Dungeon.hero.pointsInTalent(Talent.STRONGMAN) > 0) {
+		if (Dungeon.hero != null && Dungeon.hero.pointsInTalent(Talent.STRONGMAN) > 0) {
 			damage = (int) (damage * (1f + 0.05f * Dungeon.hero.pointsInTalent(Talent.STRONGMAN)));
 		}
 		return damage;

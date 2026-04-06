@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 public class Painting extends Item {
 
 
-	int id;
+	public int id;
 
 	{
 		image = ItemSpriteSheet.PAINTING_MEAT;

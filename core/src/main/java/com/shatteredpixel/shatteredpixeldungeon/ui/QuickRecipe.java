@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Coffee;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.CompleteBreakfast;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.CookedWarrior;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Cookies;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.CrispyBass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry;
@@ -71,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.FOFFSDegree;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldAmulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.misc.PinkAmulet;
@@ -386,6 +388,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new BasedCake.Recipe()));
 				result.add(new QuickRecipe(new DeepfriedRat.Recipe()));
 				result.add(new QuickRecipe(new CheeseSlice.Recipe()));
+				result.add(new QuickRecipe(new CookedWarrior.Recipe()));
 				return result;
 			case 3:
 				r = new ExoticPotion.PotionToExotic();
@@ -476,6 +479,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new StoneAmulet.Craft()));
 				result.add(new QuickRecipe(new WaxBar.Recipe()));
 				result.add(new QuickRecipe(new TidePod.Recipe()));
+				result.add(new QuickRecipe(new FOFFSDegree.Recipe()));
 				result.add(null);
 				return result;
 		}

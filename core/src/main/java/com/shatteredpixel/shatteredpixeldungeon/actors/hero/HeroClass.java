@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.Skin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
@@ -69,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
@@ -116,7 +118,8 @@ public enum HeroClass {
 
 		if (DeviceCompat.isDebug()) {
 			new SprayPaint().collect();
-			new LeatherArmor().identify().upgrade(3).collect();
+			new LeatherArmor().identify().upgrade(30).collect();
+			new Longsword().identify().upgrade(50).collect();
 			new ScrollOfDebug().identify().collect();
 		}
 
@@ -231,6 +234,8 @@ public enum HeroClass {
 		hero.belongings.weapon = dagger;
 
 		CloakOfShadows cloak = new CloakOfShadows();
+		if (Holiday.getCurrentHoliday() == Holiday.HALLOWEEN)
+			cloak.changeSkin(Skin.DRACULACLOAK);
 		(hero.belongings.artifact = cloak).identify();
 		hero.belongings.artifact.activate( hero );
 
@@ -252,6 +257,8 @@ public enum HeroClass {
 		hero.belongings.weapon = gloves;
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
+		if (Holiday.getCurrentHoliday() == Holiday.EASTER)
+			bow.changeSkin(Skin.EGGBOW);
 
 		Dungeon.quickslot.setSlot(0, bow);
 

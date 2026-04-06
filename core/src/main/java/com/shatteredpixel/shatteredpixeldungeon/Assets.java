@@ -206,6 +206,7 @@ public class Assets {
 		public static final String CANTO_TWINGO 		= "music/player/canto_twingo.ogg";
 		public static final String TWIGIGIGI 			= "music/player/twigigigi.ogg";
 		public static final String TWINGO_TURBO 		= "music/player/twingo_turbo.ogg";
+		public static final String TWINGO_TANGO 		= "music/player/twingo_tango.ogg";
 		public static final String YSILUOKKALAISET 		= "music/player/ysiluokkalaiset.ogg";
 		public static final String MISSA_TWINGO 		= "music/player/missa_twingo.ogg";
 		public static final String MOKKITIE 			= "music/player/mokkitie.ogg";

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.misc.Painting;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -115,6 +116,10 @@ public class Longsword extends MeleeWeapon {
 			switch (skin) {
 				case TRUEGOLDLSWORD:
 					return "Golden Longsword";
+				case STARRYLSWORD:
+					return "Starry Nightsword";
+				case WAVELSWORD:
+					return "Great Wavesword";
 			}
 		}
 		return super.name();
@@ -155,6 +160,17 @@ public class Longsword extends MeleeWeapon {
 		public void onSelect( Item item ) {
 			if (item != null && itemSelectable(item)) {
 				Skin skin = Skin.fromIngredient(item, Longsword.class);
+
+				if (item instanceof Painting) {
+					if (((Painting) item).id == 2) {
+						skin = Skin.STARRYLSWORD;
+					} else if (((Painting) item).id == 3) {
+						skin = Skin.WAVELSWORD;
+					} else {
+						GLog.w(Messages.get(this, "notpretty"));
+						return;
+					}
+				}
 
 				GLog.p(Messages.get(Longsword.class, "applyskin"));
 				Dungeon.hero.sprite.operate(Dungeon.hero.pos);

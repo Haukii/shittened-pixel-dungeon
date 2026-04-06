@@ -120,7 +120,9 @@ public class TitleScene extends PixelScene {
 			titleStyle = 3;
 		} else if (Holiday.getCurrentHoliday() == Holiday.VALENTINES_DAY) {
 			title = BannerSprites.get(  BannerSprites.Type.PIXEL_DUNGEON_VALENTINE );
-
+			titleStyle = 3;
+		} else if (Holiday.getCurrentHoliday() == Holiday.EASTER) {
+			title = BannerSprites.get(  BannerSprites.Type.PIXEL_DUNGEON_EASTER );
 			titleStyle = 3;
 		} else if (Random.Float() < 0.02f) {
 			title = BannerSprites.get(  BannerSprites.Type.SHIT_SHIT_SHIT );
